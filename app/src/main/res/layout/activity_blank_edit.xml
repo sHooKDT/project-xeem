@@ -9,4 +9,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="shook.xeem.BlankEdit">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:choiceMode="none"
+        android:layout_marginBottom="50dp"
+        android:id="@+id/questionsList" />
 </RelativeLayout>

@@ -17,36 +17,33 @@ public class BlankObject {
     private String title = "";
     private List<Question> questions;
 
-    public void setTitle (String newtitle) {
-        this.title = newtitle;
+    public int addQuestion(String text) {
+        questions.add(new Question(text));
+        return questions.size()-1;
     }
 
-    public void addQuestion (String text, String[] atts) {
-        this.questions.add(new Question(text, Arrays.asList(atts)));
+    public void addAnswer(int qindex, String text) {
+        questions.get(qindex).addAnswer(text);
     }
-
-
-
 
     // Question object
     private class Question {
 
         // Constructor
-        public Question (String text, List<String> atts) {
+        public Question (String text/*, List<String> atts*/) {
             this.text = text;
             this.answers = new ArrayList<Answer>();
-            this.attachments = new ArrayList<String>();
-            this.attachments.addAll(atts);
+//            this.attachments = new ArrayList<String>();
+//            this.attachments.addAll(atts);
         }
 
         // Class variables
         private String text;
         private List<Answer> answers; // = new ArrayList<Answer>();
-        private List<String> attachments;
+//        private List<String> attachments;
 
-        public int addAnswer(String text) {
+        public void addAnswer(String text) {
             answers.add(new Answer(text));
-            return answers.size();
         }
 
         private class Answer {
