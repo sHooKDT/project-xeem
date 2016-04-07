@@ -22,6 +22,10 @@ public class BlankObject {
         return questions.size()-1;
     }
 
+    public void removeQuestion(int position) {
+        this.questions.remove(position);
+    }
+
     public ArrayList<Question> getQuestions () {
         return this.questions;
     }

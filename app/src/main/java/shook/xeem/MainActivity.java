@@ -5,10 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import shook.tools.shookTools;
 
-
-public class Main extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +15,6 @@ public class Main extends AppCompatActivity {
     }
 
     public void addBlankClick (View v) {
-        startActivity(new Intent(this, BlankEdit.class));
+        startActivity(new Intent(this, BlankEditActivity.class));
     }
 }
