@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Xeem.iml" filepath="$PROJECT_DIR$/Xeem.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-xeem.iml" filepath="$PROJECT_DIR$/project-xeem.iml" />
     </modules>
   </component>
 </project>

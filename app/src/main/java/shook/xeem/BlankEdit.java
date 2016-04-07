@@ -8,20 +8,18 @@ import android.widget.ListView;
 
 public class BlankEdit extends AppCompatActivity {
 
-    BlankObject testBlank = generateBlank();
-    ListView questionsList = (ListView) findViewById(R.id.questionsList);
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
 
-//        questionsList.setAdapter();
+        ListView questionsList = (ListView) findViewById(R.id.questionsList);
+        EditQuestionAdapter adapter = new EditQuestionAdapter(this, generateBlank().getQuestions());
+        try {
+            questionsList.setAdapter(adapter);
+        } catch (NullPointerException e) {e.printStackTrace();}
     }
 
-//    class blankAdapter extends ArrayAdapter<BlankObject> {
-//
-//    }
 
     public BlankObject generateBlank () {
         BlankObject result = new BlankObject("Test title");

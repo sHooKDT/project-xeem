@@ -15,11 +15,15 @@ public class BlankObject {
 
     // Blank variables
     private String title = "";
-    private List<Question> questions;
+    private ArrayList<Question> questions;
 
     public int addQuestion(String text) {
         questions.add(new Question(text));
         return questions.size()-1;
+    }
+
+    public ArrayList<Question> getQuestions () {
+        return this.questions;
     }
 
     public void addAnswer(int qindex, String text) {
@@ -27,7 +31,7 @@ public class BlankObject {
     }
 
     // Question object
-    private class Question {
+    public class Question {
 
         // Constructor
         public Question (String text/*, List<String> atts*/) {
@@ -35,6 +39,10 @@ public class BlankObject {
             this.answers = new ArrayList<Answer>();
 //            this.attachments = new ArrayList<String>();
 //            this.attachments.addAll(atts);
+        }
+
+        public String getText() {
+            return this.text;
         }
 
         // Class variables
