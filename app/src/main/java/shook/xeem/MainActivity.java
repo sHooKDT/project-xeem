@@ -17,4 +17,5 @@ public class MainActivity extends AppCompatActivity {
     public void addBlankClick (View v) {
         startActivity(new Intent(this, BlankEditActivity.class));
     }
+
 }

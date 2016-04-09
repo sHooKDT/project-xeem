@@ -26,12 +26,16 @@ public class BlankObject {
         this.questions.remove(position);
     }
 
-    public ArrayList<Question> getQuestions () {
-        return this.questions;
+    public Question getQuestion (int position) {
+        return this.questions.get(position);
     }
 
     public void addAnswer(int qindex, String text) {
         questions.get(qindex).addAnswer(text);
+    }
+
+    public int questionCount() {
+        return questions.size();
     }
 
     // Question object
