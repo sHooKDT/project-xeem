@@ -1,6 +1,7 @@
 package shook.xeem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +12,19 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class EditQuestionAdapter extends BaseAdapter{
+public class BlankEditAdapter extends BaseAdapter{
 
     Context context;
     LayoutInflater lInflater;
     BlankObject curBlank;
 
-    EditQuestionAdapter(Context _context, BlankObject _blank) {
+    BlankEditAdapter(Context _context, BlankObject _blank) {
         this.context = _context;
         this.curBlank = _blank;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
+
+    public BlankObject getBlank() { return curBlank; }
 
     @Override
     public int getCount() {
@@ -40,6 +43,7 @@ public class EditQuestionAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         final int pos = position;
         View view = convertView;
 
@@ -50,19 +54,33 @@ public class EditQuestionAdapter extends BaseAdapter{
         BlankObject.Question q = (BlankObject.Question) getItem(position);
 
         ((TextView) view.findViewById(R.id.questionText)).setText(q.getText());
+
+        // Click handler for REMOVE button
         Button removeBut = (Button) view.findViewById(R.id.removeButton);
         removeBut.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                removeQuestion(pos);
+                curBlank.removeQuestion(pos);
                 notifyDataSetChanged();
             }
         });
 
+        // Click handler for EDIT button
+        Button editBut = (Button) view.findViewById(R.id.editButton);
+        editBut.setOnClickListener(new View.OnClickListener() {
+            public void onClick (View v) {
+                editQuestion(pos);
+                notifyDataSetChanged();
+            }
+        });
+
+
         return view;
     }
 
-    public void removeQuestion (int position) {
-        curBlank.removeQuestion(position);
+    public void editQuestion (int position) {
+        Intent intent = new Intent(context, AnswersEdit.class);
+        intent.putExtra("position", position);
+        context.startActivity(intent);
     }
 
     public void addQuestion (String _title) {

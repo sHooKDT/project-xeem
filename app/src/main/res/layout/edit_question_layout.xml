@@ -1,47 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="30dp" android:orientation="horizontal"
-    android:weightSum="1">
-
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Super super long question text"-->
-        <!--android:id="@+id/questionText"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:textSize="15dp"-->
-        <!--android:layout_alignBaseline="@+id/questionRemove"-->
-        <!--android:layout_alignBottom="@+id/questionRemove"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_marginStart="40dp" />-->
-
-    <!--<Button-->
-        <!--android:layout_width="15dp"-->
-        <!--android:layout_height="15dp"-->
-        <!--android:id="@+id/questionRemove"-->
-        <!--android:background="@drawable/can"-->
-        <!--android:layout_marginLeft="10dp"-->
-        <!--android:layout_marginTop="23dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_marginEnd="66dp" />-->
+    android:weightSum="1"
+    android:layout_marginTop="7dp" >
 
     <TextView
         android:layout_width="300dp"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_gravity="bottom"
         android:layout_marginLeft="5dp"
         android:text="Super long question for test the layout???"
-        android:textSize="15dp"
+        android:textSize="15sp"
         android:id="@+id/questionText"
-        android:lines="1" />
+        android:lines="1"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/editButton" />
 
     <Button
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginTop="5dp"
         android:background="@drawable/can"
+        android:id="@+id/removeButton"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
-        android:id="@+id/removeButton" />
+    <Button
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/draw"
+        android:id="@+id/editButton"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/removeButton"
+        android:layout_marginRight="5dp" />
 
-</LinearLayout>
+</RelativeLayout>

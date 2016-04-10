@@ -6,15 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 public class BlankEditActivity extends AppCompatActivity {
 
-    EditQuestionAdapter blankAdapter;
+    BlankEditAdapter blankAdapter;
+    public BlankObject currentBlank;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,16 +20,18 @@ public class BlankEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_blank_edit);
 
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
-        blankAdapter = new EditQuestionAdapter(this, generateBlank());
+
+        currentBlank = generateBlank();
+        blankAdapter = new BlankEditAdapter(this, currentBlank);
         questionsList.setAdapter(blankAdapter);
 
-        Button addBut = (Button) findViewById(R.id.addQuestionButton);
-        addBut.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 addQuestionClick(v);
                 blankAdapter.notifyDataSetChanged();
             }
         });
+
     }
 
     public void addQuestionClick (View v) {
@@ -82,4 +82,5 @@ public class BlankEditActivity extends AppCompatActivity {
 
         return result;
     }
+
 }
