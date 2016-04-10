@@ -7,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class BlankEditAdapter extends BaseAdapter{
 
@@ -51,7 +48,7 @@ public class BlankEditAdapter extends BaseAdapter{
             view = lInflater.inflate(R.layout.edit_question_layout, parent, false);
         }
 
-        BlankObject.Question q = (BlankObject.Question) getItem(position);
+        QuestionObject q = (QuestionObject) getItem(position);
 
         ((TextView) view.findViewById(R.id.questionText)).setText(q.getText());
 

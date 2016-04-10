@@ -16,10 +16,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addBlankClick (View v) {
+
         BlankObject blankToEdit = generateBlank();
         Intent editIntent = new Intent(this, BlankEditActivity.class);
 
-//        editIntent.putExtra("blank", blankToEdit);
+        editIntent.putExtra("blank", blankToEdit);
 
         startActivity(editIntent);
     }

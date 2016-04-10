@@ -21,7 +21,7 @@ public class BlankEditActivity extends AppCompatActivity {
 
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
 
-        currentBlank = generateBlank();
+        currentBlank = getIntent().getParcelableExtra("blank");
         blankAdapter = new BlankEditAdapter(this, currentBlank);
         questionsList.setAdapter(blankAdapter);
 
