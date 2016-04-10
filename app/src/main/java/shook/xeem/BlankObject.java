@@ -54,10 +54,6 @@ public class BlankObject implements Parcelable {
         }
     };
 
-    public JSONObject       toJSON() {
-        // TODO: Realise
-    }
-
 
     // Public constructors
     public                  BlankObject (String title) {
