@@ -13,24 +13,22 @@ public class BlankEditAdapter extends BaseAdapter{
 
     Context context;
     LayoutInflater lInflater;
-    BlankObject curBlank;
+    BlankObject loadedBlank;
 
     BlankEditAdapter(Context _context, BlankObject _blank) {
         this.context = _context;
-        this.curBlank = _blank;
+        this.loadedBlank = _blank;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
-    public BlankObject getBlank() { return curBlank; }
-
     @Override
     public int getCount() {
-        return curBlank.questionCount();
+        return loadedBlank.questionCount();
     }
 
     @Override
     public Object getItem(int position) {
-        return curBlank.getQuestion(position);
+        return loadedBlank.getQuestion(position);
     }
 
     @Override
@@ -56,7 +54,7 @@ public class BlankEditAdapter extends BaseAdapter{
         Button removeBut = (Button) view.findViewById(R.id.removeButton);
         removeBut.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                curBlank.removeQuestion(pos);
+                loadedBlank.removeQuestion(pos);
                 notifyDataSetChanged();
             }
         });
@@ -81,7 +79,7 @@ public class BlankEditAdapter extends BaseAdapter{
     }
 
     public void addQuestion (String _title) {
-        curBlank.addQuestion(_title);
+        loadedBlank.addQuestion(new QuestionObject(_title));
     }
 
 }

@@ -19,8 +19,8 @@ public class BlankObject implements Parcelable {
 
 
     // Public interface
-    public int              addQuestion(String _text) {
-        bQuestions.add(new QuestionObject(_text));
+    public int              addQuestion(QuestionObject _question) {
+        bQuestions.add(_question);
         return bQuestions.size()-1;
     }
     public void             removeQuestion(int position) {

@@ -3,6 +3,8 @@ package shook.xeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.bson.Document;
+
 import java.util.ArrayList;
 
 public class QuestionObject implements Parcelable {
@@ -14,16 +16,33 @@ public class QuestionObject implements Parcelable {
     private int qPoints;
     private ArrayList<AnswerObject> qAnswers;
 
+    // JSON converter
+    public Document toDoc() {
+
+        Document[] _answers = new Document[getAnswers().size()];
+        for (int i = 0; i < _answers.length; i++) {
+            _answers[i] = getAnswers().get(i).toDoc();
+        }
+
+        Document result = new Document()
+                .append("text", getText())
+                .append("pic", getPic())
+                .append("correct", getCorrect())
+                .append("points", getPoints())
+                .append("answers", _answers);
+
+        return result;
+    }
 
     // Public interface
     public String       getText() {
         return this.qText;
     }
     public void         addAnswer(String _text) {
-        qAnswers.add(new AnswerObject(_text));
+        getAnswers().add(new AnswerObject(_text));
     }
     public void         removeAnswer(int position) {
-        qAnswers.remove(position);
+        getAnswers().remove(position);
     }
 
 
@@ -43,11 +62,11 @@ public class QuestionObject implements Parcelable {
 
     // Parcelable methods
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(qText);
-        dest.writeString(qPic);
-        dest.writeInt(qCorrect);
-        dest.writeInt(qPoints);
-        dest.writeTypedList(qAnswers);
+        dest.writeString(getText());
+        dest.writeString(getPic());
+        dest.writeInt(getCorrect());
+        dest.writeInt(getPoints());
+        dest.writeTypedList(getAnswers());
     }
     public int describeContents() {
         return 0;
@@ -65,4 +84,17 @@ public class QuestionObject implements Parcelable {
     };
 
 
+    // Getters and setters
+    public String getPic() {
+        return qPic;
+    }
+    public int getCorrect() {
+        return qCorrect;
+    }
+    public int getPoints() {
+        return qPoints;
+    }
+    public ArrayList<AnswerObject> getAnswers() {
+        return qAnswers;
+    }
 }

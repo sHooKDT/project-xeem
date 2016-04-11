@@ -28,22 +28,22 @@ public class MainActivity extends AppCompatActivity {
     public BlankObject generateBlank () {
         BlankObject result = new BlankObject("Test title");
 
-        int curQ = result.addQuestion("Blank question number one");
+        int curQ = result.addQuestion(new QuestionObject("Blank question number one"));
         result.addAnswer(curQ, "Answer 1");
         result.addAnswer(curQ, "Answer 2");
         result.addAnswer(curQ, "Answer 3");
 
-        curQ = result.addQuestion("Question number two");
+        curQ = result.addQuestion(new QuestionObject("Question number two"));
         result.addAnswer(curQ, "Answer 1");
         result.addAnswer(curQ, "Answer 2");
         result.addAnswer(curQ, "Answer 3");
 
-        curQ = result.addQuestion("Long long long long long long question");
+        curQ = result.addQuestion(new QuestionObject("Long long long long long long question"));
         result.addAnswer(curQ, "Answer 1");
         result.addAnswer(curQ, "Answer 2");
         result.addAnswer(curQ, "Answer 3");
 
-        curQ = result.addQuestion("Ultra mega super long long long long long question");
+        curQ = result.addQuestion(new QuestionObject("Ultra mega super long long long long long question"));
         result.addAnswer(curQ, "Answer 1");
         result.addAnswer(curQ, "Answer 2");
         result.addAnswer(curQ, "Answer 3");

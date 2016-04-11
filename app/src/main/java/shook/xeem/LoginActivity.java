@@ -35,25 +35,14 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        try {
-//            MongoClientURI conURI = new MongoClientURI("mongodb://testuser:testpass@ds013340.mlab.com:13340/xeem-data");
-            MongoClient mongo = new MongoClient("46.101.8.217:27017");
-            MongoDatabase db = mongo.getDatabase("xeem-db");
-            MongoCollection col = db.getCollection("testBlanks");
-
-            Document doc = new Document("name", "MongoDB")
-                    .append("type", "database")
-                    .append("count", 1)
-                    .append("info", new Document("x", 203).append("y", 102));
-
-            col.insertOne(doc);
-
-        } catch (Exception e) {e.printStackTrace();}
-
     }
 
     public void clickEnter (View v) {
         startActivity(new Intent(this, MainActivity.class));
+    }
+
+    public void testDB (View v) {
+
     }
 
 }

@@ -21,4 +21,14 @@
         android:onClick="clickEnter"
         android:layout_gravity="bottom" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test DB"
+        android:id="@+id/testDB"
+        android:layout_above="@+id/enterButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="176dp"
+        android:onClick="testDB" />
+
 </RelativeLayout>
