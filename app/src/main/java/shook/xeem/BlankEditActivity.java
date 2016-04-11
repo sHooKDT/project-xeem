@@ -28,7 +28,6 @@ public class BlankEditActivity extends AppCompatActivity {
         findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 addQuestionClick(v);
-                blankAdapter.notifyDataSetChanged();
             }
         });
 
@@ -45,6 +44,7 @@ public class BlankEditActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 blankAdapter.addQuestion(input.getText().toString());
+                blankAdapter.notifyDataSetChanged();
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -55,32 +55,6 @@ public class BlankEditActivity extends AppCompatActivity {
         });
 
         builder.show();
-    }
-
-    public BlankObject generateBlank () {
-        BlankObject result = new BlankObject("Test title");
-
-        int curQ = result.addQuestion("Blank question number one");
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion("Question number two");
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion("Long long long long long long question");
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion("Ultra mega super long long long long long question");
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        return result;
     }
 
 }

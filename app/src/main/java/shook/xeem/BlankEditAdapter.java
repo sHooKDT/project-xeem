@@ -45,7 +45,7 @@ public class BlankEditAdapter extends BaseAdapter{
         View view = convertView;
 
         if (view == null) {
-            view = lInflater.inflate(R.layout.edit_question_layout, parent, false);
+            view = lInflater.inflate(R.layout.edit_question_list_item, parent, false);
         }
 
         QuestionObject q = (QuestionObject) getItem(position);

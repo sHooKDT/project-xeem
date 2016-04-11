@@ -20,6 +20,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import org.bson.Document;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,6 +34,21 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        try {
+//            MongoClientURI conURI = new MongoClientURI("mongodb://testuser:testpass@ds013340.mlab.com:13340/xeem-data");
+            MongoClient mongo = new MongoClient("46.101.8.217:27017");
+            MongoDatabase db = mongo.getDatabase("xeem-db");
+            MongoCollection col = db.getCollection("testBlanks");
+
+            Document doc = new Document("name", "MongoDB")
+                    .append("type", "database")
+                    .append("count", 1)
+                    .append("info", new Document("x", 203).append("y", 102));
+
+            col.insertOne(doc);
+
+        } catch (Exception e) {e.printStackTrace();}
 
     }
 
