@@ -1,13 +1,17 @@
 package shook.xeem;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import org.json.JSONObject;
 
 public class BlankEditActivity extends AppCompatActivity {
 
@@ -15,7 +19,7 @@ public class BlankEditActivity extends AppCompatActivity {
     public BlankObject currentBlank;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
 
@@ -25,12 +29,31 @@ public class BlankEditActivity extends AppCompatActivity {
         blankAdapter = new BlankEditAdapter(this, currentBlank);
         questionsList.setAdapter(blankAdapter);
 
+        JSONObject myjsonblank = new JSONObject();
+        try {
+            myjsonblank.put("blank", currentBlank.getJSON());
+        } catch (Exception e) {e.printStackTrace();}
+        Log.d("MYTAG", myjsonblank.toString());
+
         findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 addQuestionClick(v);
             }
         });
+    }
 
+    protected void onActivityResult (int requestCode, int resultCode, Intent result) {
+        Log.d("MYTAG", "Some activity sent result");
+        if (requestCode == 29) {
+            Log.d("MYTAG", "Question edited");
+        }
+    }
+
+    public void finishEdit (View v) {
+        Intent intent = new Intent()
+                .putExtra("blank", currentBlank);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void addQuestionClick (View v) {

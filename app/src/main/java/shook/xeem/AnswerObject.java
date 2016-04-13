@@ -3,38 +3,24 @@ package shook.xeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.bson.Document;
-
 class AnswerObject implements Parcelable {
 
     // Answer contents
     private String aText;
     private String aPic;
 
-    // JSON converter
-    public Document toDoc() {
-        Document result = new Document()
-                .append("text", getText())
-                .append("pic", getPic());
-        return result;
-    }
-    public AnswerObject (Document in) {
-        this.aText = in.getString("text");
-        this.aPic = in.getString("pic");
-    }
-
     // Public constructors
     public AnswerObject(String _text) {
-        this.aText = _text;
-        this.aPic = null;
+        this.setText(_text);
+        this.setPic("somebase64");
     }
     public AnswerObject(String _text, String _pic) {
-        this.aText = _text;
-        this.aPic = _pic;
+        this.setText(_text);
+        this.setPic(_pic);
     }
     protected AnswerObject(Parcel in) {
-        aText = in.readString();
-        aPic = in.readString();
+        setText(in.readString());
+        setPic(in.readString());
     }
 
     // Parcelable methods
@@ -64,4 +50,11 @@ class AnswerObject implements Parcelable {
     public String getPic() {
         return aPic;
     }
+    public void setText(String aText) {
+        this.aText = aText;
+    }
+    public void setPic(String aPic) {
+        this.aPic = aPic;
+    }
+
 }

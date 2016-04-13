@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import org.json.JSONObject;
 
 
 public class MainActivity extends AppCompatActivity {
+
+    static final int EDIT_BLANK_REQUEST = 27;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +27,10 @@ public class MainActivity extends AppCompatActivity {
 
         editIntent.putExtra("blank", blankToEdit);
 
-        startActivity(editIntent);
+        startActivityForResult(editIntent, EDIT_BLANK_REQUEST);
     }
 
+    // To delete
     public BlankObject generateBlank () {
         BlankObject result = new BlankObject("Test title");
 
@@ -49,6 +55,16 @@ public class MainActivity extends AppCompatActivity {
         result.addAnswer(curQ, "Answer 3");
 
         return result;
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent result) {
+        // Edited blank callback
+        if (requestCode == EDIT_BLANK_REQUEST) {
+            BlankObject _blank = result.getParcelableExtra("blank");
+            try {
+                Log.d("MYTAG", String.format("Blank edited: %s", _blank.getJSON().toString()));
+            } catch (Exception e) {e.printStackTrace();}
+        }
     }
 
 }

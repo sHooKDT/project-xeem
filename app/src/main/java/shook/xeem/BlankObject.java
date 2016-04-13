@@ -3,6 +3,9 @@ package shook.xeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Date;
 import java.util.ArrayList;
 
@@ -17,34 +20,38 @@ public class BlankObject implements Parcelable {
     private String                      bAuthor;
     private ArrayList<QuestionObject>   bQuestions;
 
-
-    // Public interface
-    public int              addQuestion(QuestionObject _question) {
-        bQuestions.add(_question);
-        return bQuestions.size()-1;
-    }
-    public void             removeQuestion(int position) {
-        this.bQuestions.remove(position);
-    }
-    public QuestionObject   getQuestion (int position) {
-        return this.bQuestions.get(position);
-    }
-    public void             addAnswer(int qPos, String text) {
-        bQuestions.get(qPos).addAnswer(text);
-    }
-    public int              questionCount() {
-        return bQuestions.size();
+    // Delete as fast as possible
+    public void addAnswer(int ques, String _text) {
+        bQuestions.get(ques).addAnswer(_text);
     }
 
+    // JSON converter
+    private JSONArray getJsonQuestions() throws Exception {
+        JSONArray result = new JSONArray();
+        for (QuestionObject x: getQuestions()) {
+            result.put(x.getJson());
+        }
+        return result;
+    }
+    public JSONObject getJSON() throws Exception {
+
+        return new JSONObject()
+                .put("title", getTitle())
+                .put("date", getDate().getTime())
+//                .put("id", getID())
+                .put("public", isPublic())
+                .put("author", getAuthor())
+                .put("questions", getJsonQuestions());
+    }
 
     // Public constructors
     public                  BlankObject (String _title) {
         this.bQuestions = new ArrayList<QuestionObject>();
         this.bTitle = _title;
-        this.bAuthor = "";
+        this.bAuthor = "Me and my cat";
         this.bDate = new Date();
         this.bIsPublic = true;
-        this.bID = 1;
+        this.bID = 111;
     }
     protected               BlankObject(Parcel in) {
         bTitle = in.readString();
@@ -72,13 +79,37 @@ public class BlankObject implements Parcelable {
         }
     };
     public void             writeToParcel(Parcel dest, int flags) {
-        dest.writeString(bTitle);
-        dest.writeLong(bDate.getTime());
-        dest.writeLong(bID);
-        dest.writeByte((byte) (bIsPublic ? 1 : 0));
-        dest.writeString(bAuthor);
-        dest.writeTypedList(bQuestions);
+        dest.writeString(getTitle());
+        dest.writeLong(getDate().getTime());
+        dest.writeLong(getID());
+        dest.writeByte((byte) (isPublic() ? 1 : 0));
+        dest.writeString(getAuthor());
+        dest.writeTypedList(getQuestions());
     }
 
-
+    // Getters && setters
+    public String getTitle() {
+        return bTitle;
+    }
+    public Date getDate() {
+        return bDate;
+    }
+    public long getID() {
+        return bID;
+    }
+    public boolean isPublic() {
+        return bIsPublic;
+    }
+    public String getAuthor() {
+        return bAuthor;
+    }
+    public ArrayList<QuestionObject> getQuestions() { return bQuestions; }
+    public void setQuestions(ArrayList<QuestionObject> _questions) {
+        this.bQuestions = _questions;
+    }
+    public int addQuestion(QuestionObject _question) {
+        bQuestions.add(_question);
+        return bQuestions.indexOf(_question);
+    }
+    public void removeQuestion(int position) {bQuestions.remove(position);}
 }

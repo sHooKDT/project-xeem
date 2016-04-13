@@ -1,7 +1,9 @@
 package shook.xeem;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class BlankEditAdapter extends BaseAdapter{
+
+    static final int EDIT_QUESTION_REQUEST = 29;
 
     Context context;
     LayoutInflater lInflater;
@@ -23,12 +27,12 @@ public class BlankEditAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return loadedBlank.questionCount();
+        return loadedBlank.getQuestions().size();
     }
 
     @Override
     public Object getItem(int position) {
-        return loadedBlank.getQuestion(position);
+        return loadedBlank.getQuestions().get(position);
     }
 
     @Override
@@ -73,9 +77,16 @@ public class BlankEditAdapter extends BaseAdapter{
     }
 
     public void editQuestion (int position) {
-        Intent intent = new Intent(context, AnswersEdit.class);
-        intent.putExtra("position", position);
-        context.startActivity(intent);
+        Intent intent = new Intent(context, QuestionEdit.class);
+        intent.putExtra("question", loadedBlank.getQuestions().get(position));
+        ((Activity) context).startActivityForResult(intent, EDIT_QUESTION_REQUEST);
+    }
+
+    protected void onActivityResult (int requestCode, int resultCode, Intent result) {
+        Log.d("MYTAG", "Some activity sent result");
+        if (requestCode == EDIT_QUESTION_REQUEST) {
+            Log.d("MYTAG", "Question edited");
+        }
     }
 
     public void addQuestion (String _title) {
