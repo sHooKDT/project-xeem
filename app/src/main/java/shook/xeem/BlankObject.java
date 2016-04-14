@@ -3,59 +3,80 @@ package shook.xeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class BlankObject implements Parcelable {
 
     // Blank contents
-    private String                      bTitle;
-    private Date                        bDate;
-    private long                        bID;
-    private boolean                     bIsPublic;
-    private String                      bAuthor;
-    private ArrayList<QuestionObject>   bQuestions;
+    @SerializedName("title") private String                             bTitle;
+    @SerializedName("date") private long                                bDate;
+    @SerializedName("id") private long                                  bID;
+    @SerializedName("public") private boolean                           bIsPublic;
+    @SerializedName("author") private String                            bAuthor;
+    @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
 
     // Delete as fast as possible
-    public void addAnswer(int ques, String _text) {
-        bQuestions.get(ques).addAnswer(_text);
-    }
+    public static BlankObject generateSome() {
+        BlankObject result = new BlankObject("Test title", false);
 
-    // JSON converter
-    private JSONArray getJsonQuestions() throws Exception {
-        JSONArray result = new JSONArray();
-        for (QuestionObject x: getQuestions()) {
-            result.put(x.getJson());
-        }
+        int curQ = result.addQuestion(new QuestionObject("Blank question number one"));
+        result.addAnswer(curQ, "Answer 1");
+        result.addAnswer(curQ, "Answer 2");
+        result.addAnswer(curQ, "Answer 3");
+
+        curQ = result.addQuestion(new QuestionObject("Question number two"));
+        result.addAnswer(curQ, "Answer 1");
+        result.addAnswer(curQ, "Answer 2");
+        result.addAnswer(curQ, "Answer 3");
+
+        curQ = result.addQuestion(new QuestionObject("Long long long long long long question"));
+        result.addAnswer(curQ, "Answer 1");
+        result.addAnswer(curQ, "Answer 2");
+        result.addAnswer(curQ, "Answer 3");
+
+        curQ = result.addQuestion(new QuestionObject("Ultra mega super long long long long long question"));
+        result.addAnswer(curQ, "Answer 1");
+        result.addAnswer(curQ, "Answer 2");
+        result.addAnswer(curQ, "Answer 3");
+
         return result;
     }
-    public JSONObject getJSON() throws Exception {
+    public void addAnswer(int ques, String _text) {
+        bQuestions.get(ques).putAns(_text);
+    }
 
-        return new JSONObject()
-                .put("title", getTitle())
-                .put("date", getDate().getTime())
-//                .put("id", getID())
-                .put("public", isPublic())
-                .put("author", getAuthor())
-                .put("questions", getJsonQuestions());
+    public String toJSON () {
+        return (new Gson()).toJson(this);
     }
 
     // Public constructors
-    public                  BlankObject (String _title) {
-        this.bQuestions = new ArrayList<QuestionObject>();
+    public                  BlankObject (String _title, boolean _public) {
         this.bTitle = _title;
         this.bAuthor = "Me and my cat";
-        this.bDate = new Date();
-        this.bIsPublic = true;
-        this.bID = 111;
+        this.bDate = new Date().getTime();
+        this.bIsPublic = _public;
+        this.bID = new Random().nextLong();
+        this.bQuestions = new ArrayList<QuestionObject>();
     }
-    protected               BlankObject(Parcel in) {
+    public                  BlankObject (String _json) {
+        Gson g = new Gson();
+        BlankObject result = g.fromJson(_json, BlankObject.class);
+        this.bTitle = result.getTitle();
+        this.bDate = result.getDate();
+        this.bAuthor = result.getAuthor();
+        this.bIsPublic = result.isPublic();
+        this.bID = result.getID();
+        this.bQuestions = result.getQuestions();
+    }
+    protected               BlankObject (Parcel in) {
         bTitle = in.readString();
-        bDate = new Date(in.readLong());
+        bDate = in.readLong();
         bID = in.readLong();
         bIsPublic = in.readByte() != 0;
         bAuthor = in.readString();
@@ -80,7 +101,7 @@ public class BlankObject implements Parcelable {
     };
     public void             writeToParcel(Parcel dest, int flags) {
         dest.writeString(getTitle());
-        dest.writeLong(getDate().getTime());
+        dest.writeLong(getDate());
         dest.writeLong(getID());
         dest.writeByte((byte) (isPublic() ? 1 : 0));
         dest.writeString(getAuthor());
@@ -91,7 +112,7 @@ public class BlankObject implements Parcelable {
     public String getTitle() {
         return bTitle;
     }
-    public Date getDate() {
+    public long getDate() {
         return bDate;
     }
     public long getID() {

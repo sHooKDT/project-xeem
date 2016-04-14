@@ -31,7 +31,7 @@ public class BlankEditActivity extends AppCompatActivity {
 
         JSONObject myjsonblank = new JSONObject();
         try {
-            myjsonblank.put("blank", currentBlank.getJSON());
+            myjsonblank.put("blank", currentBlank.toJSON());
         } catch (Exception e) {e.printStackTrace();}
         Log.d("MYTAG", myjsonblank.toString());
 

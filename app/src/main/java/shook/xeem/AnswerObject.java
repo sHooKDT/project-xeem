@@ -3,11 +3,13 @@ package shook.xeem;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 class AnswerObject implements Parcelable {
 
     // Answer contents
-    private String aText;
-    private String aPic;
+    @SerializedName("text") private String aText;
+    @SerializedName("pic") private String aPic;
 
     // Public constructors
     public AnswerObject(String _text) {

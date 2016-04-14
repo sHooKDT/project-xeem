@@ -14,7 +14,7 @@ public class shookTools {
 
         NotificationManager notifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder nBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+//                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentTitle(title)
                 .setContentText(text);
 
