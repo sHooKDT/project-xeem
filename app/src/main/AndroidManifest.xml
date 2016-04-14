@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".BlankEditActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".QuestionEdit"></activity>
+        <activity android:name=".QuestionEdit" />
     </application>
 
 </manifest>

@@ -1,7 +1,9 @@
 package shook.xeem;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +12,18 @@ import android.view.View;
 import org.json.JSONObject;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     static final int EDIT_BLANK_REQUEST = 27;
+    static JSONObject blanksList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        blanksList = ApiWorker.getBlanksList();
+
     }
 
     public void addBlankClick (View v) {

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Xeem</string>
+    <string name="title_activity_activity_with_floating_button">ActivityWithFloatingButton</string>
 </resources>

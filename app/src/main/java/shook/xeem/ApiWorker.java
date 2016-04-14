@@ -1,5 +1,6 @@
 package shook.xeem;
 
+import android.content.Intent;
 import android.util.Log;
 
 import com.loopj.android.http.*;
@@ -22,8 +23,10 @@ public class ApiWorker {
 
     public static void getBlanksList () {
         get("blanks", null, new JsonHttpResponseHandler() {
+
             @Override
             public void onSuccess (int statusCode, Header[] headers, JSONObject response) {
+//                result.put(response);
                 Log.d("MYTAG", String.format("Response: %s", response.toString()));
             }
 
