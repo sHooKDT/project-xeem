@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void testDB (View v) throws Exception {
-
+    //TODO: CHANGE FILTERS ON EVE (NO ID??)
         XeemApiService.postBlank(BlankObject.generateSome());
 
     }

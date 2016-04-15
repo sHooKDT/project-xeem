@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.list_adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +11,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import shook.xeem.BlankObject;
+import shook.xeem.QuestionEdit;
+import shook.xeem.QuestionObject;
+import shook.xeem.R;
+
 public class BlankEditAdapter extends BaseAdapter{
 
     static final int EDIT_QUESTION_REQUEST = 29;
@@ -19,7 +24,7 @@ public class BlankEditAdapter extends BaseAdapter{
     LayoutInflater lInflater;
     BlankObject loadedBlank;
 
-    BlankEditAdapter(Context _context, BlankObject _blank) {
+    public BlankEditAdapter(Context _context, BlankObject _blank) {
         this.context = _context;
         this.loadedBlank = _blank;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

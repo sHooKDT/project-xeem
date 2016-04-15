@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Xeem</string>
     <string name="title_activity_activity_with_floating_button">ActivityWithFloatingButton</string>
+
+    <string name="author_example">Me and my cat</string>
+    <string name="title_example">My first test blank</string>
 </resources>

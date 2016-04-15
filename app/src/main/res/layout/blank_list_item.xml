@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_weight="0.70">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/title_example"
+            android:textSize="25sp"
+            android:id="@+id/blanktitle"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="start|center_vertical"
+            android:text="@string/author_example"
+            android:id="@+id/blankauthor"
+            />
+    </LinearLayout>
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="0.15"
+        android:text="EDIT"
+        android:id="@+id/editButton"
+        />
+
+    <Button
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_weight="0.15"
+        android:text="DEL"
+        android:id="@+id/delButton"
+        />
+    
+</LinearLayout>

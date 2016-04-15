@@ -13,6 +13,8 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
+import shook.xeem.list_adapters.BlankEditAdapter;
+
 public class BlankEditActivity extends AppCompatActivity {
 
     BlankEditAdapter blankAdapter;
@@ -22,6 +24,14 @@ public class BlankEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
+
+        if (getIntent().getAction() == "EDIT") {
+
+            currentBlank = getIntent().getParcelableExtra("blank");
+        }
+        else if (getIntent().getAction() == "ADD") {
+
+        }
 
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
 

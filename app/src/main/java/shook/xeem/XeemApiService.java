@@ -68,19 +68,13 @@ public class XeemApiService {
         });
     }
 
-    public static void updateBlanks(final Activity context) throws Exception {
-        final blankListResponse[] result = new blankListResponse[1];
+    public static void updateBlanks()  {
         Call<blankListResponse> blankGetCall = API.loadBlanks();
         blankGetCall.enqueue(new Callback<blankListResponse>() {
             @Override
             public void onResponse(Call<blankListResponse> call, Response<blankListResponse> response) {
-                String myjsondata = (new Gson()).toJson(response.body()._items);
-                Intent myintent = new Intent(context, MainActivity.class)
-                        .putExtra("blanklist", myjsondata);
-                context.startActivity(myintent);
-                result[0] = response.body();
-                Log.d("MYTAG", String.format("Response: %s", response.raw()));
-                Log.d("MYTAG", String.format("Response: %s", response.body()._items.get(0).getTitle()));
+                Log.d("MYTAG", "Update success:" + response.code());
+                MainActivity.setBlankList(response.body()._items);
             }
 
             @Override
@@ -88,7 +82,6 @@ public class XeemApiService {
                 Log.d("MYTAG", "Request failed.");
             }
         });
-        Log.d("MYTAG", String.format("Got blanks, example: %s", result[0]._items.get(0).getTitle()));
     }
 
 }

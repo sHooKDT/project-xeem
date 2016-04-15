@@ -21,6 +21,7 @@ public class BlankObject implements Parcelable {
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
 
+
     // Delete as fast as possible
     public static BlankObject generateSome() {
         BlankObject result = new BlankObject("Test title", false);
@@ -133,4 +134,14 @@ public class BlankObject implements Parcelable {
         return bQuestions.indexOf(_question);
     }
     public void removeQuestion(int position) {bQuestions.remove(position);}
+
+    public static class Factory {
+
+        BlankObject factored_blank = new BlankObject("", false);
+
+        public BlankObject build() {
+            return factored_blank;
+        }
+
+    }
 }

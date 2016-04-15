@@ -22,4 +22,11 @@
         android:layout_marginEnd="13dp"
         android:layout_marginBottom="11dp" />
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/blankListView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true" />
+
 </RelativeLayout>
