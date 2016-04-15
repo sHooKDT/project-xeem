@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class QuestionObject implements Parcelable {
+public class QuestionObject {
 
     // Question contents
     @SerializedName("text") private String qText;
@@ -32,37 +32,6 @@ public class QuestionObject implements Parcelable {
         this.setText(_text);
         this.qAnswers = new ArrayList<AnswerObject>();
     }
-    protected QuestionObject(Parcel in) {
-        setText(in.readString());
-        setPic(in.readString());
-        setCorrect(in.readInt());
-        setPoints(in.readInt());
-        qAnswers = in.createTypedArrayList(AnswerObject.CREATOR);
-    }
-
-    // Parcelable methods
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getText());
-        dest.writeString(getPic());
-        dest.writeInt(getCorrect());
-        dest.writeInt(getPoints());
-        dest.writeTypedList(getAnswers());
-    }
-    public int describeContents() {
-        return 0;
-    }
-    public static final Creator<QuestionObject> CREATOR = new Creator<QuestionObject>() {
-        @Override
-        public QuestionObject createFromParcel(Parcel in) {
-            return new QuestionObject(in);
-        }
-
-        @Override
-        public QuestionObject[] newArray(int size) {
-            return new QuestionObject[size];
-        }
-    };
-
 
     // Getters and setters
     public String getText() {

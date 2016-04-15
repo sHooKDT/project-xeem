@@ -82,16 +82,7 @@ public class BlankEditAdapter extends BaseAdapter{
     }
 
     public void editQuestion (int position) {
-        Intent intent = new Intent(context, QuestionEdit.class);
-        intent.putExtra("question", loadedBlank.getQuestions().get(position));
-        ((Activity) context).startActivityForResult(intent, EDIT_QUESTION_REQUEST);
-    }
 
-    protected void onActivityResult (int requestCode, int resultCode, Intent result) {
-        Log.d("MYTAG", "Some activity sent result");
-        if (requestCode == EDIT_QUESTION_REQUEST) {
-            Log.d("MYTAG", "Question edited");
-        }
     }
 
     public void addQuestion (String _title) {

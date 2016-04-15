@@ -49,19 +49,16 @@ public class MainActivity extends Activity {
 
     public void addBlankClick (View v) {
 
-        blankListAdapter.notifyDataSetChanged();
 //        BlankObject blankToEdit = BlankObject.generateSome();
-//        Intent editIntent = new Intent(this, BlankEditActivity.class);
-//
-//        editIntent.putExtra("blank", blankToEdit);
-//
-//        startActivityForResult(editIntent, EDIT_BLANK_REQUEST);
+        Intent editIntent = new Intent(this, BlankEditActivity.class);
+        editIntent.setAction("ADD");
+        startActivityForResult(editIntent, EDIT_BLANK_REQUEST);
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent result) {
         // Edited blank callback
         if (requestCode == EDIT_BLANK_REQUEST) {
-            BlankObject _blank = result.getParcelableExtra("blank");
+            BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
             try {
                 Log.d("MYTAG", String.format("Blank edited: %s", _blank.toJSON()));
             } catch (Exception e) {e.printStackTrace();}

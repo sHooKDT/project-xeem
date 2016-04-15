@@ -19,34 +19,29 @@ public class BlankEditActivity extends AppCompatActivity {
 
     BlankEditAdapter blankAdapter;
     public BlankObject currentBlank;
+    BlankObject.Factory newBlankFactory = new BlankObject.Factory();
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
 
-        if (getIntent().getAction() == "EDIT") {
-
-            currentBlank = getIntent().getParcelableExtra("blank");
-        }
-        else if (getIntent().getAction() == "ADD") {
-
-        }
-
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
 
-        currentBlank = getIntent().getParcelableExtra("blank");
-        blankAdapter = new BlankEditAdapter(this, currentBlank);
+        if (getIntent().getAction() == "EDIT") {
+            blankAdapter = new BlankEditAdapter(this, currentBlank);
+            currentBlank = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_edit"));
+            blankAdapter = new BlankEditAdapter(this, currentBlank);
+        } else if (getIntent().getAction() == "ADD") {
+            //BlankObject.Factory newBlankFactory = new BlankObject.Factory();
+            newBlankFactory.fillExample();
+//            blankAdapter = new BlankEditAdapter(this, newBlankFactory.build());
+            blankAdapter = new BlankEditAdapter(this, newBlankFactory.getPreview());
+        }
         questionsList.setAdapter(blankAdapter);
 
-        JSONObject myjsonblank = new JSONObject();
-        try {
-            myjsonblank.put("blank", currentBlank.toJSON());
-        } catch (Exception e) {e.printStackTrace();}
-        Log.d("MYTAG", myjsonblank.toString());
-
         findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick (View v) {
+            public void onClick(View v) {
                 addQuestionClick(v);
             }
         });
@@ -61,7 +56,7 @@ public class BlankEditActivity extends AppCompatActivity {
 
     public void finishEdit (View v) {
         Intent intent = new Intent()
-                .putExtra("blank", currentBlank);
+                .putExtra("edited_blank", newBlankFactory.build().toJSON());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -76,7 +71,7 @@ public class BlankEditActivity extends AppCompatActivity {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                blankAdapter.addQuestion(input.getText().toString());
+                newBlankFactory.putQuestion(new QuestionObject(input.getText().toString()));
                 blankAdapter.notifyDataSetChanged();
             }
         });

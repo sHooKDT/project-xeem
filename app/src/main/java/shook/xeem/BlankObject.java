@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class BlankObject implements Parcelable {
+public class BlankObject {
 
     // Blank contents
     @SerializedName("title") private String                             bTitle;
@@ -55,6 +55,7 @@ public class BlankObject implements Parcelable {
     public String toJSON () {
         return (new Gson()).toJson(this);
     }
+    public static BlankObject fromJSON (String _json) { return (new Gson()).fromJson(_json, BlankObject.class); }
 
     // Public constructors
     public                  BlankObject (String _title, boolean _public) {
@@ -64,49 +65,6 @@ public class BlankObject implements Parcelable {
         this.bIsPublic = _public;
         this.bID = new Random().nextLong();
         this.bQuestions = new ArrayList<QuestionObject>();
-    }
-    public                  BlankObject (String _json) {
-        Gson g = new Gson();
-        BlankObject result = g.fromJson(_json, BlankObject.class);
-        this.bTitle = result.getTitle();
-        this.bDate = result.getDate();
-        this.bAuthor = result.getAuthor();
-        this.bIsPublic = result.isPublic();
-        this.bID = result.getID();
-        this.bQuestions = result.getQuestions();
-    }
-    protected               BlankObject (Parcel in) {
-        bTitle = in.readString();
-        bDate = in.readLong();
-        bID = in.readLong();
-        bIsPublic = in.readByte() != 0;
-        bAuthor = in.readString();
-        bQuestions = in.createTypedArrayList(QuestionObject.CREATOR);
-    }
-
-
-    // Parcelable methods
-    public int              describeContents() {
-        return 0;
-    }
-    public static final     Creator<BlankObject> CREATOR = new Creator<BlankObject>() {
-        @Override
-        public BlankObject createFromParcel(Parcel in) {
-            return new BlankObject(in);
-        }
-
-        @Override
-        public BlankObject[] newArray(int size) {
-            return new BlankObject[size];
-        }
-    };
-    public void             writeToParcel(Parcel dest, int flags) {
-        dest.writeString(getTitle());
-        dest.writeLong(getDate());
-        dest.writeLong(getID());
-        dest.writeByte((byte) (isPublic() ? 1 : 0));
-        dest.writeString(getAuthor());
-        dest.writeTypedList(getQuestions());
     }
 
     // Getters && setters
@@ -137,7 +95,31 @@ public class BlankObject implements Parcelable {
 
     public static class Factory {
 
-        BlankObject factored_blank = new BlankObject("", false);
+        BlankObject factored_blank;
+
+        Factory () {
+            factored_blank = new BlankObject("", false);
+        }
+
+        public void fillExample() {
+            // just for example !!!!!!!!!
+            this.factored_blank = BlankObject.fromJSON("{\"title\": \"Very hard IQ test\", \"date\": 14749221, \"id\": 3242112411, \"public\": false, \"author\": \"John Smith\", \"questions\": [{\"text\": \"How many legs does horse have?\", \"pic\": \"\", \"correct\": 2, \"points\": 5, \"answers\": [{\"text\": \"I dont know\", \"pic\": \"\"}, {\"text\": \"Maybe three?\", \"pic\": \"\"}, {\"text\": \"Exactly four\", \"pic\": \"\"} ] } ] }");
+        }
+
+        public void loadJSON(String _json) {
+            this.factored_blank = BlankObject.fromJSON(_json);
+        }
+
+        public void putQuestion(QuestionObject _question) {
+            this.factored_blank.bQuestions.add(_question);
+        }
+
+        public BlankObject getPreview() {
+            try {
+                return (BlankObject) factored_blank.clone();
+            } catch (Exception e) {e.printStackTrace();}
+                return factored_blank;
+        }
 
         public BlankObject build() {
             return factored_blank;

@@ -23,9 +23,9 @@ public class QuestionEdit extends AppCompatActivity {
     }
 
     public void finishEdit (View v) {
-        Intent result = new Intent()
-                .putExtra("question", currentQuestion);
-        setResult(29, result);
-        finish();
+//        Intent result = new Intent()
+//                .putExtra("question", currentQuestion);
+//        setResult(29, result);
+//        finish();
     }
 }
