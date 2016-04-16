@@ -1,11 +1,11 @@
-package shook.xeem;
+package shook.xeem.objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-class AnswerObject {
+public class AnswerObject {
 
     // Answer contents
     @SerializedName("text") private String aText;

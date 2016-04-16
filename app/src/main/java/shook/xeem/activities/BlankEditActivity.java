@@ -1,43 +1,52 @@
-package shook.xeem;
+package shook.xeem.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.json.JSONObject;
-
+import shook.xeem.R;
 import shook.xeem.list_adapters.BlankEditAdapter;
+import shook.xeem.objects.BlankObject;
+import shook.xeem.objects.QuestionObject;
 
-public class BlankEditActivity extends AppCompatActivity {
+public class BlankEditActivity extends Activity {
 
     BlankEditAdapter blankAdapter;
-    public BlankObject currentBlank;
     BlankObject.Factory newBlankFactory = new BlankObject.Factory();
+    EditText editTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
 
+        editTitle = (EditText) findViewById(R.id.editTitle);
+        editTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void afterTextChanged(Editable editable) {newBlankFactory.setTitle(editTitle.getText().toString());}
+        });
+
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
 
         if (getIntent().getAction() == "EDIT") {
-            blankAdapter = new BlankEditAdapter(this, currentBlank);
-            currentBlank = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_edit"));
-            blankAdapter = new BlankEditAdapter(this, currentBlank);
-        } else if (getIntent().getAction() == "ADD") {
-            //BlankObject.Factory newBlankFactory = new BlankObject.Factory();
-            newBlankFactory.fillExample();
-//            blankAdapter = new BlankEditAdapter(this, newBlankFactory.build());
-            blankAdapter = new BlankEditAdapter(this, newBlankFactory.getPreview());
-        }
+            newBlankFactory.loadJSON(getIntent().getStringExtra("blank_to_edit"));
+        } else if (getIntent().getAction() == "ADD") {}
+
+        blankAdapter = new BlankEditAdapter(this, newBlankFactory);
+
         questionsList.setAdapter(blankAdapter);
 
         findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {

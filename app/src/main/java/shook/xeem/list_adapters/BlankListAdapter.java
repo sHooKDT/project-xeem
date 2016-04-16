@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.List;
 
-import shook.xeem.BlankObject;
+import shook.xeem.objects.BlankObject;
 import shook.xeem.R;
 
 public class BlankListAdapter extends BaseAdapter{
@@ -27,7 +25,7 @@ public class BlankListAdapter extends BaseAdapter{
     }
 
     public void reload(List<BlankObject> _blankset) {
-        blanksList.addAll(_blankset);
+        this.blanksList = _blankset;
     }
 
     @Override

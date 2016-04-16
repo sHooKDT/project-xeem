@@ -1,12 +1,6 @@
-package shook.xeem;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package shook.xeem.objects;
 
 import com.google.gson.annotations.SerializedName;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

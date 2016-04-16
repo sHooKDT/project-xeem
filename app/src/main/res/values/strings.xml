@@ -4,4 +4,5 @@
 
     <string name="author_example">Me and my cat</string>
     <string name="title_example">My first test blank</string>
+    <string name="answer_text_example">I dont actually know.</string>
 </resources>

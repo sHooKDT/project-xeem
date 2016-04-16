@@ -1,19 +1,20 @@
 package shook.xeem.list_adapters;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
-import shook.xeem.BlankObject;
-import shook.xeem.QuestionEdit;
-import shook.xeem.QuestionObject;
+import shook.xeem.objects.BlankObject;
+import shook.xeem.objects.QuestionObject;
 import shook.xeem.R;
 
 public class BlankEditAdapter extends BaseAdapter{
@@ -22,22 +23,26 @@ public class BlankEditAdapter extends BaseAdapter{
 
     Context context;
     LayoutInflater lInflater;
-    BlankObject loadedBlank;
+    BlankObject.Factory loadedFactory;
 
-    public BlankEditAdapter(Context _context, BlankObject _blank) {
+    public BlankEditAdapter(Context _context, BlankObject.Factory _factory) {
         this.context = _context;
-        this.loadedBlank = _blank;
+        this.loadedFactory = _factory;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return loadedBlank.getQuestions().size();
+        if (loadedFactory.getPreview() == null) {
+            return 0;
+        } else {
+            return loadedFactory.getPreview().getQuestions().size();
+        }
     }
 
     @Override
     public Object getItem(int position) {
-        return loadedBlank.getQuestions().get(position);
+        return loadedFactory.getPreview().getQuestions().get(position);
     }
 
     @Override
@@ -63,7 +68,7 @@ public class BlankEditAdapter extends BaseAdapter{
         Button removeBut = (Button) view.findViewById(R.id.removeButton);
         removeBut.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
-                loadedBlank.removeQuestion(pos);
+                loadedFactory.rmQuestion(pos);
                 notifyDataSetChanged();
             }
         });
@@ -82,11 +87,50 @@ public class BlankEditAdapter extends BaseAdapter{
     }
 
     public void editQuestion (int position) {
+        final QuestionObject editable = loadedFactory.getPreview().getQuestions().get(position);
+        AnswerAdapter myadapter = new AnswerAdapter(context, editable);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(editable.getText());
+        builder.setAdapter(myadapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("MYTAG", "You clicked something? WTF??");
+            }
+        });
+        builder.setNeutralButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // TODO: FAST DELETE THIS SHIT
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
+                builder.setTitle("Type the answer");
+                final EditText input = new EditText(context);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
 
-    }
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        editable.putAns(input.getText().toString());
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
 
-    public void addQuestion (String _title) {
-        loadedBlank.addQuestion(new QuestionObject(_title));
+                builder.show();
+            }
+        });
+        builder.setPositiveButton("Nice!", new DialogInterface.OnClickListener() {
+            public void onClick (DialogInterface dialog, int id) {
+                dialog.cancel();
+            };
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
 }

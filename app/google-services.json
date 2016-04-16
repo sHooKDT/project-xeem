@@ -8,27 +8,14 @@
     {
       "client_info": {
         "mobilesdk_app_id": "1:209691345475:android:b144aefbe28983f2",
-        "client_id": "android:shook.xeem",
+        "client_id": "android:shook.project_xeem",
         "client_type": 1,
         "android_client_info": {
-          "package_name": "shook.xeem",
+          "package_name": "shook.project_xeem",
           "certificate_hash": []
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "209691345475-04om4fld7jpv7gqpel0g0l9hibqbj3qj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "shook.xeem",
-            "certificate_hash": "E26F152C7F3A5891501A69A092FF4E15ED52DD71"
-          }
-        },
-        {
-          "client_id": "209691345475-5tsh2vkvn6m87rfgd8gdsd507q6q3opv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [],
       "services": {
         "analytics_service": {
@@ -43,7 +30,39 @@
           "other_platform_oauth_client": []
         },
         "google_signin_service": {
-          "status": 2
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209691345475:android:d2c04e1f82e91334",
+        "client_id": "android:shook.xeem",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "shook.xeem",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
         },
         "ads_service": {
           "status": 1

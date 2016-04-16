@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.70"
+        android:layout_marginLeft="5dp"
+        android:id="@+id/answer_text"
+        android:text="@string/answer_text_example"
+        android:gravity="start|center_vertical"/>
+
+    <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_create_black_24dp"
+        android:id="@+id/editButton"/>
+
+    <Button
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_remove_circle_outline_black_24dp"
+        android:id="@+id/delButton"/>
+
+</LinearLayout>

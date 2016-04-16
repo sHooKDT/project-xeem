@@ -1,7 +1,4 @@
-package shook.xeem;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package shook.xeem.objects;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -21,53 +18,15 @@ public class BlankObject {
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
 
-
-    // Delete as fast as possible
-    public static BlankObject generateSome() {
-        BlankObject result = new BlankObject("Test title", false);
-
-        int curQ = result.addQuestion(new QuestionObject("Blank question number one"));
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion(new QuestionObject("Question number two"));
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion(new QuestionObject("Long long long long long long question"));
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        curQ = result.addQuestion(new QuestionObject("Ultra mega super long long long long long question"));
-        result.addAnswer(curQ, "Answer 1");
-        result.addAnswer(curQ, "Answer 2");
-        result.addAnswer(curQ, "Answer 3");
-
-        return result;
-    }
-    public void addAnswer(int ques, String _text) {
-        bQuestions.get(ques).putAns(_text);
-    }
-
     public String toJSON () {
         return (new Gson()).toJson(this);
     }
     public static BlankObject fromJSON (String _json) { return (new Gson()).fromJson(_json, BlankObject.class); }
 
     // Public constructors
-    public                  BlankObject (String _title, boolean _public) {
-        this.bTitle = _title;
-        this.bAuthor = "Me and my cat";
-        this.bDate = new Date().getTime();
-        this.bIsPublic = _public;
-        this.bID = new Random().nextLong();
-        this.bQuestions = new ArrayList<QuestionObject>();
-    }
+    private BlankObject () {}
 
-    // Getters && setters
+    // Getters
     public String getTitle() {
         return bTitle;
     }
@@ -84,21 +43,15 @@ public class BlankObject {
         return bAuthor;
     }
     public ArrayList<QuestionObject> getQuestions() { return bQuestions; }
-    public void setQuestions(ArrayList<QuestionObject> _questions) {
-        this.bQuestions = _questions;
-    }
-    public int addQuestion(QuestionObject _question) {
-        bQuestions.add(_question);
-        return bQuestions.indexOf(_question);
-    }
-    public void removeQuestion(int position) {bQuestions.remove(position);}
 
     public static class Factory {
 
         BlankObject factored_blank;
 
-        Factory () {
-            factored_blank = new BlankObject("", false);
+        public Factory () {
+            factored_blank = new BlankObject();
+            factored_blank.bIsPublic = false;
+            factored_blank.bQuestions = new ArrayList<QuestionObject>();
         }
 
         public void fillExample() {
@@ -110,19 +63,27 @@ public class BlankObject {
             this.factored_blank = BlankObject.fromJSON(_json);
         }
 
+        // Setters
+        public void setTitle(String _title) { this.factored_blank.bTitle = _title; }
+        public void togglePublic() {this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic;}
+
         public void putQuestion(QuestionObject _question) {
             this.factored_blank.bQuestions.add(_question);
         }
+        public void rmQuestion(int position) {
+            this.factored_blank.bQuestions.remove(position);
+        }
 
         public BlankObject getPreview() {
-            try {
-                return (BlankObject) factored_blank.clone();
-            } catch (Exception e) {e.printStackTrace();}
                 return factored_blank;
         }
 
         public BlankObject build() {
-            return factored_blank;
+            if (this.factored_blank.bTitle == null) this.factored_blank.bTitle = "Example title";
+            this.factored_blank.bAuthor = "Me and my cat"; // TODO: Replace with authenticated client id
+            this.factored_blank.bID = (new Random()).nextLong();
+            this.factored_blank.bDate = new Date().getTime();
+            return this.factored_blank;
         }
 
     }
