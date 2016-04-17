@@ -12,9 +12,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import shook.xeem.activities.MainActivity;
+import shook.xeem.list_adapters.BlankListAdapter;
 import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
@@ -34,12 +37,27 @@ public class XeemApiService {
         @POST("blanks")
         Call<BlankObject> postBlank(@Body BlankObject _blank);
 
-        @DELETE("blanks/{blankid}")
-        Call<BlankObject> rmBlank(@Path("blankid") String blankid);
+        @DELETE("blanks/{id}")
+        Call<BlankObject> rmBlank(@Path("id") String id, @Header("If-Match") String etag);
 
     }
 
     static ApiMethods API = retrofit.create(ApiMethods.class);
+
+    public static void deleteBlank (BlankObject deletable) {
+        Call<BlankObject> rmBlankCall = API.rmBlank(deletable.getID(), deletable.getEtag());
+        rmBlankCall.enqueue(new Callback<BlankObject>() {
+            @Override
+            public void onResponse(Call<BlankObject> call, Response<BlankObject> response) {
+                Log.d("MYTAG", "[DELETE] Success: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<BlankObject> call, Throwable t) {
+                Log.d("MYTAG", "[DELETE] Fail" + t.getMessage());
+            }
+        });
+    }
 
     class blankListResponse {
         List<BlankObject> _items;
@@ -49,7 +67,6 @@ public class XeemApiService {
     }
 
     public static void postBlank (BlankObject _blank) {
-        Log.d("MYTAG", "Trying to post this json: " + _blank.toJSON());
         Call<BlankObject> postBlankCall = API.postBlank(_blank);
         postBlankCall.enqueue(new Callback<BlankObject>() {
             @Override

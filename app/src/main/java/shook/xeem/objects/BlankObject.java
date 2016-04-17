@@ -13,10 +13,11 @@ public class BlankObject {
     // Blank contents
     @SerializedName("title") private String                             bTitle;
     @SerializedName("date") private long                                bDate;
-    @SerializedName("id") private long                                  bID;
     @SerializedName("public") private boolean                           bIsPublic;
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
+    @SerializedName("_id") private String                               bID;
+    @SerializedName("_etag") private String                             bEtag;
 
     public String toJSON () {
         return (new Gson()).toJson(this);
@@ -33,9 +34,10 @@ public class BlankObject {
     public long getDate() {
         return bDate;
     }
-    public long getID() {
+    public String getID() {
         return bID;
     }
+    public String getEtag() { return bEtag; }
     public boolean isPublic() {
         return bIsPublic;
     }
@@ -65,7 +67,8 @@ public class BlankObject {
 
         // Setters
         public void setTitle(String _title) { this.factored_blank.bTitle = _title; }
-        public void togglePublic() {this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic;}
+        public void togglePublic() {this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic; }
+        public void withAuthorID(String _author) {this.factored_blank.bAuthor = _author; }
 
         public void putQuestion(QuestionObject _question) {
             this.factored_blank.bQuestions.add(_question);
@@ -79,9 +82,7 @@ public class BlankObject {
         }
 
         public BlankObject build() {
-            if (this.factored_blank.bTitle == null) this.factored_blank.bTitle = "Example title";
-            this.factored_blank.bAuthor = "Me and my cat"; // TODO: Replace with authenticated client id
-            this.factored_blank.bID = (new Random()).nextLong();
+            if (this.factored_blank.bTitle == null) this.factored_blank.bTitle = "Untitled";
             this.factored_blank.bDate = new Date().getTime();
             return this.factored_blank;
         }

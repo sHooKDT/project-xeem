@@ -5,10 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
+import shook.xeem.XeemApiService;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.R;
 
@@ -56,6 +58,13 @@ public class BlankListAdapter extends BaseAdapter{
 
         ((TextView) view.findViewById(R.id.blanktitle)).setText(curBlank.getTitle());
         ((TextView) view.findViewById(R.id.blankauthor)).setText(curBlank.getAuthor());
+
+        ((Button) view.findViewById(R.id.delButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                XeemApiService.deleteBlank(blanksList.get(position));
+            }
+        });
 
         return view;
     }

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import shook.xeem.R;
+import shook.xeem.XeemAuthService;
 import shook.xeem.list_adapters.BlankEditAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
@@ -43,7 +44,9 @@ public class BlankEditActivity extends Activity {
 
         if (getIntent().getAction() == "EDIT") {
             newBlankFactory.loadJSON(getIntent().getStringExtra("blank_to_edit"));
-        } else if (getIntent().getAction() == "ADD") {}
+        } else if (getIntent().getAction() == "ADD") {
+            newBlankFactory.withAuthorID(XeemAuthService.getAccount().getId());
+        }
 
         blankAdapter = new BlankEditAdapter(this, newBlankFactory);
 

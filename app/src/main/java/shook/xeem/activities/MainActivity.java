@@ -27,7 +27,6 @@ public class MainActivity extends Activity {
 
     static private List<BlankObject> loadedBlankList = new ArrayList<BlankObject>();
     static private BlankListAdapter blankListAdapter;
-    static private ListView blankListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +35,7 @@ public class MainActivity extends Activity {
 
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
-        XeemApiService.updateBlanks();
-        blankListView = (ListView) findViewById(R.id.blankListView);
+        ListView blankListView = (ListView) findViewById(R.id.blankListView);
         blankListAdapter = new BlankListAdapter(this, loadedBlankList);
         blankListView.setAdapter(blankListAdapter);
     }
@@ -46,7 +44,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
         XeemApiService.updateBlanks();
         super.onResume();
-        Log.d("MYTAG", "Main activity resumed");
+        Log.d("MYTAG", "[Activity] Main.onResume()");
     }
 
     public static void setBlankList(List<BlankObject> _blanks) {
@@ -68,7 +66,7 @@ public class MainActivity extends Activity {
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("MYTAG", "Blank posting declined");
+                    Log.d("MYTAG", "[POSTING] Declined by user");
                 }
             });
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
