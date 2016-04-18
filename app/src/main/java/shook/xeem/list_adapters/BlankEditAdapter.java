@@ -133,4 +133,8 @@ public class BlankEditAdapter extends BaseAdapter{
 
     }
 
+    @Override
+    public boolean isEmpty() {
+        return getCount() == 0;
+    }
 }

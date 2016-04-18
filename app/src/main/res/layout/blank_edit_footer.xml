@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:id="@+id/blank_edit_footer"
+    android:clickable="true">
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:alpha="0.30"
+        android:background="@drawable/ic_add_black_48dp"
+        android:id="@+id/addButton"/>
+    <Space
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

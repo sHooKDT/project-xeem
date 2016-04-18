@@ -17,7 +17,7 @@ public class BlankObject {
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
     @SerializedName("_id") private String                               bID;
-    @SerializedName("_etag") private String                             bEtag;
+    @SerializedName("_etag") private String                          bEtag;
 
     public String toJSON () {
         return (new Gson()).toJson(this);
@@ -28,6 +28,7 @@ public class BlankObject {
     private BlankObject () {}
 
     // Getters
+    public void rmEtag() { this.bEtag = null; }
     public String getTitle() {
         return bTitle;
     }
@@ -83,7 +84,7 @@ public class BlankObject {
 
         public BlankObject build() {
             if (this.factored_blank.bTitle == null) this.factored_blank.bTitle = "Untitled";
-            this.factored_blank.bDate = new Date().getTime();
+            if (this.factored_blank.bDate == 0) this.factored_blank.bDate = new Date().getTime();
             return this.factored_blank;
         }
 

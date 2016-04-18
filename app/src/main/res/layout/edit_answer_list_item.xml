@@ -17,13 +17,13 @@
     <Button
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:background="@drawable/ic_create_black_24dp"
+        android:background="@drawable/ic_create_black_48dp"
         android:id="@+id/editButton"/>
 
     <Button
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:background="@drawable/ic_remove_circle_outline_black_24dp"
+        android:background="@drawable/ic_remove_circle_outline_black_48dp"
         android:id="@+id/delButton"/>
 
 </LinearLayout>

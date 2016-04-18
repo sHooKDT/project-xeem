@@ -1,6 +1,9 @@
 package shook.xeem.list_adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import shook.xeem.XeemApiService;
+import shook.xeem.activities.BlankEditActivity;
+import shook.xeem.activities.MainActivity;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.R;
 
@@ -50,7 +55,7 @@ public class BlankListAdapter extends BaseAdapter{
 
         final int position = _position;
         View view =  convertView;
-        BlankObject curBlank = (BlankObject) getItem(position);
+        final BlankObject curBlank = (BlankObject) getItem(position);
 
         if (view == null) {
             view = lInflater.inflate(R.layout.blank_list_item, parent, false);
@@ -63,6 +68,18 @@ public class BlankListAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 XeemApiService.deleteBlank(blanksList.get(position));
+                XeemApiService.updateBlanks();
+            }
+        });
+
+        ((Button) view.findViewById(R.id.editButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("MYTAG", "[BLANKADAPTER] Requesting edit");
+                Intent editBlankIntent = new Intent(context, BlankEditActivity.class);
+                editBlankIntent.setAction("EDIT");
+                editBlankIntent.putExtra("blank_to_edit", curBlank.toJSON());
+                ((Activity) context).startActivityForResult(editBlankIntent, MainActivity.EDIT_BLANK_REQUEST);
             }
         });
 
