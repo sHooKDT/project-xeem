@@ -74,6 +74,9 @@ public class BlankObject {
         public void putQuestion(QuestionObject _question) {
             this.factored_blank.bQuestions.add(_question);
         }
+        public void replaceQuestion(int index, QuestionObject _question) {
+            this.factored_blank.bQuestions.set(index, _question);
+        }
         public void rmQuestion(int position) {
             this.factored_blank.bQuestions.remove(position);
         }

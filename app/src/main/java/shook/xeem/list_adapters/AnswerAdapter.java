@@ -19,7 +19,7 @@ public class AnswerAdapter extends BaseAdapter{
     QuestionObject loadedQuestion;
     LayoutInflater layoutInflater;
 
-    AnswerAdapter (Context _context, QuestionObject _question) {
+    public AnswerAdapter(Context _context, QuestionObject _question) {
         this.context = _context;
         this.loadedQuestion = _question;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

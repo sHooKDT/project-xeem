@@ -3,6 +3,9 @@ package shook.xeem.list_adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,8 +14,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
+import shook.xeem.QuestionEditFragment;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 import shook.xeem.R;
@@ -88,49 +95,18 @@ public class BlankEditAdapter extends BaseAdapter{
 
     public void editQuestion (int position) {
         final QuestionObject editable = loadedFactory.getPreview().getQuestions().get(position);
-        AnswerAdapter myadapter = new AnswerAdapter(context, editable);
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(editable.getText());
-        builder.setAdapter(myadapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d("MYTAG", "You clicked something? WTF??");
-            }
-        });
-        builder.setNeutralButton("Add", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                // TODO: FAST DELETE THIS SHIT
-                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(context);
-                builder.setTitle("Type the answer");
-                final EditText input = new EditText(context);
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
-
-                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        editable.putAns(input.getText().toString());
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-                builder.show();
-            }
-        });
-        builder.setPositiveButton("Nice!", new DialogInterface.OnClickListener() {
-            public void onClick (DialogInterface dialog, int id) {
-                dialog.cancel();
-            };
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
-
+        AppCompatActivity activity = (AppCompatActivity) context;
+        QuestionEditFragment editFragment = new QuestionEditFragment();
+        Bundle data = new Bundle();
+        data.putInt("index", position);
+        data.putString("editable", (new Gson()).toJson(editable));
+        editFragment.setArguments(data);
+        activity.getSupportFragmentManager().beginTransaction()
+                .add(R.id.question_edit_fragment_container, editFragment)
+                .addToBackStack("question-edit")
+                .commit();
+        FrameLayout fragment_frame = (FrameLayout) ((AppCompatActivity) context).findViewById(R.id.question_edit_fragment_container);
+        fragment_frame.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -3,8 +3,13 @@ package shook.xeem.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
+import android.app.FragmentManager;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -17,17 +22,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.google.gson.Gson;
+
 import org.w3c.dom.Text;
 
 import java.util.Objects;
 
+import shook.xeem.QuestionEditFragment;
 import shook.xeem.R;
 import shook.xeem.XeemAuthService;
 import shook.xeem.list_adapters.BlankEditAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 
-public class BlankEditActivity extends Activity {
+public class BlankEditActivity extends AppCompatActivity {
 
     BlankEditAdapter blankAdapter;
     BlankObject.Factory newBlankFactory = new BlankObject.Factory();
@@ -81,6 +89,8 @@ public class BlankEditActivity extends Activity {
         });
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -89,12 +99,17 @@ public class BlankEditActivity extends Activity {
 
     protected void onActivityResult (int requestCode, int resultCode, Intent result) {
         Log.d("MYTAG", "Some activity sent result");
-        if (requestCode == 29) {
-            Log.d("MYTAG", "Question edited");
-        }
     }
 
-    public void finishEdit (View v) {
+    @Override
+    public void onBackPressed() {
+        finishEdit(null);
+    }
+
+    public void finishEdit (@Nullable View v) {
+
+
+
         Intent intent = new Intent()
                 .putExtra("edited_blank", newBlankFactory.build().toJSON());
         setResult(RESULT_OK, intent);
@@ -123,6 +138,21 @@ public class BlankEditActivity extends Activity {
         });
 
         builder.show();
+    }
+
+    public void receiveEditedQuestion (int index, QuestionObject edited) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.remove(getFragmentManager().findFragmentById(R.id.question_edit_fragment_container));
+        newBlankFactory.replaceQuestion(index, edited);
+    }
+
+    public void editQuestionClick (QuestionObject _question) {
+//        QuestionEditFragment editFragment = new QuestionEditFragment();
+//        Bundle data = new Bundle();
+//        data.putString("editable", (new Gson()).toJson(_question));
+//        editFragment.setArguments(data);
+//        getSupportFragmentManager().beginTransaction()
+//                .add(R.id.question_edit_fragment_container, editFragment).commit();
     }
 
 }

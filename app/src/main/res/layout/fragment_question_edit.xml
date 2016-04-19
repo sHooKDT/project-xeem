@@ -4,9 +4,46 @@
     android:layout_height="match_parent"
     tools:context="shook.xeem.QuestionEditFragment">
 
-    <ListView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:id="@+id/answerList"></ListView>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/answerList" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:paddingStart="200dp"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/add_answer_button"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+
+                android:background="@drawable/ic_add_circle_outline_black_48dp"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/edit_question_finish"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:text="@string/ready_button"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 </FrameLayout>

@@ -12,7 +12,7 @@
         android:layout_weight="1">
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/title_example"
             android:textSize="25sp"
@@ -21,7 +21,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:text="@string/author_example"
             android:id="@+id/blankauthor"
@@ -39,6 +40,13 @@
         android:layout_height="48dp"
         android:background="@drawable/ic_delete_sweep_black_48dp"
         android:id="@+id/delButton"
+        />
+
+    <Button
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/ic_play_circle_outline_black_48dp"
+        android:id="@+id/playButton"
         />
     
 </LinearLayout>

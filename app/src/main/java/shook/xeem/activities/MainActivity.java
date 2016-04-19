@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -27,7 +28,7 @@ import shook.xeem.list_adapters.BlankListAdapter;
 import shook.xeem.objects.BlankObject;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
     public static final int EDIT_BLANK_REQUEST = 27;
     static final int ADD_BLANK_REQUEST = 28;
@@ -50,6 +51,13 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.somemenu, menu);
+        menu.findItem(R.id.addBlankButton).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                addBlankClick(null);
+                return true;
+            }
+        });
         return true;
     }
 
@@ -64,7 +72,7 @@ public class MainActivity extends Activity {
         blankListAdapter.reload(_blanks);
         blankListAdapter.notifyDataSetChanged();}
 
-    public void addBlankClick (View v) {
+    public void addBlankClick (@Nullable View v) {
         Intent editIntent = new Intent(this, BlankEditActivity.class);
         editIntent.setAction("ADD");
         startActivityForResult(editIntent, ADD_BLANK_REQUEST);
@@ -111,6 +119,11 @@ public class MainActivity extends Activity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 
 }

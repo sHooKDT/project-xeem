@@ -11,6 +11,13 @@
     tools:context=".activities.BlankEditActivity"
     android:focusable="false">
 
+    <FrameLayout
+        android:id="@+id/question_edit_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="48dp">
