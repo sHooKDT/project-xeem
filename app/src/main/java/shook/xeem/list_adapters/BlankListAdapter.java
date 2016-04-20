@@ -24,10 +24,12 @@ public class BlankListAdapter extends BaseAdapter{
     Context context;
     LayoutInflater lInflater;
     List<BlankObject> blanksList;
+    MainActivity activity;
 
     public BlankListAdapter(Context _context, List<BlankObject> _blanksList) {
         this.context = _context;
         this.blanksList = _blanksList;
+        activity = (MainActivity) _context;
         lInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -67,19 +69,28 @@ public class BlankListAdapter extends BaseAdapter{
         ((Button) view.findViewById(R.id.delButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                XeemApiService.deleteBlank(blanksList.get(position));
-                XeemApiService.updateBlanks();
+                activity.deleteBlankClick(position);
+//                XeemApiService.deleteBlank(blanksList.get(position));
+//                XeemApiService.updateBlanks();
             }
         });
 
         ((Button) view.findViewById(R.id.editButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("MYTAG", "[BLANKADAPTER] Requesting edit");
-                Intent editBlankIntent = new Intent(context, BlankEditActivity.class);
-                editBlankIntent.setAction("EDIT");
-                editBlankIntent.putExtra("blank_to_edit", curBlank.toJSON());
-                ((Activity) context).startActivityForResult(editBlankIntent, MainActivity.EDIT_BLANK_REQUEST);
+                activity.editBlankClick(position);
+//                Log.d("MYTAG", "[BLANKADAPTER] Requesting edit");
+//                Intent editBlankIntent = new Intent(context, BlankEditActivity.class);
+//                editBlankIntent.setAction("EDIT");
+//                editBlankIntent.putExtra("blank_to_edit", curBlank.toJSON());
+//                ((Activity) context).startActivityForResult(editBlankIntent, MainActivity.EDIT_BLANK_REQUEST);
+            }
+        });
+
+        ((Button) view.findViewById(R.id.passButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.passBlankClick(position);
             }
         });
 

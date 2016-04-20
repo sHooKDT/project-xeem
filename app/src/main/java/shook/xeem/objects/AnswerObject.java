@@ -36,4 +36,8 @@ public class AnswerObject {
         this.aPic = aPic;
     }
 
+    @Override
+    public String toString() {
+        return getText();
+    }
 }

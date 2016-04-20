@@ -46,7 +46,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@drawable/ic_play_circle_outline_black_48dp"
-        android:id="@+id/playButton"
+        android:id="@+id/passButton"
         />
     
 </LinearLayout>

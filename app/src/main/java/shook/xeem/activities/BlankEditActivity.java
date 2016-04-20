@@ -107,9 +107,6 @@ public class BlankEditActivity extends AppCompatActivity {
     }
 
     public void finishEdit (@Nullable View v) {
-
-
-
         Intent intent = new Intent()
                 .putExtra("edited_blank", newBlankFactory.build().toJSON());
         setResult(RESULT_OK, intent);
