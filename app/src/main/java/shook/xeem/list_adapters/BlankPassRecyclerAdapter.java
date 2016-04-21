@@ -2,10 +2,12 @@ package shook.xeem.list_adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -35,11 +37,23 @@ public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecy
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        final int pos = holder.getAdapterPosition();
+
         QuestionObject question = loadedBlank.getQuestions().get(position);
 
         holder.questionNumberText.setText(String.format("Вопрос %d", position+1));
         holder.questionText.setText(question.getText());
         holder.answersList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        holder.answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                loadedBlank.getQuestions().get(pos).setChecked(i);
+            }
+        });
+
+        holder.answersList.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         holder.answersList.setAdapter(new ArrayAdapter<AnswerObject>(context, android.R.layout.simple_list_item_single_choice, question.getAnswers()));
 
     }

@@ -13,6 +13,7 @@
     <string name="add_blank">Создать</string>
     <string name="ready_button">Готово</string>
     <string name="pass_button">Пропустить</string>
+    <string name="finish_attempt">Завершить</string>
 
     <array name="example_answers">
         <item>Я слышал, что 2</item>

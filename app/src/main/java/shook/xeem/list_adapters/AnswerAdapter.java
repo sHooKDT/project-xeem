@@ -1,13 +1,18 @@
 package shook.xeem.list_adapters;
 
 import android.content.Context;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shook.xeem.objects.AnswerObject;
 import shook.xeem.objects.QuestionObject;
@@ -19,9 +24,12 @@ public class AnswerAdapter extends BaseAdapter{
     QuestionObject loadedQuestion;
     LayoutInflater layoutInflater;
 
+    RadioGroup selector;
+
     public AnswerAdapter(Context _context, QuestionObject _question) {
         this.context = _context;
         this.loadedQuestion = _question;
+        this.selector = new RadioGroup(context);
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -64,6 +72,15 @@ public class AnswerAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 loadedQuestion.rmAns(pos);
+                notifyDataSetChanged();
+            }
+        });
+
+        ((RadioButton) view.findViewById(R.id.checked_radio)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                Toast.makeText(context, String.format("\"%s\" set as correct", loadedQuestion.getAnswers().get(pos).getText()), Toast.LENGTH_SHORT).show();
+                loadedQuestion.setCorrect(pos);
                 notifyDataSetChanged();
             }
         });

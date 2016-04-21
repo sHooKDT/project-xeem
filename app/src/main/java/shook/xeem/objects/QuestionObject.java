@@ -1,5 +1,7 @@
 package shook.xeem.objects;
 
+import android.support.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -12,6 +14,7 @@ public class QuestionObject {
     @SerializedName("correct") private int qCorrect;
     @SerializedName("points") private int qPoints;
     @SerializedName("answers") private ArrayList<AnswerObject> qAnswers;
+    private transient int qChecked;
 
     // Public interface
     public void putAns(String _text) {
@@ -24,12 +27,13 @@ public class QuestionObject {
     // Public constructors
     public QuestionObject(String _text) {
         this.setText(_text);
-        this.qAnswers = new ArrayList<AnswerObject>();
+        this.setPoints(1);
+        this.setAnswers(new ArrayList<AnswerObject>());
     }
 
     // Getters and setters
     public String getText() {
-        return this.qText;
+        return qText;
     }
     public String getPic() {
         return qPic;
@@ -45,6 +49,14 @@ public class QuestionObject {
     }
     public void setAnswers (ArrayList<AnswerObject> _answers) {
         this.qAnswers = _answers;
+    }
+
+    public void setChecked(int position) {
+        this.qChecked = position;
+    }
+
+    public int getChecked() {
+        return qChecked;
     }
 
     public void setText(String qText) {

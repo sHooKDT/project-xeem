@@ -1,8 +1,5 @@
 package shook.xeem.activities;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,8 +20,6 @@ import java.util.List;
 import shook.xeem.R;
 import shook.xeem.XeemApiService;
 import shook.xeem.XeemAuthService;
-import shook.xeem.activities.BlankEditActivity;
-import shook.xeem.list_adapters.BlankListAdapter;
 import shook.xeem.list_adapters.BlankListRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
 
@@ -61,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.somemenu, menu);
+        getMenuInflater().inflate(R.menu.main_activity_action_bar, menu);
         menu.findItem(R.id.addBlankButton).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {

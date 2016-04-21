@@ -5,14 +5,19 @@
     android:orientation="horizontal"
     android:gravity="center_vertical">
 
+    <RadioButton
+        android:id="@+id/checked_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true" />
+
     <TextView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="0.70"
-        android:layout_marginLeft="5dp"
+        android:layout_weight="1"
         android:id="@+id/answer_text"
         android:text="@string/answer_text_example"
-        android:gravity="start|center_vertical"/>
+        android:gravity="start|center_vertical" />
 
     <Button
         android:layout_width="24dp"
