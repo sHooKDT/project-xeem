@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import shook.xeem.ApiWorker;
 import shook.xeem.R;
 import shook.xeem.XeemApiService;
 import shook.xeem.XeemAuthService;
@@ -31,8 +32,7 @@ public class MainActivity extends AppCompatActivity {
     static final int PASS_BLANK_REQUEST = 29;
 
     static private List<BlankObject> loadedBlankList = new ArrayList<BlankObject>();
-//    static private BlankListAdapter blankListAdapter;
-    static private BlankListRecyclerAdapter myadapter;
+    static private BlankListRecyclerAdapter blankListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
-//        ListView blankListView = (ListView) findViewById(R.id.blankListView);
-//        blankListAdapter = new BlankListAdapter(this, loadedBlankList);
-//        blankListView.setAdapter(blankListAdapter);
-
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
-        myadapter = new BlankListRecyclerAdapter(this, loadedBlankList);
-        blankListView.setAdapter(myadapter);
+        blankListAdapter = new BlankListRecyclerAdapter(this, loadedBlankList);
+        blankListView.setAdapter(blankListAdapter);
         blankListView.setLayoutManager(new LinearLayoutManager(this));
 
     }
@@ -69,14 +65,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         XeemApiService.updateBlanks();
         super.onResume();
-        Log.d("MYTAG", "[Activity] Main.onResume()");
     }
 
     public static void setBlankList(List<BlankObject> _blanks) {
-//        blankListAdapter.reload(_blanks);
-//        blankListAdapter.notifyDataSetChanged();
-        myadapter.reload(_blanks);
-        myadapter.notifyDataSetChanged();
+        blankListAdapter.reload(_blanks);
+        blankListAdapter.notifyDataSetChanged();
      }
 
     public void addBlankClick (@Nullable View v) {
@@ -86,21 +79,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteBlankClick (int position) {
-        XeemApiService.deleteBlank(myadapter.getItem(position));
+        XeemApiService.deleteBlank(blankListAdapter.getItem(position));
         XeemApiService.updateBlanks();
     }
 
     public void editBlankClick (int position) {
         Intent editBlankIntent = new Intent(this, BlankEditActivity.class);
         editBlankIntent.setAction("EDIT");
-        editBlankIntent.putExtra("blank_to_edit", myadapter.getItem(position).toJSON());
+        editBlankIntent.putExtra("blank_to_edit", blankListAdapter.getItem(position).toJSON());
         startActivityForResult(editBlankIntent, EDIT_BLANK_REQUEST);
     }
 
     public void passBlankClick (int position) {
         Intent passBlankIntent = new Intent(this, PassTestActivity.class);
         passBlankIntent.setAction("PASS");
-        passBlankIntent.putExtra("blank_to_pass", myadapter.getItem(position).toJSON());
+        passBlankIntent.putExtra("blank_to_pass", blankListAdapter.getItem(position).toJSON());
         startActivityForResult(passBlankIntent, PASS_BLANK_REQUEST);
     }
 

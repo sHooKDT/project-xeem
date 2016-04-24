@@ -1,5 +1,7 @@
 package shook.xeem;
 
+import android.app.Application;
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -26,7 +28,6 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import shook.xeem.activities.MainActivity;
-import shook.xeem.list_adapters.BlankListAdapter;
 import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
@@ -72,15 +73,11 @@ public class XeemApiService {
     }
 
     public static void editBlank (BlankObject _blank) {
-        String myetag = _blank.getEtag();
-        _blank.rmEtag();
-        Log.d("MYTAG", _blank.toJSON());
-        Call<errorResponse> editBlankCall = API.editBlank(_blank.getID(), myetag, _blank.toJSON());
+        Call<errorResponse> editBlankCall = API.editBlank(_blank.getID(), _blank.getEtag(), _blank.rmEtag().toJSON());
         editBlankCall.enqueue(new Callback<errorResponse>() {
             @Override
             public void onResponse(Call<errorResponse> call, Response<errorResponse> response) {
                 Log.d("MYTAG", "[PATCH] Success: " + response.code());
-//                Log.d("MYTAG", "[PATCH] Response: " + response.body()._status);
             }
 
             @Override

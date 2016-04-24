@@ -3,9 +3,11 @@ package shook.xeem.objects;
 import android.app.AlertDialog;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Random;
@@ -41,7 +43,10 @@ public class BlankObject extends Jsonable<BlankObject> {
     }
 
     // Getters
-    public void rmEtag() { this.bEtag = null; }
+    public BlankObject rmEtag() {
+        this.bEtag = null;
+        return this;
+    }
     public String getTitle() {
         return bTitle;
     }
@@ -62,7 +67,7 @@ public class BlankObject extends Jsonable<BlankObject> {
 
     public class Builder {
 
-        public Builder() {
+        private Builder() {
         }
 
         // Setters
