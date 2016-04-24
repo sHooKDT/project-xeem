@@ -32,7 +32,11 @@ import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
 
-    static final String API_URL = "http://46.101.8.217:500/";
+    static String API_URL;
+
+    public XeemApiService(String api_url) {
+        API_URL = api_url;
+    }
 
     static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(API_URL)

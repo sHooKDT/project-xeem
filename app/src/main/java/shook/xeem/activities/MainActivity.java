@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     static private List<BlankObject> loadedBlankList = new ArrayList<>();
     static private BlankListRecyclerAdapter blankListAdapter;
-    
-    private XeemApiService apiService = new XeemApiService();
+
+    private XeemApiService apiService = new XeemApiService(getString(R.string.app_api_url));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
