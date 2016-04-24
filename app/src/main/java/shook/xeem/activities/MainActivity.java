@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import shook.xeem.R;
@@ -30,10 +31,10 @@ public class MainActivity extends AppCompatActivity {
     static final int ADD_BLANK_REQUEST = 28;
     static final int PASS_BLANK_REQUEST = 29;
 
-    static private List<BlankObject> loadedBlankList = new ArrayList<>();
+    static private LinkedList<BlankObject> loadedBlankList = new LinkedList<>();
     static private BlankListRecyclerAdapter blankListAdapter;
 
-    private XeemApiService apiService = new XeemApiService(getString(R.string.app_api_url));
+    private XeemApiService apiService = new XeemApiService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d("MYTAG", "[PATCH] Blank sent to api class");
                     apiService.editBlank(_blank);
                     apiService.updateBlanks();
                 }

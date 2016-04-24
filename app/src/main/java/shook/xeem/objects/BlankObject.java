@@ -10,6 +10,7 @@ import com.google.gson.annotations.SerializedName;
 import java.lang.reflect.Modifier;
 import java.util.Date;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 import shook.xeem.Jsonable;
@@ -22,7 +23,8 @@ public class BlankObject extends Jsonable<BlankObject> {
     @SerializedName("date") private long                                bDate;
     @SerializedName("public") private boolean                           bIsPublic;
     @SerializedName("author") private String                            bAuthor;
-    @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
+    @SerializedName("questions")
+    private LinkedList<QuestionObject> bQuestions;
     @SerializedName("_id") private String                               bID;
     @SerializedName("_etag")
     private String bEtag;
@@ -63,7 +65,10 @@ public class BlankObject extends Jsonable<BlankObject> {
     public String getAuthor() {
         return bAuthor;
     }
-    public ArrayList<QuestionObject> getQuestions() { return bQuestions; }
+
+    public LinkedList<QuestionObject> getQuestions() {
+        return bQuestions;
+    }
 
     public class Builder {
 

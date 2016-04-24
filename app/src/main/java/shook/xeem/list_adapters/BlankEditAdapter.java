@@ -84,22 +84,6 @@ public class BlankEditAdapter extends BaseAdapter{
         return view;
     }
 
-//    public void editQuestion (int position) {
-//        final QuestionObject editable = loadedBuilder.build().getQuestions().get(position);
-//        AppCompatActivity activity = (AppCompatActivity) context;
-//        QuestionEditFragment editFragment = new QuestionEditFragment();
-//        Bundle data = new Bundle();
-//        data.putInt("index", position);
-//        data.putString("editable", (new Gson()).toJson(editable));
-//        editFragment.setArguments(data);
-//        activity.getSupportFragmentManager().beginTransaction()
-//                .add(R.id.question_edit_fragment_container, editFragment)
-//                .addToBackStack("question-edit")
-//                .commit();
-//        FrameLayout fragment_frame = (FrameLayout) ((AppCompatActivity) context).findViewById(R.id.question_edit_fragment_container);
-//        fragment_frame.setVisibility(View.VISIBLE);
-//    }
-
     @Override
     public boolean isEmpty() {
         return getCount() == 0;

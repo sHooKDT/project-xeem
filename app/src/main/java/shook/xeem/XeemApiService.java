@@ -32,10 +32,9 @@ import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
 
-    static String API_URL;
+    static final String API_URL = "http://46.101.8.217:500/";
 
-    public XeemApiService(String api_url) {
-        API_URL = api_url;
+    public XeemApiService() {
     }
 
     static Retrofit retrofit = new Retrofit.Builder()
@@ -54,8 +53,9 @@ public class XeemApiService {
         @DELETE("blanks/{id}")
         Call<ResponseBody> rmBlank(@Path("id") String id, @Header("If-Match") String etag);
 
+        @Headers("Content-Type: application/json")
         @PATCH("blanks/{id}")
-        Call<errorResponse> editBlank(@Path("id") String id, @Header("If-Match") String etag, @Body String blank);
+        Call<ResponseBody> editBlank(@Path("id") String id, @Header("If-Match") String etag, @Body String blank);
 
     }
 
@@ -77,15 +77,20 @@ public class XeemApiService {
     }
 
     public void editBlank(BlankObject _blank) {
-        Call<errorResponse> editBlankCall = API.editBlank(_blank.getID(), _blank.getEtag(), _blank.rmEtag().toJSON());
-        editBlankCall.enqueue(new Callback<errorResponse>() {
+        Call<ResponseBody> editBlankCall = API.editBlank(_blank.getID(), _blank.getEtag(), _blank.rmEtag().toJSON());
+        editBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<errorResponse> call, Response<errorResponse> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    Log.d("MYTAG", "[PATCH Body: " + response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 Log.d("MYTAG", "[PATCH] Success: " + response.code());
             }
 
             @Override
-            public void onFailure(Call<errorResponse> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("MYTAG", "[PATCH] Fail" + t.getMessage());
             }
         });

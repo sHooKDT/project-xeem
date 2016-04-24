@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import shook.xeem.Jsonable;
 
@@ -15,9 +16,10 @@ public class QuestionObject extends Jsonable<QuestionObject> {
     @SerializedName("pic") private String qPic;
     @SerializedName("correct") private int qCorrect;
     @SerializedName("points") private int qPoints;
-    @SerializedName("answers") private ArrayList<AnswerObject> qAnswers;
+    @SerializedName("answers")
+    private LinkedList<AnswerObject> qAnswers;
     @SerializedName("checked")
-    private int qChecked;
+    transient private int qChecked;
 
     // Public interface
     public void putAns(String _text) {
@@ -31,7 +33,7 @@ public class QuestionObject extends Jsonable<QuestionObject> {
     public QuestionObject(String _text) {
         this.setText(_text);
         this.setPoints(1);
-        this.setAnswers(new ArrayList<AnswerObject>());
+        this.setAnswers(new LinkedList<AnswerObject>());
     }
 
     // Getters and setters
@@ -47,10 +49,12 @@ public class QuestionObject extends Jsonable<QuestionObject> {
     public int getPoints() {
         return qPoints;
     }
-    public ArrayList<AnswerObject> getAnswers() {
+
+    public LinkedList<AnswerObject> getAnswers() {
         return qAnswers;
     }
-    public void setAnswers (ArrayList<AnswerObject> _answers) {
+
+    public void setAnswers(LinkedList<AnswerObject> _answers) {
         this.qAnswers = _answers;
     }
 
