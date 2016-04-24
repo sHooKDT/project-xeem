@@ -55,9 +55,9 @@ public class XeemApiService {
 
     }
 
-    static ApiMethods API = retrofit.create(ApiMethods.class);
+    ApiMethods API = retrofit.create(ApiMethods.class);
 
-    public static void deleteBlank (BlankObject deletable) {
+    public void deleteBlank(BlankObject deletable) {
         Call<ResponseBody> rmBlankCall = API.rmBlank(deletable.getID(), deletable.getEtag());
         rmBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -72,7 +72,7 @@ public class XeemApiService {
         });
     }
 
-    public static void editBlank (BlankObject _blank) {
+    public void editBlank(BlankObject _blank) {
         Call<errorResponse> editBlankCall = API.editBlank(_blank.getID(), _blank.getEtag(), _blank.rmEtag().toJSON());
         editBlankCall.enqueue(new Callback<errorResponse>() {
             @Override
@@ -108,7 +108,7 @@ public class XeemApiService {
         }
     }
 
-    public static void postBlank (BlankObject _blank) {
+    public void postBlank(BlankObject _blank) {
         Call<ResponseBody> postBlankCall = API.postBlank(_blank);
         postBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -124,7 +124,7 @@ public class XeemApiService {
         });
     }
 
-    public static void updateBlanks()  {
+    public void updateBlanks() {
         Call<blankListResponse> blankGetCall = API.loadBlanks();
         blankGetCall.enqueue(new Callback<blankListResponse>() {
             @Override

@@ -17,7 +17,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import shook.xeem.ApiWorker;
 import shook.xeem.R;
 import shook.xeem.XeemApiService;
 import shook.xeem.XeemAuthService;
@@ -31,8 +30,10 @@ public class MainActivity extends AppCompatActivity {
     static final int ADD_BLANK_REQUEST = 28;
     static final int PASS_BLANK_REQUEST = 29;
 
-    static private List<BlankObject> loadedBlankList = new ArrayList<BlankObject>();
+    static private List<BlankObject> loadedBlankList = new ArrayList<>();
     static private BlankListRecyclerAdapter blankListAdapter;
+    
+    private XeemApiService apiService = new XeemApiService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
+
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
         blankListAdapter = new BlankListRecyclerAdapter(this, loadedBlankList);
-        blankListView.setAdapter(blankListAdapter);
-        blankListView.setLayoutManager(new LinearLayoutManager(this));
+        if (blankListView != null) {
+            blankListView.setAdapter(blankListAdapter);
+            blankListView.setLayoutManager(new LinearLayoutManager(this));
+        }
 
     }
 
@@ -63,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        XeemApiService.updateBlanks();
+        apiService.updateBlanks();
         super.onResume();
     }
 
@@ -79,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteBlankClick (int position) {
-        XeemApiService.deleteBlank(blankListAdapter.getItem(position));
-        XeemApiService.updateBlanks();
+        apiService.deleteBlank(blankListAdapter.getItem(position));
+        apiService.updateBlanks();
     }
 
     public void editBlankClick (int position) {
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    XeemApiService.postBlank(_blank);
+                    apiService.postBlank(_blank);
                 }
             });
             AlertDialog dialog = builder.create();
@@ -131,8 +135,8 @@ public class MainActivity extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    XeemApiService.editBlank(_blank);
-                    XeemApiService.updateBlanks();
+                    apiService.editBlank(_blank);
+                    apiService.updateBlanks();
                 }
             });
             AlertDialog dialog = builder.create();
