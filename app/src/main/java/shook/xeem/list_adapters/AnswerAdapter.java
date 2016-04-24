@@ -24,18 +24,17 @@ public class AnswerAdapter extends BaseAdapter{
     QuestionObject loadedQuestion;
     LayoutInflater layoutInflater;
 
-    RadioGroup selector;
 
     public AnswerAdapter(Context _context, QuestionObject _question) {
         this.context = _context;
         this.loadedQuestion = _question;
-        this.selector = new RadioGroup(context);
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return loadedQuestion.getAnswers().size();
+        if (loadedQuestion != null) return loadedQuestion.getAnswers().size();
+        else return 0;
     }
 
     @Override

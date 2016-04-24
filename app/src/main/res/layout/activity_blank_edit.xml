@@ -48,7 +48,12 @@
         android:layout_marginTop="10dp"
         android:choiceMode="none"
         android:layout_marginBottom="20dp"
-        android:id="@+id/questionsList">
+        android:id="@+id/questionsList"
+        tools:listitem="@layout/edit_question_list_item"
+        tools:listheader="@layout/blank_edit_header"
+        tools:listfooter="@layout/blank_edit_footer"
+        android:headerDividersEnabled="false"
+        android:footerDividersEnabled="false">
     </ListView>
 
     <LinearLayout

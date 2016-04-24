@@ -5,8 +5,8 @@ import shook.xeem.objects.QuestionObject;
 
 public interface BlankEditor {
 
-    BlankObject.Factory getFactory();
+    BlankObject.Builder getBuilder();
 
-    void startQuestionEdit(QuestionObject _question);
+    void startQuestionEdit(int index, QuestionObject _question);
 
 }

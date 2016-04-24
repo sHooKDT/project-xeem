@@ -1,6 +1,9 @@
 package shook.xeem.objects;
 
+import android.app.AlertDialog;
+
 import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -24,6 +27,14 @@ public class BlankObject extends Jsonable<BlankObject> {
 
     // Public constructors
     private BlankObject () {}
+
+    public static Builder newBuilder() {
+        return new BlankObject().new Builder();
+    }
+
+    public Builder getBuilder() {
+        return this.new Builder();
+    }
 
     public static BlankObject fromJSON(String _json) {
         return converter.fromJson(_json, BlankObject.class);
@@ -49,49 +60,36 @@ public class BlankObject extends Jsonable<BlankObject> {
     }
     public ArrayList<QuestionObject> getQuestions() { return bQuestions; }
 
-    public static class Factory {
+    public class Builder {
 
-        BlankObject factored_blank;
-
-        public Factory () {
-            factored_blank = new BlankObject();
-            factored_blank.bIsPublic = false;
-            factored_blank.bQuestions = new ArrayList<QuestionObject>();
-        }
-
-        public void loadJSON(String _json) {
-            this.factored_blank = BlankObject.fromJSON(_json);
+        public Builder() {
         }
 
         // Setters
-        public void setTitle(String _title) { this.factored_blank.bTitle = _title; }
-
-        public void setPublic() {
-            this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic;
+        public void setTitle(String _title) {
+            BlankObject.this.bTitle = _title;
         }
-
+        public void setPublic() {
+            BlankObject.this.bIsPublic = !BlankObject.this.bIsPublic;
+        }
         public void setAuthor(String _author) {
-            this.factored_blank.bAuthor = _author;
+            BlankObject.this.bAuthor = _author;
         }
 
         public void putQuestion(QuestionObject _question) {
-            this.factored_blank.bQuestions.add(_question);
+            BlankObject.this.bQuestions.add(_question);
         }
         public void replaceQuestion(int index, QuestionObject _question) {
-            this.factored_blank.bQuestions.set(index, _question);
+            BlankObject.this.bQuestions.set(index, _question);
         }
         public void rmQuestion(int position) {
-            this.factored_blank.bQuestions.remove(position);
-        }
-
-        public BlankObject getPreview() {
-                return factored_blank;
+            BlankObject.this.bQuestions.remove(position);
         }
 
         public BlankObject build() {
-            if (this.factored_blank.bTitle == null) this.factored_blank.bTitle = "Untitled";
-            if (this.factored_blank.bDate == 0) this.factored_blank.bDate = new Date().getTime();
-            return this.factored_blank;
+            if (BlankObject.this.bTitle == null) BlankObject.this.bTitle = "Untitled";
+            if (BlankObject.this.bDate == 0) BlankObject.this.bDate = new Date().getTime();
+            return BlankObject.this;
         }
 
     }

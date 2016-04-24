@@ -16,9 +16,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
 import java.util.Objects;
 
 import shook.xeem.BlankEditor;
+import shook.xeem.Jsonable;
 import shook.xeem.QuestionEditFragment;
 import shook.xeem.R;
 import shook.xeem.XeemAuthService;
@@ -29,7 +32,7 @@ import shook.xeem.objects.QuestionObject;
 public class BlankEditActivity extends AppCompatActivity implements BlankEditor {
 
     BlankEditAdapter blankAdapter;
-    BlankObject.Factory editableFactory = new BlankObject.Factory();
+    BlankObject.Builder blankBuilder = BlankObject.newBuilder();
     EditText editTitle;
 
     @Override
@@ -43,7 +46,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     @Override
     protected void onResume() {
         super.onResume();
-        editTitle.setText(editableFactory.getPreview().getTitle());
+        editTitle.setText(blankBuilder.build().getTitle());
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
@@ -57,7 +60,6 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     public void initView() {
         // Initialisation of the view stuff
-
         editTitle = (EditText) findViewById(R.id.editTitle);
         editTitle.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,7 +72,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
             @Override
             public void afterTextChanged(Editable editable) {
-                editableFactory.setTitle(editTitle.getText().toString());
+                blankBuilder.setTitle(editTitle.getText().toString());
             }
         });
 
@@ -79,34 +81,33 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         addFooter.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addQuestionClick(view);
+                addQuestionClick(null);
             }
         });
-        questionsList.addFooterView(addFooter);
-        View addHeader = getLayoutInflater().inflate(R.layout.blank_edit_header, null);
-        questionsList.addHeaderView(addHeader);
-        questionsList.setHeaderDividersEnabled(false);
-        questionsList.setFooterDividersEnabled(false);
-
+        if (questionsList != null) {
+            questionsList.addFooterView(addFooter);
+            View addHeader = getLayoutInflater().inflate(R.layout.blank_edit_header, null);
+            questionsList.addHeaderView(addHeader);
+            questionsList.setHeaderDividersEnabled(false);
+            questionsList.setFooterDividersEnabled(false);
+        }
         if (Objects.equals(getIntent().getAction(), "EDIT")) {
-            editableFactory.loadJSON(getIntent().getStringExtra("blank_to_edit"));
+            blankBuilder = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_edit")).getBuilder();
         } else if (Objects.equals(getIntent().getAction(), "ADD")) {
-            editableFactory.setAuthor(XeemAuthService.getAccount().getId());
+            blankBuilder.setAuthor(XeemAuthService.getAccount().getId());
         }
 
-        blankAdapter = new BlankEditAdapter(this, editableFactory);
-        questionsList.setAdapter(blankAdapter);
+        blankAdapter = new BlankEditAdapter(this);
 
-        findViewById(R.id.addQuestionButton).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                addQuestionClick(v);
-            }
-        });
+        if (questionsList != null) {
+            questionsList.setAdapter(blankAdapter);
+        }
+
     }
 
     public void finishEdit(@Nullable View v) {
         Intent intent = new Intent()
-                .putExtra("edited_blank", editableFactory.build().toJSON());
+                .putExtra("edited_blank", blankBuilder.build().toJSON());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -121,7 +122,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                editableFactory.putQuestion(new QuestionObject(input.getText().toString()));
+                blankBuilder.putQuestion(new QuestionObject(input.getText().toString()));
                 blankAdapter.notifyDataSetChanged();
             }
         });
@@ -139,21 +140,20 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     public void receiveEditedQuestion(int index, QuestionObject edited) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(getFragmentManager().findFragmentById(R.id.question_edit_fragment_container));
-        editableFactory.replaceQuestion(index, edited);
-    }
-
-
-    @Override
-    public BlankObject.Factory getFactory() {
-        return editableFactory;
+        blankBuilder.replaceQuestion(index, edited);
     }
 
     @Override
-    public void startQuestionEdit(QuestionObject _question) {
+    public BlankObject.Builder getBuilder() {
+        return blankBuilder;
+    }
+
+    @Override
+    public void startQuestionEdit(int index, QuestionObject _question) {
         QuestionEditFragment editFragment = new QuestionEditFragment();
         Bundle data = new Bundle();
-        data.putInt("index", 1);
-        data.putString("question", _question.toJSON());
+        data.putInt("index", index);
+        data.putString("question", (new Gson()).toJson(_question));
         editFragment.setArguments(data);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.question_edit_fragment_container, editFragment)

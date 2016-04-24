@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,9 +32,6 @@ public class QuestionEditFragment extends Fragment {
 
     QuestionObject editable;
     AnswerAdapter answerAdapter;
-//    ArrayAdapter<AnswerObject> answerAdapter;
-
-    QuestionEditFragment self = this;
 
     public QuestionEditFragment() {
         // Required empty public constructor
@@ -50,12 +48,13 @@ public class QuestionEditFragment extends Fragment {
         final Context context = getActivity();
 
         // Get editable question from sent bundle
-        editable = (new Gson()).fromJson(getArguments().getString("editable"), QuestionObject.class);
+        editable = (new Gson()).fromJson(getArguments().getString("question"), QuestionObject.class);
+        Log.d("MYTAG", "Question: " + editable.getText());
 
         final ListView answerList = (ListView) view.findViewById(R.id.answerList);
         answerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
-        answerAdapter = new AnswerAdapter(this.getContext(), editable);
+        answerAdapter = new AnswerAdapter(context, editable);
         answerList.setAdapter(answerAdapter);
 
 //        answerAdapter = new ArrayAdapter<AnswerObject>(context, android.R.layout.simple_list_item_single_choice, editable.getAnswers());
