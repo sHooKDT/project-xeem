@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import shook.xeem.BlankEditor;
 import shook.xeem.QuestionEditFragment;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
@@ -84,11 +85,11 @@ public class BlankEditAdapter extends BaseAdapter{
         Button editBut = (Button) view.findViewById(R.id.editButton);
         editBut.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
+                ((BlankEditor) context).startQuestionEdit(q);
                 editQuestion(pos);
                 notifyDataSetChanged();
             }
         });
-
 
         return view;
     }

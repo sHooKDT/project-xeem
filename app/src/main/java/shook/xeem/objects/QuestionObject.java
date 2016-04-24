@@ -6,7 +6,9 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 
-public class QuestionObject {
+import shook.xeem.Jsonable;
+
+public class QuestionObject extends Jsonable<QuestionObject> {
 
     // Question contents
     @SerializedName("text") private String qText;
@@ -14,7 +16,8 @@ public class QuestionObject {
     @SerializedName("correct") private int qCorrect;
     @SerializedName("points") private int qPoints;
     @SerializedName("answers") private ArrayList<AnswerObject> qAnswers;
-    private transient int qChecked;
+    @SerializedName("checked")
+    private int qChecked;
 
     // Public interface
     public void putAns(String _text) {

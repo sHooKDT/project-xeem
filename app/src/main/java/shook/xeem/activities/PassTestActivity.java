@@ -9,6 +9,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
+
 import shook.xeem.R;
 import shook.xeem.list_adapters.BlankPassRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
@@ -24,13 +26,20 @@ public class PassTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pass_test);
 
         loadedBlank = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_pass"));
-        Log.d("MYTAG", "Got for pass this test: " + loadedBlank.toJSON());
 
-        RecyclerView testPassRecycler = (RecyclerView) findViewById(R.id.test_pass_questions_list);
-        BlankPassRecyclerAdapter passadapter = new BlankPassRecyclerAdapter(this, loadedBlank);
+//        RecyclerView testPassRecycler = (RecyclerView) findViewById(R.id.test_pass_questions_list);
+        RecyclerViewPager testPassRecycler = (RecyclerViewPager) findViewById(R.id.test_pass_questions_list);
+        BlankPassRecyclerAdapter testPassAdapter = new BlankPassRecyclerAdapter(this, loadedBlank);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
-        testPassRecycler.setAdapter(passadapter);
-        testPassRecycler.setLayoutManager(new LinearLayoutManager(this));
+
+        testPassRecycler.setAdapter(testPassAdapter);
+        testPassRecycler.setLayoutManager(layoutManager);
+
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
 
     }
 
@@ -53,8 +62,7 @@ public class PassTestActivity extends AppCompatActivity {
 
         for (QuestionObject x : loadedBlank.getQuestions()) {
             if (x.getChecked() == x.getCorrect()) {
-//                result += x.getPoints();
-                result += 1;
+                result += x.getPoints();
             }
         }
 

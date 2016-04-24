@@ -7,8 +7,10 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.Random;
 
+import shook.xeem.Jsonable;
 
-public class BlankObject {
+
+public class BlankObject extends Jsonable<BlankObject> {
 
     // Blank contents
     @SerializedName("title") private String                             bTitle;
@@ -17,15 +19,15 @@ public class BlankObject {
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions") private ArrayList<QuestionObject>      bQuestions;
     @SerializedName("_id") private String                               bID;
-    @SerializedName("_etag") private String                          bEtag;
-
-    public String toJSON () {
-        return (new Gson()).toJson(this);
-    }
-    public static BlankObject fromJSON (String _json) { return (new Gson()).fromJson(_json, BlankObject.class); }
+    @SerializedName("_etag")
+    private String bEtag;
 
     // Public constructors
     private BlankObject () {}
+
+    public static BlankObject fromJSON(String _json) {
+        return converter.fromJson(_json, BlankObject.class);
+    }
 
     // Getters
     public void rmEtag() { this.bEtag = null; }
@@ -57,19 +59,20 @@ public class BlankObject {
             factored_blank.bQuestions = new ArrayList<QuestionObject>();
         }
 
-        public void fillExample() {
-            // just for example !!!!!!!!!
-            this.factored_blank = BlankObject.fromJSON("{\"title\": \"Very hard IQ test\", \"date\": 14749221, \"id\": 3242112411, \"public\": false, \"author\": \"John Smith\", \"questions\": [{\"text\": \"How many legs does horse have?\", \"pic\": \"\", \"correct\": 2, \"points\": 5, \"answers\": [{\"text\": \"I dont know\", \"pic\": \"\"}, {\"text\": \"Maybe three?\", \"pic\": \"\"}, {\"text\": \"Exactly four\", \"pic\": \"\"} ] } ] }");
-        }
-
         public void loadJSON(String _json) {
             this.factored_blank = BlankObject.fromJSON(_json);
         }
 
         // Setters
         public void setTitle(String _title) { this.factored_blank.bTitle = _title; }
-        public void togglePublic() {this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic; }
-        public void withAuthorID(String _author) {this.factored_blank.bAuthor = _author; }
+
+        public void setPublic() {
+            this.factored_blank.bIsPublic = !this.factored_blank.bIsPublic;
+        }
+
+        public void setAuthor(String _author) {
+            this.factored_blank.bAuthor = _author;
+        }
 
         public void putQuestion(QuestionObject _question) {
             this.factored_blank.bQuestions.add(_question);

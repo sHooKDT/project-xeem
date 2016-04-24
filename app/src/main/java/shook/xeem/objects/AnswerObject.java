@@ -5,7 +5,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AnswerObject {
+import shook.xeem.Jsonable;
+
+public class AnswerObject extends Jsonable<AnswerObject> {
 
     // Answer contents
     @SerializedName("text") private String aText;
