@@ -1,7 +1,6 @@
 package shook.xeem.list_adapters;
 
 import android.content.Context;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import shook.xeem.R;
 import shook.xeem.objects.AnswerObject;
 import shook.xeem.objects.QuestionObject;
-import shook.xeem.R;
 
 public class AnswerAdapter extends BaseAdapter{
 
@@ -63,7 +61,7 @@ public class AnswerAdapter extends BaseAdapter{
         ((Button) view.findViewById(R.id.editButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("MYTAG", "Your are trying to edit answer");
+                Log.d("XEEMDBG", "Your are trying to edit answer");
             }
         });
 

@@ -2,11 +2,13 @@
     <string name="app_name">Xeem</string>
     <string name="app_api_url">http://46.101.8.217:500/</string>
 
+    <!-- Examples, just for testing -->
     <string name="question_examle">Сколько ног у лошади?</string>
     <string name="author_example">Я и мой кот</string>
     <string name="answer_text_example">Я не знаю</string>
-    <string name="title_example">Мой первый тестовый бланк</string>
+    <string name="title_example">Сложнейший тест на IQ</string>
 
+    <!-- Localisation strings -->
     <string name="empty_text">Список вопросов пуст.</string>
     <string name="question_list_description">добавьте вопросы для теста</string>
     <string name="type_blank_title">Введите название теста</string>
@@ -22,6 +24,17 @@
         <item>Возможно 3</item>
         <item>Мне кажется, что возможно, у неё около 5 ног</item>
     </array>
+
+    <!-- Test Result Fragment strings -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test_complete_congrats">Поздравляем!</string>
+    <string name="test_complete_name">Вы прошли \"%s\"</string>
+    <string name="test_complete_yourres">Ваш результат:</string>
+    <string name="test_complete_points">%1$d из %2$d баллов (%3$d%4$s)</string>
+    <string name="test_complete_questions">%1$d из %2$d ответов верны (%3$d%4$s)</string>
+    <string name="test_complete_mark">Отличный результат!</string>
+    <string name="ok_string">OK</string>
+    <string name="question_text_hint">Введите текст вопроса</string>
 
 
 </resources>

@@ -1,14 +1,11 @@
 package shook.xeem.activities;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.app.FragmentTransaction;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +18,6 @@ import com.google.gson.Gson;
 import java.util.Objects;
 
 import shook.xeem.BlankEditor;
-import shook.xeem.Jsonable;
 import shook.xeem.QuestionEditFragment;
 import shook.xeem.R;
 import shook.xeem.XeemAuthService;
@@ -50,7 +46,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
-        Log.d("MYTAG", "Some activity sent result");
+        Log.d("XEEMDBG", "Some activity sent result");
     }
 
     @Override
@@ -77,14 +73,14 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         });
 
         ListView questionsList = (ListView) findViewById(R.id.questionsList);
-        View addFooter = getLayoutInflater().inflate(R.layout.blank_edit_footer, null);
-        addFooter.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addQuestionClick(null);
-            }
-        });
         if (questionsList != null) {
+            View addFooter = getLayoutInflater().inflate(R.layout.blank_edit_footer, null);
+            addFooter.findViewById(R.id.addButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addQuestionClick(null);
+                }
+            });
             questionsList.addFooterView(addFooter);
             View addHeader = getLayoutInflater().inflate(R.layout.blank_edit_header, null);
             questionsList.addHeaderView(addHeader);
@@ -113,27 +109,29 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     }
 
     public void addQuestionClick(@Nullable View v) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Type the question");
-        final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                blankBuilder.putQuestion(new QuestionObject(input.getText().toString()));
-                blankAdapter.notifyDataSetChanged();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
+        blankBuilder.putQuestion(new QuestionObject(""));
+        blankAdapter.notifyDataSetChanged();
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Type the question");
+//        final EditText input = new EditText(this);
+//        input.setInputType(InputType.TYPE_CLASS_TEXT);
+//        builder.setView(input);
+//
+//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                blankBuilder.putQuestion(new QuestionObject(input.getText().toString()));
+//                blankAdapter.notifyDataSetChanged();
+//            }
+//        });
+//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.cancel();
+//            }
+//        });
+//
+//        builder.show();
     }
 
 
@@ -160,6 +158,8 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
                 .addToBackStack("question-edit")
                 .commit();
         FrameLayout fragment_frame = (FrameLayout) findViewById(R.id.question_edit_fragment_container);
-        fragment_frame.setVisibility(View.VISIBLE);
+        if (fragment_frame != null) {
+            fragment_frame.setVisibility(View.VISIBLE);
+        }
     }
 }

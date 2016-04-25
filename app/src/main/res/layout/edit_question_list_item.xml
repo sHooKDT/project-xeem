@@ -4,14 +4,18 @@
     android:layout_height="60dp"
     android:orientation="horizontal">
 
-    <TextView
+    <EditText
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        android:background="#FFF"
         android:gravity="center_vertical|start"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:text="@string/question_examle"
+        android:hint="@string/question_text_hint"
         android:textSize="18sp"
         android:id="@+id/questionText"
         android:lines="2" />

@@ -53,7 +53,7 @@ public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecy
             @Override
             public void onClick(View view) {
                 activity.editBlankClick(position);
-//                Log.d("MYTAG", "[BLANKADAPTER] Requesting edit");
+//                Log.d("XEEMDBG", "[BLANKADAPTER] Requesting edit");
 //                Intent editBlankIntent = new Intent(context, BlankEditActivity.class);
 //                editBlankIntent.setAction("EDIT");
 //                editBlankIntent.putExtra("blank_to_edit", curBlank.toJSON());

@@ -1,24 +1,19 @@
 package shook.xeem.list_adapters;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.TextView;
-
-import com.google.gson.Gson;
+import android.widget.EditText;
 
 import shook.xeem.BlankEditor;
-import shook.xeem.QuestionEditFragment;
+import shook.xeem.R;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
-import shook.xeem.R;
 
 public class BlankEditAdapter extends BaseAdapter{
 
@@ -61,7 +56,24 @@ public class BlankEditAdapter extends BaseAdapter{
 
         final QuestionObject q = (QuestionObject) getItem(position);
 
-        ((TextView) view.findViewById(R.id.questionText)).setText(q.getText());
+        EditText questiontext = ((EditText) view.findViewById(R.id.questionText));
+        questiontext.setText(q.getText());
+        questiontext.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                q.setText(editable.toString());
+            }
+        });
 
         // Click handler for REMOVE button
         Button removeBut = (Button) view.findViewById(R.id.removeButton);

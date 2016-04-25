@@ -1,10 +1,7 @@
 package shook.xeem;
 
-import android.app.Application;
-import android.content.res.Resources;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONObject;
@@ -25,7 +22,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import shook.xeem.activities.MainActivity;
 import shook.xeem.objects.BlankObject;
@@ -34,8 +30,7 @@ public class XeemApiService {
 
     static final String API_URL = "http://46.101.8.217:500/";
 
-    public XeemApiService() {
-    }
+    public XeemApiService() {}
 
     static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(API_URL)
@@ -66,12 +61,13 @@ public class XeemApiService {
         rmBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("MYTAG", "[DELETE] Success: " + response.code());
+
+                Log.d("XEEMDBG", "[DELETE] Success: " + response.code());
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("MYTAG", "[DELETE] Fail" + t.getMessage());
+                Log.d("XEEMDBG", "[DELETE] Fail" + t.getMessage());
             }
         });
     }
@@ -82,16 +78,16 @@ public class XeemApiService {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    Log.d("MYTAG", "[PATCH Body: " + response.body().string());
+                    Log.d("XEEMDBG", "[PATCH Body: " + response.body().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                Log.d("MYTAG", "[PATCH] Success: " + response.code());
+                Log.d("XEEMDBG", "[PATCH] Success: " + response.code());
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("MYTAG", "[PATCH] Fail" + t.getMessage());
+                Log.d("XEEMDBG", "[PATCH] Fail" + t.getMessage());
             }
         });
     }
@@ -122,13 +118,13 @@ public class XeemApiService {
         postBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("MYTAG", "[POSTING] Success: " + response.code());
+                Log.d("XEEMDBG", "[POSTING] Success: " + response.code());
                 updateBlanks();
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("MYTAG", "[POSTING] Fail: " + t.getMessage());
+                Log.d("XEEMDBG", "[POSTING] Fail: " + t.getMessage());
             }
         });
     }
@@ -138,13 +134,13 @@ public class XeemApiService {
         blankGetCall.enqueue(new Callback<blankListResponse>() {
             @Override
             public void onResponse(Call<blankListResponse> call, Response<blankListResponse> response) {
-                Log.d("MYTAG", "[UPDATE] Success: " + response.code());
+                Log.d("XEEMDBG", "[UPDATE] Success: " + response.code());
                 MainActivity.setBlankList(response.body()._items);
             }
 
             @Override
             public void onFailure(Call<blankListResponse> call, Throwable t) {
-                Log.d("MYTAG", "[UPDATE] Fail: " + t.getMessage());
+                Log.d("XEEMDBG", "[UPDATE] Fail: " + t.getMessage());
             }
         });
     }

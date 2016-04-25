@@ -1,7 +1,6 @@
 package shook.xeem;
 
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,19 +11,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
 import shook.xeem.activities.BlankEditActivity;
 import shook.xeem.list_adapters.AnswerAdapter;
-import shook.xeem.objects.AnswerObject;
 import shook.xeem.objects.QuestionObject;
 
 public class QuestionEditFragment extends Fragment {
@@ -49,7 +42,7 @@ public class QuestionEditFragment extends Fragment {
 
         // Get editable question from sent bundle
         editable = (new Gson()).fromJson(getArguments().getString("question"), QuestionObject.class);
-        Log.d("MYTAG", "Question: " + editable.getText());
+        Log.d("XEEMDBG", "Question: " + editable.getText());
 
         final ListView answerList = (ListView) view.findViewById(R.id.answerList);
         answerList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

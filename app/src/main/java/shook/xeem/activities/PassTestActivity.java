@@ -1,20 +1,20 @@
 package shook.xeem.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import shook.xeem.R;
+import shook.xeem.XeemAuthService;
 import shook.xeem.list_adapters.BlankPassRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
+import shook.xeem.objects.TestResult;
 
 public class PassTestActivity extends AppCompatActivity {
 
@@ -56,18 +56,35 @@ public class PassTestActivity extends AppCompatActivity {
         return true;
     }
 
-    private int score() {
+    private void score() {
 
-        int result = 0;
-
+        int points = 0;
+        int maxpoints = 0;
+        int qright = 0;
+        int qcount = 0;
         for (QuestionObject x : loadedBlank.getQuestions()) {
             if (x.getChecked() == x.getCorrect()) {
-                result += x.getPoints();
+                points += x.getPoints();
+                qright ++;
             }
+            maxpoints += x.getPoints();
+            qcount ++;
         }
 
-        Toast.makeText(this, String.format("You scored %d of %d", result, loadedBlank.getQuestions().size()), Toast.LENGTH_SHORT).show();
+        TestResult result = new TestResult(
+                loadedBlank.getTitle(),
+                loadedBlank.getID(),
+                XeemAuthService.getAccount().getId(),
+                loadedBlank.getEtag(),
+                points,
+                maxpoints,
+                qright,
+                qcount
+        );
 
-        return 0;
+        Intent resultIntent = new Intent()
+                .putExtra("result", result.toJSON());
+        setResult(RESULT_OK, resultIntent);
+        finish();
     }
 }

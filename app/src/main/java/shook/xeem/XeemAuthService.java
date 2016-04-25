@@ -31,7 +31,7 @@ public class XeemAuthService {
     public static void loadAccountInfo(GoogleSignInResult _result) {
         if (_result.isSuccess() && authAccount == null) {
             authAccount = _result.getSignInAccount();
-            Log.d("MYTAG", "[AUTH] Signed in as " + authAccount.getDisplayName());
+            Log.d("XEEMDBG", "[AUTH] Signed in as " + authAccount.getDisplayName());
         }
     }
 
@@ -52,7 +52,7 @@ public class XeemAuthService {
                 .enableAutoManage((FragmentActivity) context, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d("MYTAG", "[GOOGLEAPI] Something failed");
+                        Log.d("XEEMDBG", "[GOOGLEAPI] Something failed");
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)

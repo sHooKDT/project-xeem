@@ -12,17 +12,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import shook.xeem.R;
+import shook.xeem.TestResultFragment;
 import shook.xeem.XeemApiService;
 import shook.xeem.XeemAuthService;
 import shook.xeem.list_adapters.BlankListRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
+import shook.xeem.objects.TestResult;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
             blankListView.setLayoutManager(new LinearLayoutManager(this));
         }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("MYTAG", "[POSTING] Declined by user");
+                    Log.d("XEEMDBG", "[POSTING] Declined by user");
                 }
             });
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -124,19 +131,19 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         } else if (requestCode == EDIT_BLANK_REQUEST) {
             final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
-            Log.d("MYTAG", "tried to send: " + _blank);
+            Log.d("XEEMDBG", "tried to send: " + _blank);
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Replace this blank?");
             builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("MYTAG", "[POSTING] Declined by user");
+                    Log.d("XEEMDBG", "[POSTING] Declined by user");
                 }
             });
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("MYTAG", "[PATCH] Blank sent to api class");
+                    Log.d("XEEMDBG", "[PATCH] Blank sent to api class");
                     apiService.editBlank(_blank);
                     apiService.updateBlanks();
                 }
@@ -144,7 +151,17 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         } else if (requestCode == PASS_BLANK_REQUEST) {
-            Log.d("MYTAG", "You passed the test, Nice!");
+            final TestResult _result = TestResult.fromJSON(result.getStringExtra("result"));
+            TestResultFragment resultFragment = new TestResultFragment();
+            Bundle data = new Bundle();
+            data.putString("result", _result.toJSON());
+            resultFragment.setArguments(data);
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.result_fragment_container, resultFragment)
+                    .addToBackStack("result")
+                    .commitAllowingStateLoss();
+            FrameLayout fragment_frame = (FrameLayout) findViewById(R.id.result_fragment_container);
+            fragment_frame.setVisibility(View.VISIBLE);
         }
     }
 
