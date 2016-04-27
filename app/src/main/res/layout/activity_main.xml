@@ -16,12 +16,12 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
-    <!--<ListView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/blankListView"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_alignParentTop="true" />-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/main_list_descrp"
+        android:layout_marginBottom="10dp" />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

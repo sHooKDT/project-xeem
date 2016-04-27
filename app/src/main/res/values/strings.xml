@@ -35,6 +35,7 @@
     <string name="test_complete_mark">Отличный результат!</string>
     <string name="ok_string">OK</string>
     <string name="question_text_hint">Введите текст вопроса</string>
+    <string name="main_list_descrp">показаны все пользовательские тесты</string>
 
 
 </resources>

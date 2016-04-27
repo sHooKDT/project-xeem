@@ -111,27 +111,6 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     public void addQuestionClick(@Nullable View v) {
         blankBuilder.putQuestion(new QuestionObject(""));
         blankAdapter.notifyDataSetChanged();
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Type the question");
-//        final EditText input = new EditText(this);
-//        input.setInputType(InputType.TYPE_CLASS_TEXT);
-//        builder.setView(input);
-//
-//        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                blankBuilder.putQuestion(new QuestionObject(input.getText().toString()));
-//                blankAdapter.notifyDataSetChanged();
-//            }
-//        });
-//        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                dialog.cancel();
-//            }
-//        });
-//
-//        builder.show();
     }
 
 
