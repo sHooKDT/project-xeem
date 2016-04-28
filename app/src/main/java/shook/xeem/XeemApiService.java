@@ -2,12 +2,8 @@ package shook.xeem;
 
 import android.util.Log;
 
-import com.google.gson.annotations.SerializedName;
-
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -23,7 +19,6 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import shook.xeem.activities.MainActivity;
 import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
@@ -92,24 +87,11 @@ public class XeemApiService {
         });
     }
 
-    class blankListResponse {
-        List<BlankObject> _items;
-        public blankListResponse(List<BlankObject> _items) {
+    public static class blankListResponse {
+        public LinkedList<BlankObject> _items;
+
+        public blankListResponse(LinkedList<BlankObject> _items) {
             this._items = _items;
-        }
-    }
-    class errorResponse {
-        @SerializedName("_status") String _status;
-        @SerializedName("_issues") JSONObject _issues;
-        @SerializedName("_error") error _error;
-        class error {
-            String message;
-            int code;
-        }
-        public errorResponse(String _status, error _error, JSONObject _issues) {
-            this._error = _error;
-            this._status = _status;
-            this._issues = _issues;
         }
     }
 
@@ -119,7 +101,12 @@ public class XeemApiService {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("XEEMDBG", "[POSTING] Success: " + response.code());
-                updateBlanks();
+                try {
+                    if (response.body() != null)
+                        Log.d("XEEMDBG", "[POSTING] Response: " + response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -129,20 +116,9 @@ public class XeemApiService {
         });
     }
 
-    public void updateBlanks() {
+    public void updateBlanks(Callback<blankListResponse> callback) {
         Call<blankListResponse> blankGetCall = API.loadBlanks();
-        blankGetCall.enqueue(new Callback<blankListResponse>() {
-            @Override
-            public void onResponse(Call<blankListResponse> call, Response<blankListResponse> response) {
-                Log.d("XEEMDBG", "[UPDATE] Success: " + response.code());
-                MainActivity.setBlankList(response.body()._items);
-            }
-
-            @Override
-            public void onFailure(Call<blankListResponse> call, Throwable t) {
-                Log.d("XEEMDBG", "[UPDATE] Fail: " + t.getMessage());
-            }
-        });
+        blankGetCall.enqueue(callback);
     }
 
 }

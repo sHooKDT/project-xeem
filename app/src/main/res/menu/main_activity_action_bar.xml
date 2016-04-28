@@ -6,6 +6,10 @@
         android:title="@string/add_blank"
         app:showAsAction="always" >
     </item>
+    <item
+        android:id="@+id/updateButton"
+        android:title="@string/update"
+        app:showAsAction="ifRoom"></item>
 </menu>
 
     <!--android:icon="@drawable/ic_add_white_48dp"-->

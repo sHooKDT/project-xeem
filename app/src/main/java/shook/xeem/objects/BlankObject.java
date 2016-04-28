@@ -1,17 +1,9 @@
 package shook.xeem.objects;
 
-import android.app.AlertDialog;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.lang.reflect.Modifier;
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Random;
 
 import shook.xeem.Jsonable;
 
@@ -73,6 +65,7 @@ public class BlankObject extends Jsonable<BlankObject> {
     public class Builder {
 
         private Builder() {
+            if (bQuestions == null) bQuestions = new LinkedList<>();
         }
 
         // Setters

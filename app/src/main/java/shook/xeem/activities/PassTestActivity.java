@@ -15,8 +15,9 @@ import shook.xeem.list_adapters.BlankPassRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 import shook.xeem.objects.TestResult;
+import shook.xeem.testPassHolder;
 
-public class PassTestActivity extends AppCompatActivity {
+public class PassTestActivity extends AppCompatActivity implements testPassHolder {
 
     private BlankObject loadedBlank;
 
@@ -27,20 +28,27 @@ public class PassTestActivity extends AppCompatActivity {
 
         loadedBlank = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_pass"));
 
-//        RecyclerView testPassRecycler = (RecyclerView) findViewById(R.id.test_pass_questions_list);
+        // View
         RecyclerViewPager testPassRecycler = (RecyclerViewPager) findViewById(R.id.test_pass_questions_list);
-        BlankPassRecyclerAdapter testPassAdapter = new BlankPassRecyclerAdapter(this, loadedBlank);
+        // Adapter
+        BlankPassRecyclerAdapter testPassAdapter = new BlankPassRecyclerAdapter(this);
+        // Layout Manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-
-
-        testPassRecycler.setAdapter(testPassAdapter);
-        testPassRecycler.setLayoutManager(layoutManager);
+        // Apply
+        if (testPassRecycler != null) {
+            testPassRecycler.setAdapter(testPassAdapter);
+            testPassRecycler.setLayoutManager(layoutManager);
+        }
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
 
+    }
+
+    public BlankObject getBlank() {
+        return loadedBlank;
     }
 
     @Override

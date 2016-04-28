@@ -16,8 +16,12 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.util.LinkedList;
-import java.util.List;
+import java.util.Objects;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import shook.xeem.BlankListHolder;
 import shook.xeem.R;
 import shook.xeem.TestResultFragment;
 import shook.xeem.XeemApiService;
@@ -27,7 +31,7 @@ import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.TestResult;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     static final int EDIT_BLANK_REQUEST = 27;
     static final int ADD_BLANK_REQUEST = 28;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
-        blankListAdapter = new BlankListRecyclerAdapter(this, loadedBlankList);
+        blankListAdapter = new BlankListRecyclerAdapter(this);
         if (blankListView != null) {
             blankListView.setAdapter(blankListAdapter);
             blankListView.setLayoutManager(new LinearLayoutManager(this));
@@ -70,19 +74,39 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+        menu.findItem(R.id.updateButton).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                apiService.updateBlanks(updateCallback);
+                return true;
+            }
+        });
         return true;
     }
 
     @Override
     protected void onResume() {
-        apiService.updateBlanks();
+        apiService.updateBlanks(updateCallback);
         super.onResume();
     }
 
-    public static void setBlankList(List<BlankObject> _blanks) {
-        blankListAdapter.reload(_blanks);
-        blankListAdapter.notifyDataSetChanged();
-     }
+    private Callback<XeemApiService.blankListResponse> updateCallback = new Callback<XeemApiService.blankListResponse>() {
+        @Override
+        public void onResponse(Call<XeemApiService.blankListResponse> call, Response<XeemApiService.blankListResponse> response) {
+            if (response.code() == 200) {
+                Log.d("XEEMDBG", "Blanks updated");
+                loadedBlankList = response.body()._items;
+                blankListAdapter.reload();
+            } else {
+                Log.d("XEEMDBG", "Blanks update failed");
+            }
+        }
+
+        @Override
+        public void onFailure(Call<XeemApiService.blankListResponse> call, Throwable t) {
+
+        }
+    };
 
     public void addBlankClick (@Nullable View v) {
         Intent editIntent = new Intent(this, BlankEditActivity.class);
@@ -91,8 +115,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void deleteBlankClick (int position) {
-        apiService.deleteBlank(blankListAdapter.getItem(position));
-        apiService.updateBlanks();
+        if (Objects.equals(loadedBlankList.get(position).getAuthor(), XeemAuthService.getAccount().getId())) {
+            apiService.deleteBlank(loadedBlankList.get(position));
+        } else {
+            Toast.makeText(this, "Вы не можете удалить этот тест", Toast.LENGTH_SHORT).show();
+        }
+        apiService.updateBlanks(updateCallback);
     }
 
     public void editBlankClick (int position) {
@@ -107,6 +135,10 @@ public class MainActivity extends AppCompatActivity {
         passBlankIntent.setAction("PASS");
         passBlankIntent.putExtra("blank_to_pass", blankListAdapter.getItem(position).toJSON());
         startActivityForResult(passBlankIntent, PASS_BLANK_REQUEST);
+    }
+
+    public LinkedList<BlankObject> getBlankList() {
+        return loadedBlankList;
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent result) {
@@ -145,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Log.d("XEEMDBG", "[PATCH] Blank sent to api class");
                     apiService.editBlank(_blank);
-                    apiService.updateBlanks();
+                    apiService.updateBlanks(updateCallback);
                 }
             });
             AlertDialog dialog = builder.create();
@@ -163,11 +195,6 @@ public class MainActivity extends AppCompatActivity {
             FrameLayout fragment_frame = (FrameLayout) findViewById(R.id.result_fragment_container);
             fragment_frame.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
     }
 
 }

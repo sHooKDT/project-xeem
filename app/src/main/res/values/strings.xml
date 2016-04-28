@@ -36,6 +36,7 @@
     <string name="ok_string">OK</string>
     <string name="question_text_hint">Введите текст вопроса</string>
     <string name="main_list_descrp">показаны все пользовательские тесты</string>
+    <string name="update">Обновить</string>
 
 
 </resources>

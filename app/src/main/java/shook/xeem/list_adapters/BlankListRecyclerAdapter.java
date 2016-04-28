@@ -7,24 +7,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.LinkedList;
 
+import shook.xeem.BlankListHolder;
 import shook.xeem.R;
-import shook.xeem.activities.MainActivity;
 import shook.xeem.objects.BlankObject;
 
 public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecyclerAdapter.ViewHolder> {
 
-    List<BlankObject> blanksList;
-    MainActivity activity;
+    LinkedList<BlankObject> blankList;
+    BlankListHolder blankListHost;
 
-    public BlankListRecyclerAdapter(MainActivity _activity, List<BlankObject> _blanksLists) {
-        activity = _activity;
-        this.blanksList = _blanksLists;
+    public BlankListRecyclerAdapter(BlankListHolder _activity) {
+        blankListHost = _activity;
+        this.blankList = blankListHost.getBlankList();
     }
 
-    public void reload(List<BlankObject> _blankset) {
-        this.blanksList = _blankset;
+    public void reload() {
+        this.blankList = blankListHost.getBlankList();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -36,46 +37,40 @@ public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecy
     @Override
     public void onBindViewHolder(ViewHolder holder, int _position) {
         final int position = holder.getAdapterPosition();
-        BlankObject blank = blanksList.get(position);
+        BlankObject blank = blankList.get(position);
+
         holder.author.setText(blank.getAuthor());
         holder.title.setText(blank.getTitle());
 
         holder.delBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.deleteBlankClick(position);
-//                XeemApiService.deleteBlank(blanksList.get(position));
-//                XeemApiService.updateBlanks();
+                blankListHost.deleteBlankClick(position);
             }
         });
 
         holder.editBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.editBlankClick(position);
-//                Log.d("XEEMDBG", "[BLANKADAPTER] Requesting edit");
-//                Intent editBlankIntent = new Intent(context, BlankEditActivity.class);
-//                editBlankIntent.setAction("EDIT");
-//                editBlankIntent.putExtra("blank_to_edit", curBlank.toJSON());
-//                ((Activity) context).startActivityForResult(editBlankIntent, MainActivity.EDIT_BLANK_REQUEST);
+                blankListHost.editBlankClick(position);
             }
         });
 
         holder.passBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.passBlankClick(position);
+                blankListHost.passBlankClick(position);
             }
         });
     }
 
     public BlankObject getItem(int position) {
-        return blanksList.get(position);
+        return blankList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return blanksList.size();
+        return blankList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

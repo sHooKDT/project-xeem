@@ -31,7 +31,11 @@ public class BlankEditAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return loadedBuilder.build().getQuestions().size();
+        if (loadedBuilder.build().getQuestions() != null) {
+            return loadedBuilder.build().getQuestions().size();
+        } else {
+            return 0;
+        }
     }
 
     @Override
