@@ -27,9 +27,9 @@ import shook.xeem.objects.QuestionObject;
 
 public class BlankEditActivity extends AppCompatActivity implements BlankEditor {
 
-    BlankEditAdapter blankAdapter;
-    BlankObject.Builder blankBuilder = BlankObject.newBuilder();
-    EditText editTitle;
+    private BlankEditAdapter blankAdapter;
+    private BlankObject.Builder blankBuilder = BlankObject.newBuilder();
+    private EditText editTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         finishEdit(null);
     }
 
-    public void initView() {
+    private void initView() {
         // Initialisation of the view stuff
         editTitle = (EditText) findViewById(R.id.editTitle);
         editTitle.addTextChangedListener(new TextWatcher() {
@@ -101,14 +101,14 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     }
 
-    public void finishEdit(@Nullable View v) {
+    private void finishEdit(@Nullable View v) {
         Intent intent = new Intent()
                 .putExtra("edited_blank", blankBuilder.build().toJSON());
         setResult(RESULT_OK, intent);
         finish();
     }
 
-    public void addQuestionClick(@Nullable View v) {
+    private void addQuestionClick(@Nullable View v) {
         blankBuilder.putQuestion(new QuestionObject(""));
         blankAdapter.notifyDataSetChanged();
     }
@@ -117,6 +117,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     public void receiveEditedQuestion(int index, QuestionObject edited) {
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.remove(getFragmentManager().findFragmentById(R.id.question_edit_fragment_container));
+        ft.commit();
         blankBuilder.replaceQuestion(index, edited);
     }
 

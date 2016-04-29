@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import shook.xeem.R;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
@@ -40,7 +42,7 @@ public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecy
 
         QuestionObject question = loadedBlank.getQuestions().get(position);
 
-        holder.questionNumberText.setText(String.format("Вопрос %d", position + 1));
+        holder.questionNumberText.setText(String.format(Locale.getDefault(), "Вопрос %d", position + 1));
         holder.questionText.setText(question.getText());
         holder.answersList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 

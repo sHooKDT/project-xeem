@@ -6,12 +6,12 @@ import shook.xeem.objects.BlankObject;
 
 public interface BlankListHolder {
 
-    public LinkedList<BlankObject> getBlankList();
+    LinkedList<BlankObject> getBlankList();
 
-    public void deleteBlankClick(int position);
+    void deleteBlankClick(int position);
 
-    public void editBlankClick(int position);
+    void editBlankClick(int position);
 
-    public void passBlankClick(int position);
+    void passBlankClick(int position);
 
 }

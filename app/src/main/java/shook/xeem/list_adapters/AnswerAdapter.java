@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -18,9 +17,9 @@ import shook.xeem.objects.QuestionObject;
 
 public class AnswerAdapter extends BaseAdapter{
 
-    Context context;
-    QuestionObject loadedQuestion;
-    LayoutInflater layoutInflater;
+    private Context context;
+    private QuestionObject loadedQuestion;
+    private LayoutInflater layoutInflater;
 
 
     public AnswerAdapter(Context _context, QuestionObject _question) {
@@ -58,14 +57,14 @@ public class AnswerAdapter extends BaseAdapter{
 
         ((TextView) view.findViewById(R.id.answer_text)).setText(curAnswer.getText());
 
-        ((Button) view.findViewById(R.id.editButton)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.editButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("XEEMDBG", "Your are trying to edit answer");
             }
         });
 
-        ((Button) view.findViewById(R.id.delButton)).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.delButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loadedQuestion.rmAns(pos);
