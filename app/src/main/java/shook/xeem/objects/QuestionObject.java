@@ -1,10 +1,7 @@
 package shook.xeem.objects;
 
-import android.support.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import shook.xeem.Jsonable;
@@ -33,6 +30,7 @@ public class QuestionObject extends Jsonable<QuestionObject> {
     public QuestionObject(String _text) {
         this.setText(_text);
         this.setPoints(1);
+        this.setChecked(-1);
         this.setAnswers(new LinkedList<AnswerObject>());
     }
 

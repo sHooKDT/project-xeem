@@ -7,6 +7,8 @@ public interface BlankEditor {
 
     BlankObject.Builder getBuilder();
 
+    void applyQuestionEdit(int index, QuestionObject _question);
+
     void startQuestionEdit(int index, QuestionObject _question);
 
 }

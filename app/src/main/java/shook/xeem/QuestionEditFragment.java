@@ -16,7 +16,6 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
-import shook.xeem.activities.BlankEditActivity;
 import shook.xeem.list_adapters.AnswerAdapter;
 import shook.xeem.objects.QuestionObject;
 
@@ -89,7 +88,7 @@ public class QuestionEditFragment extends Fragment {
     View.OnClickListener finishEdit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ((BlankEditActivity)getActivity()).receiveEditedQuestion(getArguments().getInt("index"), editable);
+            ((BlankEditor) getActivity()).applyQuestionEdit(getArguments().getInt("index"), editable);
             getActivity().getSupportFragmentManager().popBackStack();
             getActivity().findViewById(R.id.question_edit_fragment_container).setVisibility(View.GONE);
         }

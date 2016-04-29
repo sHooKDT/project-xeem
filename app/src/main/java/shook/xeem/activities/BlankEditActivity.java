@@ -1,6 +1,5 @@
 package shook.xeem.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -101,7 +100,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     }
 
-    private void finishEdit(@Nullable View v) {
+    public void finishEdit(@Nullable View v) {
         Intent intent = new Intent()
                 .putExtra("edited_blank", blankBuilder.build().toJSON());
         setResult(RESULT_OK, intent);
@@ -114,10 +113,10 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     }
 
 
-    public void receiveEditedQuestion(int index, QuestionObject edited) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.remove(getFragmentManager().findFragmentById(R.id.question_edit_fragment_container));
-        ft.commit();
+    public void applyQuestionEdit(int index, QuestionObject edited) {
+//        FragmentTransaction ft = getFragmentManager().beginTransaction();
+//        ft.remove(getFragmentManager().findFragmentById(R.id.question_edit_fragment_container));
+//        ft.commit();
         blankBuilder.replaceQuestion(index, edited);
     }
 

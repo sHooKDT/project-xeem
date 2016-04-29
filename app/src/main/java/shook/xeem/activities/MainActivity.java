@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (XeemAuthService.getAccount() != null)
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
 
