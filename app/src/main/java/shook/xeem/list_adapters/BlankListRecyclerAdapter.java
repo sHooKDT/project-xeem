@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import java.util.LinkedList;
 
-import shook.xeem.BlankListHolder;
 import shook.xeem.R;
+import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.objects.BlankObject;
 
 public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecyclerAdapter.ViewHolder> {

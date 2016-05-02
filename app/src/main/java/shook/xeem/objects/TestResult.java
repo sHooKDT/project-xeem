@@ -1,6 +1,6 @@
 package shook.xeem.objects;
 
-import shook.xeem.Jsonable;
+import shook.xeem.interfaces.Jsonable;
 
 public class TestResult extends Jsonable<TestResult> {
 

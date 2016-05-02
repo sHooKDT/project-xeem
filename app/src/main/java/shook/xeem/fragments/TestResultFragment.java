@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.fragments;
 
 
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import shook.xeem.R;
 import shook.xeem.objects.TestResult;
 
 

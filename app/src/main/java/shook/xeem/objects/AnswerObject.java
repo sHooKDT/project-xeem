@@ -1,11 +1,8 @@
 package shook.xeem.objects;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-import shook.xeem.Jsonable;
+import shook.xeem.interfaces.Jsonable;
 
 public class AnswerObject extends Jsonable<AnswerObject> {
 

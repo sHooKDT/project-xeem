@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.LinkedList;
 
-import shook.xeem.Jsonable;
+import shook.xeem.interfaces.Jsonable;
 
 public class QuestionObject extends Jsonable<QuestionObject> {
 
@@ -30,7 +30,7 @@ public class QuestionObject extends Jsonable<QuestionObject> {
     public QuestionObject(String _text) {
         this.setText(_text);
         this.setPoints(1);
-        this.setChecked(-1);
+        this.setCorrect(-1);
         this.setAnswers(new LinkedList<AnswerObject>());
     }
 

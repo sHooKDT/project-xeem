@@ -18,17 +18,15 @@ import android.widget.Toast;
 import java.util.LinkedList;
 import java.util.Objects;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import shook.xeem.BlankListHolder;
 import shook.xeem.R;
-import shook.xeem.TestResultFragment;
-import shook.xeem.XeemApiService;
-import shook.xeem.XeemAuthService;
+import shook.xeem.fragments.TestResultFragment;
+import shook.xeem.interfaces.BlankListHolder;
+import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.list_adapters.BlankListRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.TestResult;
+import shook.xeem.services.XeemApiService;
+import shook.xeem.services.XeemAuthService;
 
 
 public class MainActivity extends AppCompatActivity implements BlankListHolder {
@@ -50,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         if (XeemAuthService.getAccount() != null)
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
+        apiService.registerUpdateListener(updateListener);
 
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
         blankListAdapter = new BlankListRecyclerAdapter(this);
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         menu.findItem(R.id.updateButton).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                apiService.updateBlanks(updateCallback);
+                apiService.updateBlanks();
                 return true;
             }
         });
@@ -87,25 +86,15 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     @Override
     protected void onResume() {
-        apiService.updateBlanks(updateCallback);
         super.onResume();
     }
 
-    private Callback<XeemApiService.blankListResponse> updateCallback = new Callback<XeemApiService.blankListResponse>() {
-        @Override
-        public void onResponse(Call<XeemApiService.blankListResponse> call, Response<XeemApiService.blankListResponse> response) {
-            if (response.code() == 200) {
-                Log.d("XEEMDBG", "Blanks updated");
-                loadedBlankList = response.body()._items;
-                blankListAdapter.reload();
-            } else {
-                Log.d("XEEMDBG", "Blanks update failed");
-            }
-        }
 
+    private BlankUpdateListener updateListener = new BlankUpdateListener() {
         @Override
-        public void onFailure(Call<XeemApiService.blankListResponse> call, Throwable t) {
-
+        public void onUpdate(LinkedList<BlankObject> _blanks) {
+            loadedBlankList = _blanks;
+            blankListAdapter.reload();
         }
     };
 
@@ -121,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         } else {
             Toast.makeText(this, "Вы не можете удалить этот тест", Toast.LENGTH_SHORT).show();
         }
-        apiService.updateBlanks(updateCallback);
+        apiService.updateBlanks();
     }
 
     public void editBlankClick (int position) {
@@ -157,6 +146,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d("XEEMDBG", "[POSTING] Requested");
                     apiService.postBlank(_blank);
                 }
             });
@@ -178,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     Log.d("XEEMDBG", "[PATCH] Blank sent to api class");
                     apiService.editBlank(_blank);
-                    apiService.updateBlanks(updateCallback);
                 }
             });
             AlertDialog dialog = builder.create();

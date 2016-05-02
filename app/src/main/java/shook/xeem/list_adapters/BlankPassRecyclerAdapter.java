@@ -15,9 +15,9 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import shook.xeem.R;
+import shook.xeem.interfaces.testPassHolder;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
-import shook.xeem.testPassHolder;
 
 public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecyclerAdapter.ViewHolder> {
 

@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.interfaces;
 
 import java.util.LinkedList;
 

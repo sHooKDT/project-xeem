@@ -1,8 +1,10 @@
-package shook.xeem;
+package shook.xeem.services;
 
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import okhttp3.ResponseBody;
@@ -19,11 +21,26 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.objects.BlankObject;
 
 public class XeemApiService {
 
     static final String API_URL = "http://46.101.8.217:500/";
+
+    private ArrayList<BlankUpdateListener> listeners = new ArrayList<>();
+
+    public void registerUpdateListener(BlankUpdateListener _listener) {
+        listeners.add(_listener);
+    }
+
+    private void notifyUpdate(blankListResponse response) {
+        Iterator<BlankUpdateListener> listenerIterator = listeners.iterator();
+        while (listenerIterator.hasNext()) {
+            listenerIterator.next().onUpdate(response._items);
+        }
+    }
+
 
     public XeemApiService() {}
 
@@ -56,8 +73,8 @@ public class XeemApiService {
         rmBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
                 Log.d("XEEMDBG", "[DELETE] Success: " + response.code());
+                updateBlanks();
             }
 
             @Override
@@ -78,6 +95,7 @@ public class XeemApiService {
                     e.printStackTrace();
                 }
                 Log.d("XEEMDBG", "[PATCH] Success: " + response.code());
+                updateBlanks();
             }
 
             @Override
@@ -107,6 +125,7 @@ public class XeemApiService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                updateBlanks();
             }
 
             @Override
@@ -116,9 +135,20 @@ public class XeemApiService {
         });
     }
 
-    public void updateBlanks(Callback<blankListResponse> callback) {
+    public void updateBlanks() {
         Call<blankListResponse> blankGetCall = API.loadBlanks();
-        blankGetCall.enqueue(callback);
+        blankGetCall.enqueue(new Callback<blankListResponse>() {
+            @Override
+            public void onResponse(Call<blankListResponse> call, Response<blankListResponse> response) {
+                Log.d("XEEMDBG", "[UPDATE] Success " + response.code());
+                notifyUpdate(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<blankListResponse> call, Throwable t) {
+                Log.d("XEEMDBG", "[UPDATE] Failed " + t.getMessage());
+            }
+        });
     }
 
 }

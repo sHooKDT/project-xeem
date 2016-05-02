@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.fragments;
 
 
 import android.app.AlertDialog;
@@ -16,6 +16,8 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 
+import shook.xeem.R;
+import shook.xeem.interfaces.BlankEditor;
 import shook.xeem.list_adapters.AnswerAdapter;
 import shook.xeem.objects.QuestionObject;
 

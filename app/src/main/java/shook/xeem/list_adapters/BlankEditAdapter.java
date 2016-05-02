@@ -10,8 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
-import shook.xeem.BlankEditor;
 import shook.xeem.R;
+import shook.xeem.interfaces.BlankEditor;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 

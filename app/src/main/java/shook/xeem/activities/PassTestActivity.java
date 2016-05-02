@@ -10,12 +10,12 @@ import android.view.MenuItem;
 import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
 import shook.xeem.R;
-import shook.xeem.XeemAuthService;
+import shook.xeem.interfaces.testPassHolder;
 import shook.xeem.list_adapters.BlankPassRecyclerAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 import shook.xeem.objects.TestResult;
-import shook.xeem.testPassHolder;
+import shook.xeem.services.XeemAuthService;
 
 public class PassTestActivity extends AppCompatActivity implements testPassHolder {
 
@@ -27,6 +27,9 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
         setContentView(R.layout.activity_pass_test);
 
         loadedBlank = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_pass"));
+        // BAD PATTERN: making default checked item not match with correct (if it's 0)
+        for (QuestionObject x : loadedBlank.getQuestions())
+            x.setChecked(-2);
 
         // View
         RecyclerViewPager testPassRecycler = (RecyclerViewPager) findViewById(R.id.test_pass_questions_list);
@@ -66,10 +69,10 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
 
     private void score() {
 
-        int points = 0;
-        int maxpoints = 0;
-        int qright = 0;
-        int qcount = 0;
+        // Making counters null
+        int points = 0, maxpoints = 0, qright = 0, qcount = 0;
+
+        // Counting right answers, points
         for (QuestionObject x : loadedBlank.getQuestions()) {
             if (x.getChecked() == x.getCorrect()) {
                 points += x.getPoints();
@@ -79,6 +82,7 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
             qcount ++;
         }
 
+        // Building final result object
         TestResult result = new TestResult(
                 loadedBlank.getTitle(),
                 loadedBlank.getID(),

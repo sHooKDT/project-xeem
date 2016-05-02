@@ -1,32 +1,19 @@
 package shook.xeem.activities;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.TokenData;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
 import shook.xeem.R;
-import shook.xeem.XeemApiService;
-import shook.xeem.XeemAuthService;
-import shook.xeem.objects.BlankObject;
+import shook.xeem.services.XeemAuthService;
 
-import static shook.xeem.XeemAuthService.getRequestCode;
+import static shook.xeem.services.XeemAuthService.getRequestCode;
 
 public class LoginActivity extends AppCompatActivity {
 

@@ -15,7 +15,9 @@
             android:layout_height="wrap_content"
             android:gravity="start|center_vertical"
             android:text="@string/title_example"
-            android:textSize="25sp"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+            android:alpha="0.87"
             android:id="@+id/blanktitle"
             />
 
@@ -25,27 +27,39 @@
             android:layout_weight="1"
             android:gravity="start|center_vertical"
             android:text="@string/author_example"
+            android:textSize="12sp"
+            android:alpha="0.54"
             android:id="@+id/blankauthor"
             />
     </LinearLayout>
-    <Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/ic_create_black_48dp"
-        android:id="@+id/editButton"
-        />
 
-    <Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/ic_delete_sweep_black_48dp"
-        android:id="@+id/delButton"
-        />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/ic_play_circle_outline_black_48dp"
-        android:id="@+id/passButton" />
+        <Button
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/ic_create_black_48dp"
+            android:alpha="0.35"
+            android:id="@+id/editButton" />
+
+        <Button
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/ic_delete_sweep_black_48dp"
+            android:alpha="0.35"
+            android:id="@+id/delButton" />
+
+        <Button
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_play_circle_outline_black_48dp"
+            android:alpha="0.87"
+            android:id="@+id/passButton" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.services;
 
 import android.content.Context;
 import android.content.Intent;

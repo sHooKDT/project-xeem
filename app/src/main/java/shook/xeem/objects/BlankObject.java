@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.LinkedList;
 
-import shook.xeem.Jsonable;
+import shook.xeem.interfaces.Jsonable;
 
 
 public class BlankObject extends Jsonable<BlankObject> {

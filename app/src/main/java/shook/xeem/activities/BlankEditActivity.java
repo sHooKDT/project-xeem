@@ -16,13 +16,13 @@ import com.google.gson.Gson;
 
 import java.util.Objects;
 
-import shook.xeem.BlankEditor;
-import shook.xeem.QuestionEditFragment;
 import shook.xeem.R;
-import shook.xeem.XeemAuthService;
+import shook.xeem.fragments.QuestionEditFragment;
+import shook.xeem.interfaces.BlankEditor;
 import shook.xeem.list_adapters.BlankEditAdapter;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
+import shook.xeem.services.XeemAuthService;
 
 public class BlankEditActivity extends AppCompatActivity implements BlankEditor {
 
