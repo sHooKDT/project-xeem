@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
 
         apiService.registerUpdateListener(updateListener);
+        apiService.updateBlanks();
 
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
         blankListAdapter = new BlankListRecyclerAdapter(this);
