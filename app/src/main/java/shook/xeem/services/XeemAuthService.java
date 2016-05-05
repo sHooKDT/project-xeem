@@ -1,7 +1,9 @@
 package shook.xeem.services;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -15,37 +17,46 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import shook.xeem.activities.LoginActivity;
+
 public class XeemAuthService {
 
-    static private GoogleApiClient googleApiClient;
     static public final int SIGNIN_REQUEST_CODE = 25;
+    private static final String PREFS_NAME = "XeemPrefs";
 
+    static private GoogleApiClient googleApiClient;
     static private GoogleSignInAccount authAccount;
+    public static SharedPreferences AppPreferences;
 
-    static private OptionalPendingResult<GoogleSignInResult> pendingResult;
+    private static LoginActivity activity;
 
-    public static OptionalPendingResult<GoogleSignInResult> getPendingResult() {
-        return pendingResult;
+    private static signinSuccess successCallback;
+
+    public static boolean isLogged() {
+        return AppPreferences.getBoolean("isLoginCached", false);
     }
 
-    public static void loadAccountInfo(GoogleSignInResult _result) {
-        if (_result.isSuccess() && authAccount == null) {
-            authAccount = _result.getSignInAccount();
-            Log.d("XEEMDBG", "[AUTH] Signed in as " + authAccount.getDisplayName());
-        }
+    public static boolean isOnline() {
+        return authAccount != null;
     }
 
-    public static int getRequestCode() { return SIGNIN_REQUEST_CODE; }
-
-    public static GoogleApiClient getClient() {return googleApiClient;}
-
-    public static GoogleSignInAccount getAccount() {
-        return authAccount;
+    public static String getCachedUsername() {
+        return AppPreferences.getString("cached_username", null);
     }
 
-    public static void init(Context context) {
+    public static String getUserId() {
+        if (authAccount != null) return authAccount.getId();
+        return "offline";
+    }
 
+    public static void init(Context context, signinSuccess callback) {
+
+        activity = (LoginActivity) context;
+
+        // Variables initialisation
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestId()
+                .requestProfile()
                 .build();
 
         googleApiClient = new GoogleApiClient.Builder(context)
@@ -58,29 +69,61 @@ public class XeemAuthService {
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
 
-        pendingResult = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+        AppPreferences = context.getSharedPreferences(PREFS_NAME, 0);
+        successCallback = callback;
     }
 
-    public static void auth(Context context) {
-        final Context activity_context = context;
-        if (pendingResult.isDone()) {
-            loadAccountInfo(pendingResult.get());
-        } else {
-            // There's no immediate result ready, displays some progress indicator and waits for the
-            // async callback.
-            pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
-                @Override
-                public void onResult(@NonNull GoogleSignInResult result) {
-                    if (result.isSuccess()) {
-                        loadAccountInfo(pendingResult.get());
-                    } else {
-                        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
-                        ((FragmentActivity) activity_context).startActivityForResult(signInIntent, SIGNIN_REQUEST_CODE);
-                    }
-                }
-            });
+    private static void updateCache(GoogleSignInResult result) {
+        SharedPreferences.Editor prefEditor = AppPreferences.edit();
+        prefEditor.putBoolean("isLoginCached", true);
+        if (result.isSuccess() && result.getSignInAccount() != null) {
+            prefEditor.putString("cached_username", result.getSignInAccount().getDisplayName());
+            prefEditor.putString("cached_id", result.getSignInAccount().getId());
         }
+        prefEditor.apply();
+    }
 
+    public static void silent() {
+        OptionalPendingResult<GoogleSignInResult> result = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
+
+        result.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+            @Override
+            public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
+                if (googleSignInResult.isSuccess()) {
+                    Log.d("XEEMDBG", "[GOOGLEAPI] Silent signin success");
+                    updateCache(googleSignInResult);
+                    authAccount = googleSignInResult.getSignInAccount();
+                    successCallback.onSuccess();
+                } else {
+                    // Ask user to sign in manually
+                    Log.d("XEEMDBG", "[GOOGLEAPI Silent signin failed. Try to signin manually");
+                }
+            }
+        });
+    }
+
+    public static void manual(Activity context) {
+        Log.d("XEEMDBG", "Start signInIntent");
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        activity.startActivityForResult(signInIntent, SIGNIN_REQUEST_CODE);
+    }
+
+    public static void setManualResult(Intent data) {
+        GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+        if (result.isSuccess()) {
+            Log.d("XEEMDBG", "[GOOGLEAPI] Manual signin success");
+            updateCache(result);
+            authAccount = result.getSignInAccount();
+            successCallback.onSuccess();
+        } else {
+            // Ask user to sign in manually
+            Log.d("XEEMDBG", "[GOOGLEAPI Manual signin failed");
+        }
+    }
+
+
+    public interface signinSuccess {
+        void onSuccess();
     }
 
 }

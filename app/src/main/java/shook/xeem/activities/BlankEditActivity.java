@@ -89,7 +89,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         if (Objects.equals(getIntent().getAction(), "EDIT")) {
             blankBuilder = BlankObject.fromJSON(getIntent().getStringExtra("blank_to_edit")).getBuilder();
         } else if (Objects.equals(getIntent().getAction(), "ADD")) {
-            blankBuilder.setAuthor(XeemAuthService.getAccount().getId());
+            blankBuilder.setAuthor(XeemAuthService.getUserId());
         }
 
         blankAdapter = new BlankEditAdapter(this);

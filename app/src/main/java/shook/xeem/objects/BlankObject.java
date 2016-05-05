@@ -2,6 +2,7 @@ package shook.xeem.objects;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -12,11 +13,15 @@ public class BlankObject extends Jsonable<BlankObject> {
 
     // Blank contents
     @SerializedName("title") private String                             bTitle;
+    @SerializedName("pic")
+    private String bPic;
     @SerializedName("date") private long                                bDate;
     @SerializedName("public") private boolean                           bIsPublic;
     @SerializedName("author") private String                            bAuthor;
     @SerializedName("questions")
     private LinkedList<QuestionObject> bQuestions;
+    @SerializedName("result-strings")
+    private ArrayList<ResultString> bResultStrings;
     @SerializedName("_id") private String                               bID;
     @SerializedName("_etag")
     private String bEtag;
@@ -95,5 +100,44 @@ public class BlankObject extends Jsonable<BlankObject> {
             return BlankObject.this;
         }
 
+    }
+
+    public class ResultString {
+        ResultString(int _points, String _text, String _pic) {
+            this.points = _points;
+            this.text = _text;
+            this.pic = _pic;
+        }
+
+        @SerializedName("points")
+        private int points;
+        @SerializedName("text")
+        private String text;
+        @SerializedName("pic")
+        private String pic;
+
+        public String getPic() {
+            return pic;
+        }
+
+        public void setPic(String pic) {
+            this.pic = pic;
+        }
+
+        public int getPoints() {
+            return points;
+        }
+
+        public void setPoints(int points) {
+            this.points = points;
+        }
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
     }
 }

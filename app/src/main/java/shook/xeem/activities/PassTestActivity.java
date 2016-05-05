@@ -86,7 +86,7 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
         TestResult result = new TestResult(
                 loadedBlank.getTitle(),
                 loadedBlank.getID(),
-                XeemAuthService.getAccount().getId(),
+                XeemAuthService.getUserId(),
                 loadedBlank.getEtag(),
                 points,
                 maxpoints,

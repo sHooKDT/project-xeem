@@ -45,8 +45,9 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (XeemAuthService.getAccount() != null)
-        Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getAccount().getDisplayName() , Toast.LENGTH_SHORT).show();
+        if (XeemAuthService.isLogged())
+            Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getCachedUsername(), Toast.LENGTH_SHORT).show();
+        else Toast.makeText(MainActivity.this, "You are logged offline", Toast.LENGTH_SHORT).show();
 
         apiService.registerUpdateListener(updateListener);
         apiService.updateBlanks();
@@ -106,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
     }
 
     public void deleteBlankClick (int position) {
-        if (Objects.equals(loadedBlankList.get(position).getAuthor(), XeemAuthService.getAccount().getId())) {
+        if (Objects.equals(loadedBlankList.get(position).getAuthor(), XeemAuthService.getUserId())) {
             apiService.deleteBlank(loadedBlankList.get(position));
         } else {
             Toast.makeText(this, "Вы не можете удалить этот тест", Toast.LENGTH_SHORT).show();
@@ -184,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
                     .addToBackStack("result")
                     .commitAllowingStateLoss();
             FrameLayout fragment_frame = (FrameLayout) findViewById(R.id.result_fragment_container);
-            fragment_frame.setVisibility(View.VISIBLE);
+            if (fragment_frame != null) fragment_frame.setVisibility(View.VISIBLE);
         }
     }
 

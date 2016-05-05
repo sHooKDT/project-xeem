@@ -3,40 +3,44 @@ package shook.xeem.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.ResultCallback;
 
 import shook.xeem.R;
 import shook.xeem.services.XeemAuthService;
 
-import static shook.xeem.services.XeemAuthService.getRequestCode;
 
 public class LoginActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        XeemAuthService.init(this);
 
-        XeemAuthService.getPendingResult().setResultCallback(new ResultCallback<GoogleSignInResult>() {
+//        getSharedPreferences("XeemPrefs", 0).edit().putBoolean("isLoginCached", true).commit();
+
+        XeemAuthService.init(this, new XeemAuthService.signinSuccess() {
             @Override
-            public void onResult(GoogleSignInResult googleSignInResult) {
-                if (googleSignInResult.isSuccess()) {
-                    XeemAuthService.loadAccountInfo(googleSignInResult);
-                    goMain();
-                }
+            public void onSuccess() {
+                goMain();
             }
         });
+
+
+        if (XeemAuthService.isLogged()) {
+            XeemAuthService.silent();
+        } else {
+            // Notify user need to manually sign in
+            Toast.makeText(this, "Войдите в приложение", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
     public void clickEnter (View v) {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(XeemAuthService.getClient());
-        startActivityForResult(signInIntent, getRequestCode());
+        XeemAuthService.manual(this);
     }
 
     @Override
@@ -44,18 +48,22 @@ public class LoginActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case XeemAuthService.SIGNIN_REQUEST_CODE:
-                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-                if (result.isSuccess()) {
-                    XeemAuthService.loadAccountInfo(result);
-                    goMain();
-                } else { Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show(); }
+                XeemAuthService.setManualResult(data);
                 break;
         }
     }
 
-    public void goMain() {
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("XEEMDBG", "Destroying login activity");
+    }
+
+    private void goMain() {
         Intent mainIntent = new Intent(this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(mainIntent);
+        finish();
     }
 
 }
