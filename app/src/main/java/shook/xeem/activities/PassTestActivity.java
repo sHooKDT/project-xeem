@@ -9,6 +9,8 @@ import android.view.MenuItem;
 
 import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 
+import java.util.Date;
+
 import shook.xeem.R;
 import shook.xeem.interfaces.testPassHolder;
 import shook.xeem.list_adapters.BlankPassRecyclerAdapter;
@@ -83,16 +85,15 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
         }
 
         // Building final result object
-        TestResult result = new TestResult(
-                loadedBlank.getTitle(),
-                loadedBlank.getID(),
-                XeemAuthService.getUserId(),
-                loadedBlank.getEtag(),
-                points,
-                maxpoints,
-                qright,
-                qcount
-        );
+        TestResult result = new TestResult();
+        result.userid = XeemAuthService.getUserId();
+        result.testid = getBlank().getID();
+        result.testetag = getBlank().getEtag();
+        result.date = (new Date()).getTime();
+        result.max_points = maxpoints;
+        result.max_questions = qcount;
+        result.points = points;
+        result.right_questions = qright;
 
         Intent resultIntent = new Intent()
                 .putExtra("result", result.toJSON());

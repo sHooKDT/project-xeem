@@ -37,6 +37,7 @@
     <string name="question_text_hint">Введите текст вопроса</string>
     <string name="main_list_descrp">показаны все пользовательские тесты</string>
     <string name="update">Обновить</string>
+    <string name="result_post_button">Опубликовать</string>
 
 
 </resources>

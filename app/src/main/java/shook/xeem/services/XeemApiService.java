@@ -23,6 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.objects.BlankObject;
+import shook.xeem.objects.TestResult;
 
 public class XeemApiService {
 
@@ -57,12 +58,16 @@ public class XeemApiService {
         @POST("blanks")
         Call<ResponseBody> postBlank(@Body BlankObject _blank);
 
+        @POST("results")
+        Call<ResponseBody> postResult(@Body TestResult _result);
+
         @DELETE("blanks/{id}")
         Call<ResponseBody> rmBlank(@Path("id") String id, @Header("If-Match") String etag);
 
         @Headers("Content-Type: application/json")
         @PATCH("blanks/{id}")
         Call<ResponseBody> editBlank(@Path("id") String id, @Header("If-Match") String etag, @Body String blank);
+
 
     }
 
@@ -118,10 +123,10 @@ public class XeemApiService {
         postBlankCall.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Log.d("XEEMDBG", "[POSTING] Success: " + response.code());
+                Log.d("XEEMDBG", "[BLANK-POSTING] Success: " + response.code());
                 try {
                     if (response.body() != null)
-                        Log.d("XEEMDBG", "[POSTING] Response: " + response.body().string());
+                        Log.d("XEEMDBG", "[BLANK-POSTING] Response: " + response.body().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -131,6 +136,21 @@ public class XeemApiService {
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("XEEMDBG", "[POSTING] Fail: " + t.getMessage());
+            }
+        });
+    }
+
+    public void postResult(TestResult _result) {
+        Call<ResponseBody> postResultCall = API.postResult(_result);
+        postResultCall.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("XEEMDBG", "[RESULT-POSTING] Success: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("XEEMDBG", "[RESULT-POSTING] Fail: " + t.getMessage());
             }
         });
     }

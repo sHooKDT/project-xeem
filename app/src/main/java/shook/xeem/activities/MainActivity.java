@@ -129,6 +129,10 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         startActivityForResult(passBlankIntent, PASS_BLANK_REQUEST);
     }
 
+    public void publishResult(TestResult _result) {
+        apiService.postResult(_result);
+    }
+
     public LinkedList<BlankObject> getBlankList() {
         return loadedBlankList;
     }

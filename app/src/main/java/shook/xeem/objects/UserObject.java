@@ -6,6 +6,9 @@ import shook.xeem.interfaces.Jsonable;
 
 public class UserObject extends Jsonable<UserObject> {
 
+    UserObject() {
+    }
+
     @SerializedName("userid")
     public String userId;
     @SerializedName("username")
