@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         apiService.updateBlanks();
 
         if (!XeemAuthService.isOnline()) {
-            Log.d("XEEMDBG", "Not online, trying to load cache");
+            Log.d("XEEMDBG", "[CACHE] Not online, trying to load cached blanks");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(openFileInput(BLANKS_CACHE_FILE_NAME)));
                 String line;
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == EDIT_BLANK_REQUEST) {
+        } else if (requestCode == EDIT_BLANK_REQUEST && resultCode == RESULT_CANCELED) {
             if (XeemAuthService.isOnline()) {
                 final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
                 Log.d("XEEMDBG", "tried to send: " + _blank);

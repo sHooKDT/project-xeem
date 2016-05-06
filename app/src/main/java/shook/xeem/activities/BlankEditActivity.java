@@ -22,6 +22,7 @@ import shook.xeem.R;
 import shook.xeem.fragments.QuestionEditFragment;
 import shook.xeem.interfaces.BlankEditor;
 import shook.xeem.list_adapters.BlankEditAdapter;
+import shook.xeem.objects.AnswerObject;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.QuestionObject;
 import shook.xeem.services.XeemAuthService;
@@ -132,11 +133,44 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     }
 
+    public int validateBlank() {
+        int errors = 0;
+        if (blankBuilder.build().getTitle().length() > 1) errors++;
+        for (QuestionObject cur : blankBuilder.build().getQuestions()) {
+            if (cur.getCorrect() < 0) errors++;
+            if (cur.getText().length() < 1) errors++;
+            if (cur.getPoints() < 0) errors++;
+            for (AnswerObject cur_ans : cur.getAnswers()) {
+                if (cur_ans.getText().length() < 1) errors++;
+            }
+        }
+        return errors;
+    }
+
     public void finishEdit(@Nullable View v) {
-        Intent intent = new Intent()
-                .putExtra("edited_blank", blankBuilder.build().toJSON());
-        setResult(RESULT_OK, intent);
-        finish();
+        if (validateBlank() > 0) {
+            Intent intent = new Intent()
+                    .putExtra("edited_blank", blankBuilder.build().toJSON());
+            setResult(RESULT_OK, intent);
+            finish();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Уведомление");
+            builder.setMessage(String.format("Бланк не прошел валидацию и содержит %d ошибок", validateBlank()));
+            builder.setPositiveButton("Редактировать", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            builder.setNegativeButton("Закрыть", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
+            });
+            builder.create().show();
+        }
     }
 
     private void addQuestionClick(@Nullable View v) {

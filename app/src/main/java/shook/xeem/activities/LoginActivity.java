@@ -3,6 +3,7 @@ package shook.xeem.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -18,15 +19,12 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        getSharedPreferences("XeemPrefs", 0).edit().putBoolean("isLoginCached", true).commit();
-
         XeemAuthService.init(this, new XeemAuthService.signinSuccess() {
             @Override
             public void onSuccess() {
                 goMain();
             }
         });
-
 
         if (XeemAuthService.isLogged()) {
             XeemAuthService.silent();
@@ -60,4 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.d("XEEMDBG", "Login activity destroyed");
+        super.onDestroy();
+    }
 }
