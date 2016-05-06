@@ -3,7 +3,6 @@ package shook.xeem.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -31,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (XeemAuthService.isLogged()) {
             XeemAuthService.silent();
+            goMain();
         } else {
             // Notify user need to manually sign in
             Toast.makeText(this, "Войдите в приложение", Toast.LENGTH_SHORT).show();
@@ -51,12 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                 XeemAuthService.setManualResult(data);
                 break;
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("XEEMDBG", "Destroying login activity");
     }
 
     private void goMain() {

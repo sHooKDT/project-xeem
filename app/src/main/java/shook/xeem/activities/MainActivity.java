@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         setContentView(R.layout.activity_main);
 
         if (XeemAuthService.isLogged())
-            Toast.makeText(MainActivity.this, "Hello, " + XeemAuthService.getCachedUsername(), Toast.LENGTH_SHORT).show();
-        else Toast.makeText(MainActivity.this, "You are logged offline", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Привет, " + XeemAuthService.getCachedUsername(), Toast.LENGTH_SHORT).show();
+        else Toast.makeText(MainActivity.this, "Вы не авторизированы", Toast.LENGTH_SHORT).show();
 
         apiService.registerUpdateListener(updateListener);
         apiService.updateBlanks();
