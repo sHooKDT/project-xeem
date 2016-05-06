@@ -2,11 +2,12 @@ package shook.xeem.objects;
 
 import com.google.gson.annotations.SerializedName;
 
+import shook.xeem.UserList;
 import shook.xeem.interfaces.Jsonable;
 
 public class UserObject extends Jsonable<UserObject> {
 
-    UserObject() {
+    public UserObject() {
     }
 
     @SerializedName("userid")
@@ -20,6 +21,15 @@ public class UserObject extends Jsonable<UserObject> {
 
     public static UserObject fromJSON(String _json) {
         return converter.fromJson(_json, UserObject.class);
+    }
+
+    public class UserListResponse {
+        public UserList _items;
+
+        //        public ArrayList<UserObject> _items;
+        public UserListResponse(UserList _items) {
+            this._items = _items;
+        }
     }
 
 }

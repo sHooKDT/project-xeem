@@ -25,6 +25,7 @@ import java.util.Objects;
 
 import shook.xeem.BlankList;
 import shook.xeem.R;
+import shook.xeem.UserList;
 import shook.xeem.fragments.TestResultFragment;
 import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.interfaces.BlankUpdateListener;
@@ -57,11 +58,12 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
             Toast.makeText(MainActivity.this, "Привет, " + XeemAuthService.getCachedUsername(), Toast.LENGTH_SHORT).show();
         else Toast.makeText(MainActivity.this, "Вы не авторизированы", Toast.LENGTH_SHORT).show();
 
-        apiService.registerUpdateListener(updateListener);
-        apiService.updateBlanks();
+        apiService.registerBlankUpdateListener(updateListener);
+        apiService.loadBlanks();
+        apiService.loadUsers();
 
         if (!XeemAuthService.isOnline()) {
-            Log.d("XEEMDBG", "[CACHE] Not online, trying to load cached blanks");
+            Log.d("XEEMDBG", "[CACHE] Not online, trying to load cache");
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(openFileInput(BLANKS_CACHE_FILE_NAME)));
                 String line;
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         menu.findItem(R.id.updateButton).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                apiService.updateBlanks();
+                apiService.loadBlanks();
                 return true;
             }
         });
@@ -136,29 +138,29 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         }
     };
 
-    public void addBlankClick (@Nullable View v) {
+    public void addBlankClick(@Nullable View v) {
         Intent editIntent = new Intent(this, BlankEditActivity.class);
         editIntent.setAction("ADD");
         startActivityForResult(editIntent, ADD_BLANK_REQUEST);
     }
 
-    public void deleteBlankClick (int position) {
+    public void deleteBlankClick(int position) {
         if (Objects.equals(loadedBlankList.get(position).getAuthor(), XeemAuthService.getUserId())) {
             apiService.deleteBlank(loadedBlankList.get(position));
         } else {
             Toast.makeText(this, "Вы не можете удалить этот тест", Toast.LENGTH_SHORT).show();
         }
-        apiService.updateBlanks();
+        apiService.loadBlanks();
     }
 
-    public void editBlankClick (int position) {
+    public void editBlankClick(int position) {
         Intent editBlankIntent = new Intent(this, BlankEditActivity.class);
         editBlankIntent.setAction("EDIT");
         editBlankIntent.putExtra("blank_to_edit", blankListAdapter.getItem(position).toJSON());
         startActivityForResult(editBlankIntent, EDIT_BLANK_REQUEST);
     }
 
-    public void passBlankClick (int position) {
+    public void passBlankClick(int position) {
         Intent passBlankIntent = new Intent(this, PassTestActivity.class);
         passBlankIntent.setAction("PASS");
         passBlankIntent.putExtra("blank_to_pass", blankListAdapter.getItem(position).toJSON());
@@ -173,7 +175,11 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         return loadedBlankList;
     }
 
-    protected void onActivityResult (int requestCode, int resultCode, Intent result) {
+    public UserList getUserList() {
+        return (UserList) apiService.getUsers();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
         // Edited blank callback
         if (requestCode == ADD_BLANK_REQUEST && resultCode != RESULT_CANCELED) {
             if (XeemAuthService.isOnline()) {

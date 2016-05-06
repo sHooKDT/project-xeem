@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
+import shook.xeem.BlankList;
 import shook.xeem.interfaces.Jsonable;
 
 
@@ -65,6 +66,14 @@ public class BlankObject extends Jsonable<BlankObject> {
 
     public LinkedList<QuestionObject> getQuestions() {
         return bQuestions;
+    }
+
+    public class blankListResponse {
+        public BlankList _items;
+
+        public blankListResponse(BlankList _items) {
+            this._items = _items;
+        }
     }
 
     public class Builder {

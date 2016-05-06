@@ -19,7 +19,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import java.util.Date;
+
 import shook.xeem.activities.LoginActivity;
+import shook.xeem.objects.UserObject;
 
 public class XeemAuthService {
 
@@ -89,13 +92,13 @@ public class XeemAuthService {
     }
 
     public static void silent() {
+        Log.d("XEEMDBG", "[GOOGLEAPI] Silent Sign In requested");
         OptionalPendingResult<GoogleSignInResult> result = Auth.GoogleSignInApi.silentSignIn(googleApiClient);
-
         result.setResultCallback(new ResultCallback<GoogleSignInResult>() {
             @Override
             public void onResult(@NonNull GoogleSignInResult googleSignInResult) {
                 if (googleSignInResult.isSuccess()) {
-                    Log.d("XEEMDBG", "[GOOGLEAPI] Silent signin success");
+                    Log.d("XEEMDBG", "[GOOGLEAPI] Silent Sign In success");
                     updateCache(googleSignInResult);
                     authAccount = googleSignInResult.getSignInAccount();
                     successCallback.onSuccess();
@@ -119,6 +122,15 @@ public class XeemAuthService {
             Log.d("XEEMDBG", "[GOOGLEAPI] Manual signin success");
             updateCache(result);
             authAccount = result.getSignInAccount();
+            Log.d("XEEMDBG", "[USERS] Sending new user to DB");
+            UserObject newuser = new UserObject();
+            newuser.userId = authAccount.getId();
+            newuser.regDate = (new Date()).getTime();
+            newuser.userName = authAccount.getDisplayName();
+//            newuser.userPic = authAccount.getPhotoUrl().getPath();
+            XeemApiService apiService = new XeemApiService();
+            apiService.postUser(newuser);
+            // Sending callback to login activity (passing goMain())
             successCallback.onSuccess();
         } else {
             // Ask user to sign in manually

@@ -9,20 +9,25 @@ import android.widget.TextView;
 
 import shook.xeem.BlankList;
 import shook.xeem.R;
+import shook.xeem.UserList;
 import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.objects.BlankObject;
+import shook.xeem.objects.UserObject;
 
 public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecyclerAdapter.ViewHolder> {
 
     BlankList blankList;
     BlankListHolder blankListHost;
+    UserList users;
 
     public BlankListRecyclerAdapter(BlankListHolder _activity) {
         blankListHost = _activity;
         this.blankList = blankListHost.getBlankList();
+        this.users = blankListHost.getUserList();
     }
 
     public void reload() {
+        this.users = blankListHost.getUserList();
         this.blankList = blankListHost.getBlankList();
         notifyDataSetChanged();
     }
@@ -38,7 +43,11 @@ public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecy
         final int position = holder.getAdapterPosition();
         BlankObject blank = blankList.get(position);
 
-        holder.author.setText(blank.getAuthor());
+        UserObject blankAuthor;
+        if (users != null && (blankAuthor = users.findUserById(blank.getAuthor())) != null) {
+            holder.author.setText(blankAuthor.userName);
+        } else holder.author.setText(blank.getAuthor());
+
         holder.title.setText(blank.getTitle());
 
         holder.delBut.setOnClickListener(new View.OnClickListener() {

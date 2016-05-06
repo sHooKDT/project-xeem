@@ -20,23 +20,32 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import shook.xeem.BlankList;
+import shook.xeem.UserList;
 import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.TestResult;
+import shook.xeem.objects.UserObject;
 
 public class XeemApiService {
 
     static final String API_URL = "http://46.101.8.217:500/";
 
-    private ArrayList<BlankUpdateListener> listeners = new ArrayList<>();
+    private ArrayList<BlankUpdateListener> blankUpdateListeners = new ArrayList<>();
 
-    public void registerUpdateListener(BlankUpdateListener _listener) {
-        listeners.add(_listener);
+    static private UserList userList;
+
+    public UserList getUsers() {
+        return userList;
+    }
+//    static private ArrayList<UserObject> userList;
+//    public ArrayList<UserObject> getUsers() {return userList;}
+
+    public void registerBlankUpdateListener(BlankUpdateListener _listener) {
+        blankUpdateListeners.add(_listener);
     }
 
-    private void notifyUpdate(blankListResponse response) {
-        Iterator<BlankUpdateListener> listenerIterator = listeners.iterator();
+    private void notifyUpdate(BlankObject.blankListResponse response) {
+        Iterator<BlankUpdateListener> listenerIterator = blankUpdateListeners.iterator();
         while (listenerIterator.hasNext()) {
             listenerIterator.next().onUpdate(response._items);
         }
@@ -53,13 +62,19 @@ public class XeemApiService {
     public interface ApiMethods {
 
         @GET("blanks")
-        Call<blankListResponse> loadBlanks();
+        Call<BlankObject.blankListResponse> loadBlanks();
 
         @POST("blanks")
         Call<ResponseBody> postBlank(@Body BlankObject _blank);
 
         @POST("results")
         Call<ResponseBody> postResult(@Body TestResult _result);
+
+        @GET("users")
+        Call<UserObject.UserListResponse> loadUsers();
+
+        @POST("users")
+        Call<ResponseBody> postUser(@Body UserObject _user);
 
         @DELETE("blanks/{id}")
         Call<ResponseBody> rmBlank(@Path("id") String id, @Header("If-Match") String etag);
@@ -79,7 +94,7 @@ public class XeemApiService {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("XEEMDBG", "[DELETE] Success: " + response.code());
-                updateBlanks();
+                loadBlanks();
             }
 
             @Override
@@ -100,7 +115,7 @@ public class XeemApiService {
                     e.printStackTrace();
                 }
                 Log.d("XEEMDBG", "[PATCH] Success: " + response.code());
-                updateBlanks();
+                loadBlanks();
             }
 
             @Override
@@ -108,14 +123,6 @@ public class XeemApiService {
                 Log.d("XEEMDBG", "[PATCH] Fail" + t.getMessage());
             }
         });
-    }
-
-    public static class blankListResponse {
-        public BlankList _items;
-
-        public blankListResponse(BlankList _items) {
-            this._items = _items;
-        }
     }
 
     public void postBlank(BlankObject _blank) {
@@ -130,7 +137,7 @@ public class XeemApiService {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                updateBlanks();
+                loadBlanks();
             }
 
             @Override
@@ -155,18 +162,49 @@ public class XeemApiService {
         });
     }
 
-    public void updateBlanks() {
-        Call<blankListResponse> blankGetCall = API.loadBlanks();
-        blankGetCall.enqueue(new Callback<blankListResponse>() {
+    public void postUser(UserObject _user) {
+        Call<ResponseBody> postUserCall = API.postUser(_user);
+        postUserCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<blankListResponse> call, Response<blankListResponse> response) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("XEEMDBG", "[USERS] Sent success: " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("XEEMDBG", "[USERS] Send fail: " + t.getMessage());
+            }
+        });
+    }
+
+    public void loadBlanks() {
+        Call<BlankObject.blankListResponse> blankGetCall = API.loadBlanks();
+        blankGetCall.enqueue(new Callback<BlankObject.blankListResponse>() {
+            @Override
+            public void onResponse(Call<BlankObject.blankListResponse> call, Response<BlankObject.blankListResponse> response) {
                 Log.d("XEEMDBG", "[UPDATE] Success " + response.code());
                 notifyUpdate(response.body());
             }
 
             @Override
-            public void onFailure(Call<blankListResponse> call, Throwable t) {
+            public void onFailure(Call<BlankObject.blankListResponse> call, Throwable t) {
                 Log.d("XEEMDBG", "[UPDATE] Failed " + t.getMessage());
+            }
+        });
+    }
+
+    public void loadUsers() {
+        Call<UserObject.UserListResponse> usersGetCall = API.loadUsers();
+        usersGetCall.enqueue(new Callback<UserObject.UserListResponse>() {
+            @Override
+            public void onResponse(Call<UserObject.UserListResponse> call, Response<UserObject.UserListResponse> response) {
+                userList = response.body()._items;
+                Log.d("XEEMDBG", "[USERS] Load success " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<UserObject.UserListResponse> call, Throwable t) {
+                Log.d("XEEMDBG", "[USERS] Failed " + t.getMessage());
             }
         });
     }
