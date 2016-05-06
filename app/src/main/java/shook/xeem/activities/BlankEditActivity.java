@@ -37,6 +37,24 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blank_edit);
         initView();
+
+        if (!XeemAuthService.isOnline()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Уведомление");
+            builder.setMessage("Вы не сможете сохранить бланк, пока не подключитесь к интернету. \n Продолжить редактирование?");
+            builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finishEdit(null);
+                }
+            });
+            builder.create().show();
+        }
     }
 
 
