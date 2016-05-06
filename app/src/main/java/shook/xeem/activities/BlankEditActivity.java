@@ -135,9 +135,10 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     public int validateBlank() {
         int errors = 0;
-        if (blankBuilder.build().getTitle().length() > 1) errors++;
+        if (blankBuilder.build().getTitle().length() < 1) errors++;
         for (QuestionObject cur : blankBuilder.build().getQuestions()) {
-            if (cur.getCorrect() < 0) errors++;
+            if (cur.getAnswers().size() != 0 && (cur.getCorrect() < 0 || cur.getCorrect() >= cur.getAnswers().size()))
+                errors++;
             if (cur.getText().length() < 1) errors++;
             if (cur.getPoints() < 0) errors++;
             for (AnswerObject cur_ans : cur.getAnswers()) {
@@ -148,7 +149,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     }
 
     public void finishEdit(@Nullable View v) {
-        if (validateBlank() > 0) {
+        if (validateBlank() == 0) {
             Intent intent = new Intent()
                     .putExtra("edited_blank", blankBuilder.build().toJSON());
             setResult(RESULT_OK, intent);

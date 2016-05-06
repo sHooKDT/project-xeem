@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     protected void onActivityResult (int requestCode, int resultCode, Intent result) {
         // Edited blank callback
-        if (requestCode == ADD_BLANK_REQUEST) {
+        if (requestCode == ADD_BLANK_REQUEST && resultCode != RESULT_CANCELED) {
             if (XeemAuthService.isOnline()) {
                 final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
                 AlertDialog dialog = builder.create();
                 dialog.show();
             } else Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_SHORT).show();
-        } else if (requestCode == EDIT_BLANK_REQUEST && resultCode == RESULT_CANCELED) {
+        } else if (requestCode == EDIT_BLANK_REQUEST && resultCode != RESULT_CANCELED) {
             if (XeemAuthService.isOnline()) {
                 final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
                 Log.d("XEEMDBG", "tried to send: " + _blank);
