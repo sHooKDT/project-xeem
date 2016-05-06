@@ -1,11 +1,9 @@
 package shook.xeem.interfaces;
 
-import java.util.LinkedList;
-
-import shook.xeem.objects.BlankObject;
+import shook.xeem.BlankList;
 
 public interface BlankUpdateListener {
 
-    void onUpdate(LinkedList<BlankObject> blanks);
+    void onUpdate(BlankList blanks);
 
 }

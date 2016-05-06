@@ -1,6 +1,7 @@
 package shook.xeem.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +16,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import java.util.LinkedList;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.util.Objects;
 
+import shook.xeem.BlankList;
 import shook.xeem.R;
 import shook.xeem.fragments.TestResultFragment;
 import shook.xeem.interfaces.BlankListHolder;
@@ -35,7 +41,9 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
     static final int ADD_BLANK_REQUEST = 28;
     static final int PASS_BLANK_REQUEST = 29;
 
-    static private LinkedList<BlankObject> loadedBlankList = new LinkedList<>();
+    static final String BLANKS_CACHE_FILE_NAME = "blanks_cache";
+
+    static private BlankList loadedBlankList = new BlankList();
     static private BlankListRecyclerAdapter blankListAdapter;
 
     private XeemApiService apiService = new XeemApiService();
@@ -52,6 +60,34 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         apiService.registerUpdateListener(updateListener);
         apiService.updateBlanks();
 
+        if (!XeemAuthService.isOnline()) {
+            Log.d("XEEMDBG", "Not online, trying to load cache");
+            try {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(openFileInput(BLANKS_CACHE_FILE_NAME)));
+                String line;
+                if ((line = reader.readLine()) != null) {
+                    Log.d("XEEMDBG", "[CACHE] Loaded: " + line);
+                    loadedBlankList = (new Gson()).fromJson(line, BlankList.class);
+                    blankListAdapter.reload();
+                } else Log.d("XEEMDBG", "[CACHE] No cache");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        // If no internet, ask user to continue
+        if (!XeemAuthService.isOnline()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Уведомление");
+            builder.setMessage("Вы не подключены к интернету. Без интернета нельзя редактировать и удалять бланки, а также недоступно сохранение результатов.");
+            builder.setPositiveButton("Ок", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                }
+            });
+            builder.create().show();
+        }
+
         RecyclerView blankListView = (RecyclerView) findViewById(R.id.blankListView);
         blankListAdapter = new BlankListRecyclerAdapter(this);
         if (blankListView != null) {
@@ -61,10 +97,6 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,15 +118,19 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
 
     private BlankUpdateListener updateListener = new BlankUpdateListener() {
         @Override
-        public void onUpdate(LinkedList<BlankObject> _blanks) {
+        public void onUpdate(BlankList _blanks) {
+            try {
+                Log.d("XEEMDBG", "[CACHE] Caching blanks");
+                FileOutputStream fos = openFileOutput(BLANKS_CACHE_FILE_NAME, Context.MODE_PRIVATE);
+                fos.write(_blanks.toJSON().getBytes());
+                Log.d("XEEMDBG", "[CACHE] Written: " + _blanks.toJSON());
+                fos.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             loadedBlankList = _blanks;
             blankListAdapter.reload();
         }
@@ -133,51 +169,55 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
         apiService.postResult(_result);
     }
 
-    public LinkedList<BlankObject> getBlankList() {
+    public BlankList getBlankList() {
         return loadedBlankList;
     }
 
     protected void onActivityResult (int requestCode, int resultCode, Intent result) {
         // Edited blank callback
         if (requestCode == ADD_BLANK_REQUEST) {
-            final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Post this blank?");
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("XEEMDBG", "[POSTING] Declined by user");
-                }
-            });
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("XEEMDBG", "[POSTING] Requested");
-                    apiService.postBlank(_blank);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            if (XeemAuthService.isOnline()) {
+                final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Опубликовать бланк?");
+                builder.setNegativeButton("Не надо", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("XEEMDBG", "[POSTING] Declined by user");
+                    }
+                });
+                builder.setPositiveButton("Опубликовать", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("XEEMDBG", "[POSTING] Requested");
+                        apiService.postBlank(_blank);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_SHORT).show();
         } else if (requestCode == EDIT_BLANK_REQUEST) {
-            final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
-            Log.d("XEEMDBG", "tried to send: " + _blank);
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Replace this blank?");
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("XEEMDBG", "[POSTING] Declined by user");
-                }
-            });
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Log.d("XEEMDBG", "[PATCH] Blank sent to api class");
-                    apiService.editBlank(_blank);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            dialog.show();
+            if (XeemAuthService.isOnline()) {
+                final BlankObject _blank = BlankObject.fromJSON(result.getStringExtra("edited_blank"));
+                Log.d("XEEMDBG", "tried to send: " + _blank);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Сохранить изменения?");
+                builder.setNegativeButton("Не надо", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("XEEMDBG", "[POSTING] Declined by user");
+                    }
+                });
+                builder.setPositiveButton("Сохранить", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("XEEMDBG", "[PATCH] Blank sent to api class");
+                        apiService.editBlank(_blank);
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            } else Toast.makeText(this, "Нет подключения к интернету", Toast.LENGTH_SHORT).show();
         } else if (requestCode == PASS_BLANK_REQUEST) {
             final TestResult _result = TestResult.fromJSON(result.getStringExtra("result"));
             TestResultFragment resultFragment = new TestResultFragment();

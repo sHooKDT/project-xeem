@@ -1,12 +1,10 @@
 package shook.xeem.interfaces;
 
-import java.util.LinkedList;
-
-import shook.xeem.objects.BlankObject;
+import shook.xeem.BlankList;
 
 public interface BlankListHolder {
 
-    LinkedList<BlankObject> getBlankList();
+    BlankList getBlankList();
 
     void deleteBlankClick(int position);
 

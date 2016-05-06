@@ -1,5 +1,7 @@
 package shook.xeem.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,13 +46,25 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         editTitle.setText(blankBuilder.build().getTitle());
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
-        Log.d("XEEMDBG", "Some activity sent result");
-    }
-
     @Override
     public void onBackPressed() {
-        finishEdit(null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Закончить редактирование?");
+        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("XEEMDBG", "[EDIT] Return to edit");
+            }
+        });
+        builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("XEEMDBG", "[EDIT] Edit ended");
+                finishEdit(null);
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private void initView() {

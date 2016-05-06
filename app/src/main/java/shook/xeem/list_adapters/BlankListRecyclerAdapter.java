@@ -7,15 +7,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.util.LinkedList;
-
+import shook.xeem.BlankList;
 import shook.xeem.R;
 import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.objects.BlankObject;
 
 public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecyclerAdapter.ViewHolder> {
 
-    LinkedList<BlankObject> blankList;
+    BlankList blankList;
     BlankListHolder blankListHost;
 
     public BlankListRecyclerAdapter(BlankListHolder _activity) {
@@ -70,7 +69,8 @@ public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecy
 
     @Override
     public int getItemCount() {
-        return blankList.size();
+        if (blankList != null) return blankList.size();
+        return 0;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

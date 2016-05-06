@@ -8,11 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import shook.xeem.R;
 import shook.xeem.activities.MainActivity;
 import shook.xeem.objects.TestResult;
+import shook.xeem.services.XeemAuthService;
 
 
 public class TestResultFragment extends Fragment {
@@ -36,6 +39,16 @@ public class TestResultFragment extends Fragment {
         ((TextView) view.findViewById(R.id.test_complete_points)).setText(String.format(getString(R.string.test_complete_points), result.points, result.max_points, (result.points * 100 / result.max_points), "%"));
         ((TextView) view.findViewById(R.id.test_complete_questions)).setText(String.format(getString(R.string.test_complete_questions), result.right_questions, result.max_questions, (result.right_questions * 100 / result.max_questions), "%"));
         ((TextView) view.findViewById(R.id.test_complete_mark)).setText(getString(R.string.test_complete_mark));
+
+        ((CheckBox) view.findViewById(R.id.postCheckBox)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!XeemAuthService.isOnline()) {
+                    Toast.makeText(getActivity(), "Нет подключения к интернету, отправка недоступна", Toast.LENGTH_SHORT).show();
+                    ((CheckBox) view.findViewById(R.id.postCheckBox)).setChecked(false);
+                }
+            }
+        });
 
         view.findViewById(R.id.okButton).setOnClickListener(new View.OnClickListener() {
             @Override

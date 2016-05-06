@@ -1,9 +1,12 @@
 package shook.xeem.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -48,8 +51,25 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Закончить прохождение?");
+        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("XEEMDBG", "[PASS] Returning to pass");
+            }
+        });
+        builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Log.d("XEEMDBG", "[PASS] Pass ended");
+                score();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+//        super.onBackPressed();
     }
 
     public BlankObject getBlank() {

@@ -5,7 +5,6 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -21,6 +20,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import shook.xeem.BlankList;
 import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.TestResult;
@@ -111,9 +111,9 @@ public class XeemApiService {
     }
 
     public static class blankListResponse {
-        public LinkedList<BlankObject> _items;
+        public BlankList _items;
 
-        public blankListResponse(LinkedList<BlankObject> _items) {
+        public blankListResponse(BlankList _items) {
             this._items = _items;
         }
     }
