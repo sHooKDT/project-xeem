@@ -30,6 +30,7 @@ public class BlankListRecyclerAdapter extends RecyclerView.Adapter<BlankListRecy
         this.users = blankListHost.getUserList();
         this.blankList = blankListHost.getBlankList();
         notifyDataSetChanged();
+        blankListHost.hideLoading();
     }
 
     @Override

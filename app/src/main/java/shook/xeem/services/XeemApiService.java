@@ -1,5 +1,6 @@
 package shook.xeem.services;
 
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.io.IOException;
@@ -44,10 +45,11 @@ public class XeemApiService {
         blankUpdateListeners.add(_listener);
     }
 
-    private void notifyUpdate(BlankObject.blankListResponse response) {
+    private void notifyUpdate(@Nullable BlankObject.blankListResponse response) {
         Iterator<BlankUpdateListener> listenerIterator = blankUpdateListeners.iterator();
         while (listenerIterator.hasNext()) {
-            listenerIterator.next().onUpdate(response._items);
+            if (response != null) listenerIterator.next().onUpdate(response._items);
+            else listenerIterator.next().onUpdate(null);
         }
     }
 
@@ -199,6 +201,7 @@ public class XeemApiService {
             @Override
             public void onResponse(Call<UserObject.UserListResponse> call, Response<UserObject.UserListResponse> response) {
                 userList = response.body()._items;
+                notifyUpdate(null);
                 Log.d("XEEMDBG", "[USERS] Load success " + response.code());
             }
 

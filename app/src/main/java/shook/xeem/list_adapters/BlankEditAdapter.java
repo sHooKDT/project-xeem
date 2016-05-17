@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import shook.xeem.R;
 import shook.xeem.interfaces.BlankEditor;
@@ -76,6 +78,17 @@ public class BlankEditAdapter extends BaseAdapter{
             @Override
             public void afterTextChanged(Editable editable) {
                 q.setText(editable.toString());
+            }
+        });
+
+        NumberPicker pointsPicker = (NumberPicker) view.findViewById(R.id.points_picker);
+        pointsPicker.setMinValue(0);
+        pointsPicker.setMaxValue(5);
+        pointsPicker.setValue(q.getPoints());
+        pointsPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                q.setPoints(newVal);
             }
         });
 

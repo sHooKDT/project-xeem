@@ -6,7 +6,7 @@
     android:gravity="center_vertical">
 
     <RadioButton
-        android:id="@+id/checked_radio"
+        android:id="@+id/correct_radio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true" />
@@ -23,6 +23,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:background="@drawable/ic_create_black_48dp"
+        android:visibility="gone"
         android:id="@+id/editButton"/>
 
     <Button

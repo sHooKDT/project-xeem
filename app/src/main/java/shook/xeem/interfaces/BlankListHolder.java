@@ -9,6 +9,12 @@ public interface BlankListHolder {
 
     UserList getUserList();
 
+    boolean hasBlanks();
+
+    boolean hasUsers();
+
+    void hideLoading();
+
     void deleteBlankClick(int position);
 
     void editBlankClick(int position);

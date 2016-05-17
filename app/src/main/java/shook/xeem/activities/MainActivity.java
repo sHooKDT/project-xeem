@@ -1,6 +1,7 @@
 package shook.xeem.activities;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     static final String BLANKS_CACHE_FILE_NAME = "blanks_cache";
 
+    ProgressDialog loadingIndicator;
+
     static private BlankList loadedBlankList = new BlankList();
     static private BlankListRecyclerAdapter blankListAdapter;
 
@@ -53,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        loadingIndicator = new ProgressDialog(this);
 
         if (XeemAuthService.isLogged())
             Toast.makeText(MainActivity.this, "Привет, " + XeemAuthService.getCachedUsername(), Toast.LENGTH_SHORT).show();
@@ -75,6 +80,12 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        if (!hasBlanks() || !hasUsers()) {
+            loadingIndicator.setMessage("Loading some blanks");
+            loadingIndicator.setCancelable(false);
+            loadingIndicator.show();
         }
 
         // If no internet, ask user to continue
@@ -124,17 +135,19 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
     private BlankUpdateListener updateListener = new BlankUpdateListener() {
         @Override
         public void onUpdate(BlankList _blanks) {
-            try {
-                Log.d("XEEMDBG", "[CACHE] Caching blanks");
-                FileOutputStream fos = openFileOutput(BLANKS_CACHE_FILE_NAME, Context.MODE_PRIVATE);
-                fos.write(_blanks.toJSON().getBytes());
-                Log.d("XEEMDBG", "[CACHE] Written: " + _blanks.toJSON());
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+            if (_blanks != null) {
+                try {
+                    Log.d("XEEMDBG", "[CACHE] Caching blanks");
+                    FileOutputStream fos = openFileOutput(BLANKS_CACHE_FILE_NAME, Context.MODE_PRIVATE);
+                    fos.write(_blanks.toJSON().getBytes());
+                    Log.d("XEEMDBG", "[CACHE] Written: " + _blanks.toJSON());
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                loadedBlankList = _blanks;
             }
-            loadedBlankList = _blanks;
-            blankListAdapter.reload();
+            if (hasUsers() && hasBlanks()) blankListAdapter.reload();
         }
     };
 
@@ -177,6 +190,21 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
 
     public UserList getUserList() {
         return (UserList) apiService.getUsers();
+    }
+
+    @Override
+    public boolean hasBlanks() {
+        return loadedBlankList != null;
+    }
+
+    @Override
+    public boolean hasUsers() {
+        return getUserList() != null;
+    }
+
+    @Override
+    public void hideLoading() {
+        loadingIndicator.hide();
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {

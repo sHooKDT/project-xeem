@@ -21,10 +21,12 @@ public class AnswerAdapter extends BaseAdapter{
     private QuestionObject loadedQuestion;
     private LayoutInflater layoutInflater;
 
+    int correct_selection;
 
     public AnswerAdapter(Context _context, QuestionObject _question) {
         this.context = _context;
         this.loadedQuestion = _question;
+        this.correct_selection = _question.getCorrect();
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -72,12 +74,16 @@ public class AnswerAdapter extends BaseAdapter{
             }
         });
 
-        ((RadioButton) view.findViewById(R.id.checked_radio)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        RadioButton correctRadio = (RadioButton) view.findViewById(R.id.correct_radio);
+        correctRadio.setChecked(position == correct_selection);
+        correctRadio.setTag(position);
+        correctRadio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
+                correct_selection = (Integer) v.getTag();
+                notifyDataSetChanged();
                 Toast.makeText(context, String.format("\"%s\" set as correct", loadedQuestion.getAnswers().get(pos).getText()), Toast.LENGTH_SHORT).show();
                 loadedQuestion.setCorrect(pos);
-                notifyDataSetChanged();
             }
         });
 
