@@ -36,15 +36,22 @@ public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecy
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-        QuestionObject question = loadedBlank.getQuestions().get(position);
+        final QuestionObject question = loadedBlank.getQuestions().get(position);
 
         holder.questionNumberText.setText(String.format(Locale.getDefault(), "Вопрос %d", position + 1));
         holder.questionText.setText(question.getText());
         holder.answersList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         holder.answersList.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         holder.answersList.setAdapter(new ArrayAdapter<>((Context) context, android.R.layout.simple_list_item_single_choice, question.getAnswers()));
+
+        holder.answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                question.setChecked(position);
+            }
+        });
 
         // If current question is last change text and action
         if (position == getItemCount() - 1) {
@@ -68,6 +75,7 @@ public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecy
             holder.answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    question.setChecked(position);
                     holder.skipQuestionButton.setText("Следующий");
                 }
             });

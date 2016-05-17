@@ -145,6 +145,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
         for (QuestionObject cur : blankBuilder.build().getQuestions()) {
             if (cur.getAnswers().size() != 0 && (cur.getCorrect() < 0 || cur.getCorrect() >= cur.getAnswers().size()))
                 errors++;
+            if (cur.getAnswers().size() == 0) errors++;
             if (cur.getText().length() < 1) errors++;
             if (cur.getPoints() < 0) errors++;
             for (AnswerObject cur_ans : cur.getAnswers()) {
