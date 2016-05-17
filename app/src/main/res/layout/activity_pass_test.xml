@@ -7,17 +7,21 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="shook.xeem.activities.PassTestActivity">
-
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/test_pass_questions_list"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--/>-->
 
     <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
         android:id="@+id/test_pass_questions_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:alpha="0.54"
+        android:text="@string/swipe_questions_caption"/>
 
 </LinearLayout>

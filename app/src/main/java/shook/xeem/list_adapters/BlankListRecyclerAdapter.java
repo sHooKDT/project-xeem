@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import shook.xeem.BlankList;
+import shook.xeem.objects.BlankList;
 import shook.xeem.R;
-import shook.xeem.UserList;
+import shook.xeem.objects.UserList;
 import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.UserObject;

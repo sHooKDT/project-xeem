@@ -36,32 +36,42 @@ public class BlankPassRecyclerAdapter extends RecyclerView.Adapter<BlankPassRecy
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-
-        final int pos = holder.getAdapterPosition();
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         QuestionObject question = loadedBlank.getQuestions().get(position);
 
         holder.questionNumberText.setText(String.format(Locale.getDefault(), "Вопрос %d", position + 1));
         holder.questionText.setText(question.getText());
         holder.answersList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        holder.answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                loadedBlank.getQuestions().get(pos).setChecked(i);
-            }
-        });
-
-        holder.skipQuestionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("XEEMDBG", "Skip question");
-            }
-        });
-
         holder.answersList.setOverScrollMode(View.OVER_SCROLL_ALWAYS);
         holder.answersList.setAdapter(new ArrayAdapter<>((Context) context, android.R.layout.simple_list_item_single_choice, question.getAnswers()));
+
+        // If current question is last change text and action
+        if (position == getItemCount() - 1) {
+            holder.skipQuestionButton.setText("Завершить");
+            holder.skipQuestionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.score();
+                }
+            });
+        } else {
+            // Else make default skip button
+            holder.skipQuestionButton.setText("Пропустить");
+            holder.skipQuestionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.scroll_next();
+                }
+            });
+            // On answer choice, change button text
+            holder.answersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    holder.skipQuestionButton.setText("Следующий");
+                }
+            });
+        }
 
     }
 

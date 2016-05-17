@@ -38,6 +38,8 @@
     <string name="main_list_descrp">показаны все пользовательские тесты</string>
     <string name="update">Обновить</string>
     <string name="result_post_button">Опубликовать</string>
+    <string name="swipe_questions_caption">перелистывайте вопросы свайпом</string>
+    <string name="skip_button">Пропустить</string>
 
 
 </resources>

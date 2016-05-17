@@ -25,6 +25,7 @@ import shook.xeem.services.XeemAuthService;
 public class PassTestActivity extends AppCompatActivity implements testPassHolder {
 
     private BlankObject loadedBlank;
+    private RecyclerViewPager testPassRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +38,7 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
             x.setChecked(-2);
 
         // View
-        RecyclerViewPager testPassRecycler = (RecyclerViewPager) findViewById(R.id.test_pass_questions_list);
+        testPassRecycler = (RecyclerViewPager) findViewById(R.id.test_pass_questions_list);
         // Adapter
         BlankPassRecyclerAdapter testPassAdapter = new BlankPassRecyclerAdapter(this);
         // Layout Manager
@@ -69,7 +70,6 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-//        super.onBackPressed();
     }
 
     public BlankObject getBlank() {
@@ -89,7 +89,15 @@ public class PassTestActivity extends AppCompatActivity implements testPassHolde
         return true;
     }
 
-    private void score() {
+    public void scroll_next() {
+        testPassRecycler.smoothScrollToPosition(testPassRecycler.getCurrentPosition() + 1);
+    }
+
+    public void scroll_previous() {
+        testPassRecycler.smoothScrollToPosition(testPassRecycler.getCurrentPosition() - 1);
+    }
+
+    public void score() {
 
         // Making counters null
         int points = 0, maxpoints = 0, qright = 0, qcount = 0;

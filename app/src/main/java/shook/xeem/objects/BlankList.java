@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.objects;
 
 import com.google.gson.Gson;
 

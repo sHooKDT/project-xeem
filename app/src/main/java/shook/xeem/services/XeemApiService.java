@@ -21,7 +21,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import shook.xeem.UserList;
+import shook.xeem.objects.UserList;
 import shook.xeem.interfaces.BlankUpdateListener;
 import shook.xeem.objects.BlankObject;
 import shook.xeem.objects.TestResult;

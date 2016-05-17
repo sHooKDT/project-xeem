@@ -2,7 +2,6 @@ package shook.xeem.objects;
 
 import com.google.gson.annotations.SerializedName;
 
-import shook.xeem.UserList;
 import shook.xeem.interfaces.Jsonable;
 
 public class UserObject extends Jsonable<UserObject> {

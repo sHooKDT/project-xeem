@@ -1,6 +1,6 @@
 package shook.xeem.interfaces;
 
-import shook.xeem.BlankList;
+import shook.xeem.objects.BlankList;
 
 public interface BlankUpdateListener {
 

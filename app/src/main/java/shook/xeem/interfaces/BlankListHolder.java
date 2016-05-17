@@ -1,7 +1,7 @@
 package shook.xeem.interfaces;
 
-import shook.xeem.BlankList;
-import shook.xeem.UserList;
+import shook.xeem.objects.BlankList;
+import shook.xeem.objects.UserList;
 
 public interface BlankListHolder {
 

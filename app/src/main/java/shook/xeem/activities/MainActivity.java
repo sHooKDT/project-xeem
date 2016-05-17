@@ -24,9 +24,9 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-import shook.xeem.BlankList;
+import shook.xeem.objects.BlankList;
 import shook.xeem.R;
-import shook.xeem.UserList;
+import shook.xeem.objects.UserList;
 import shook.xeem.fragments.TestResultFragment;
 import shook.xeem.interfaces.BlankListHolder;
 import shook.xeem.interfaces.BlankUpdateListener;
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements BlankListHolder {
     }
 
     public UserList getUserList() {
-        return (UserList) apiService.getUsers();
+        return apiService.getUsers();
     }
 
     @Override

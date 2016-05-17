@@ -1,4 +1,4 @@
-package shook.xeem;
+package shook.xeem.objects;
 
 import java.util.ArrayList;
 import java.util.Objects;
