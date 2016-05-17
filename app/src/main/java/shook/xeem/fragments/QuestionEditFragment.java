@@ -90,10 +90,14 @@ public class QuestionEditFragment extends Fragment {
     View.OnClickListener finishEdit = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            ((BlankEditor) getActivity()).applyQuestionEdit(getArguments().getInt("index"), editable);
-            getActivity().getSupportFragmentManager().popBackStack();
-            getActivity().findViewById(R.id.question_edit_fragment_container).setVisibility(View.GONE);
+            finishEdit();
         }
     };
+
+    public void finishEdit() {
+        ((BlankEditor) getActivity()).applyQuestionEdit(getArguments().getInt("index"), editable);
+        getActivity().getSupportFragmentManager().popBackStack();
+        getActivity().findViewById(R.id.question_edit_fragment_container).setVisibility(View.GONE);
+    }
 
 }

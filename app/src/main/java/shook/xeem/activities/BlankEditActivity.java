@@ -33,6 +33,8 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
     private BlankObject.Builder blankBuilder = BlankObject.newBuilder();
     private EditText editTitle;
 
+    private QuestionEditFragment editFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,23 +69,27 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     @Override
     public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Закончить редактирование?");
-        builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d("XEEMDBG", "[EDIT] Return to edit");
-            }
-        });
-        builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                Log.d("XEEMDBG", "[EDIT] Edit ended");
-                finishEdit(null);
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        if (editFragment != null && editFragment.isVisible()) {
+            editFragment.finishEdit();
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Закончить редактирование?");
+            builder.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d("XEEMDBG", "[EDIT] Return to edit");
+                }
+            });
+            builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Log.d("XEEMDBG", "[EDIT] Edit ended");
+                    finishEdit(null);
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     private void initView() {
@@ -194,7 +200,7 @@ public class BlankEditActivity extends AppCompatActivity implements BlankEditor 
 
     @Override
     public void startQuestionEdit(int index, QuestionObject _question) {
-        QuestionEditFragment editFragment = new QuestionEditFragment();
+        editFragment = new QuestionEditFragment();
         Bundle data = new Bundle();
         data.putInt("index", index);
         data.putString("question", (new Gson()).toJson(_question));
